@@ -9,7 +9,8 @@ const initialState = {
   tour: '',
   leftSeconds: {},
   currentTeam: '',
-  currentGameId: ''
+  currentGameId: '',
+  score: {}
 }
 
 export const gameSlice = createSlice({
@@ -43,6 +44,9 @@ export const gameSlice = createSlice({
     setCurrentGameId: (state, action) => {
       state.currentGameId = action.payload
     },
+    setScore: (state, action) => {
+      state.score = action.payload
+    },
   }
 })
 
@@ -55,7 +59,8 @@ export const {
   setTour,
   setLeftSeconds,
   setCurrentTeam,
-  setCurrentGameId
+  setCurrentGameId,
+  setScore
 } = gameSlice.actions
 
 export default gameSlice.reducer

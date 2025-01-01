@@ -3,17 +3,20 @@ import {useEffect, useState} from "react";
 import {
   setCurrentTeam,
   setLeftSeconds,
-  setLeftWords,
+  setLeftWords, setScore,
   setTour
 } from "../redux/gameSlice";
 import {updatePlayer} from "../redux/playersSlice";
 
+// add score
+// shuffle left words
+// shuffle first chosen asker
+// bug: when all words are guessed
+
 const GamePage = () => {
 
-  // shuffle left words
-
   const dispatch = useDispatch()
-  const {leftWords, tour, leftSeconds, words, currentTeam, currentGameId} = useSelector(state => state.game);
+  const {leftWords, tour, leftSeconds, words, currentTeam, currentGameId, score} = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
   const [currentWord, setCurrentWord] = useState('')
@@ -90,6 +93,11 @@ const GamePage = () => {
   const finishRound = () => {
     setRoundEnded(false)
     dispatch(setLeftWords(leftWords.filter(word => !answeredWords.includes(word))))
+    const newScore = {
+      ...score,
+      [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
+    }
+    dispatch(setScore(newScore))
     setAnsweredWords([]);
     setCopyAnsweredWords([])
     setCurrentWord('')
@@ -141,6 +149,7 @@ const GamePage = () => {
         <button onClick={openWord}>
           {showed ? currentWord : 'Start round'}
         </button>
+        <p>Team's score: {score[currentTeam] || 0}</p>
         <p>Words left: {leftWords.length}</p>
         {roundEnded && <p>answered words</p>}
         {roundEnded && copyAnsweredWords.map(option => (
