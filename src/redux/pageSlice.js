@@ -11,10 +11,11 @@ export const pageSlice = createSlice({
   reducers: {
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload
-    }
+    },
+    reset: () => initialState
   }
 })
 
-export const {setCurrentPage} = pageSlice.actions
+export const {setCurrentPage, reset} = pageSlice.actions
 
 export default pageSlice.reducer

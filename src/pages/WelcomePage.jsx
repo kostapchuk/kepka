@@ -1,6 +1,7 @@
 import {useDispatch} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
+import ResetFullGame from "../components/ResetFullGame";
 
 const WelcomePage = () => {
 
@@ -18,6 +19,7 @@ const WelcomePage = () => {
         <button onClick={handleStartGame}>
           Start
         </button>
+        <ResetFullGame/>
       </div>
   )
 }

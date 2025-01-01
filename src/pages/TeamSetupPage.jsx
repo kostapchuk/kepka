@@ -1,15 +1,17 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {addPlayers} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {v4 as uuidv4} from 'uuid';
 import {setCurrentGameId} from "../redux/gameSlice";
+import ResetFullGame from "../components/ResetFullGame";
 
 const TeamSetupPage = () => {
   const dispatch = useDispatch();
   const [playerNames, setPlayerNames] = useState(['', '', '']);
   const [gameId, setGameId] = useState('');
+  const players = useSelector(state => state.players);
 
   useEffect(() => {
     const newGameId = uuidv4();
@@ -43,7 +45,7 @@ const TeamSetupPage = () => {
 
   return (
       <div>
-        <button onClick={addPlayersToRedux}>
+        <button onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>
           Add Players
         </button>
         {playerNames.map((name, index) => (
@@ -54,9 +56,10 @@ const TeamSetupPage = () => {
                 onChange={(e) => handleInputChange(index, e.target.value)}
             />
         ))}
-        <button onClick={goToNextPage}>
+        <button onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
           Go to game setup page
         </button>
+        <ResetFullGame/>
       </div>
   );
 };

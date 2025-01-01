@@ -7,6 +7,7 @@ import {
   setTour,
   setWords
 } from "../redux/gameSlice";
+import ResetFullGame from "../components/ResetFullGame";
 
 const GameSetupPage = () => {
 
@@ -141,6 +142,7 @@ const GameSetupPage = () => {
         <button onClick={goToGamePage}>
           Start game
         </button>
+        <ResetFullGame/>
       </div>
   );
 };

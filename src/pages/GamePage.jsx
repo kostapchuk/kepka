@@ -3,23 +3,31 @@ import {useEffect, useState} from "react";
 import {
   setCurrentTeam,
   setLeftSeconds,
-  setLeftWords, setScore,
+  setLeftWords,
+  setScore,
   setTour
 } from "../redux/gameSlice";
 import {updatePlayer} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
+import ResetFullGame from "../components/ResetFullGame";
 
-// add score
 // shuffle left words
 // shuffle first chosen asker
-// bug: when all words are guessed
 // check: all words answered but then one uncheck
 
 const GamePage = () => {
 
   const dispatch = useDispatch()
-  const {leftWords, tour, leftSeconds, words, currentTeam, currentGameId, score} = useSelector(state => state.game);
+  const {
+    leftWords,
+    tour,
+    leftSeconds,
+    words,
+    currentTeam,
+    currentGameId,
+    score
+  } = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
   const [currentWord, setCurrentWord] = useState('')
@@ -30,8 +38,9 @@ const GamePage = () => {
   const [timeLeft, setTimeLeft] = useState(-1);
   const [isActive, setIsActive] = useState(false);
   const players = useSelector(state => state.players);
-  const [currentAsker, setCurrentAsker] = useState(players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0])
-  const [allWordsAnswered, setAllWordsAnswered] = useState(false)
+  const [currentAsker, setCurrentAsker] = useState(players.filter(
+      p => p.gameId === currentGameId && p.teamId === currentTeam
+          && p.asker)[0])
 
   useEffect(() => {
     let timer;
@@ -76,7 +85,6 @@ const GamePage = () => {
       const word = leftWords[index];
       setIndex(index + 1);
       setCurrentWord(word);
-      setAllWordsAnswered(false);
     } else {
       const newLeftSeconds = {
         ...leftSeconds,
@@ -87,15 +95,21 @@ const GamePage = () => {
       setIndex(0);
       setRoundEnded(true);
       setShowed(false);
-      // dispatch(setLeftWords(words))
       alert('all words are answered');
-      setAllWordsAnswered(true);
     }
   }
 
   const finishRound = () => {
     setRoundEnded(false)
-    dispatch(setLeftWords(leftWords.filter(word => !answeredWords.includes(word))))
+    const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
+    dispatch(setLeftWords(actualLeftWords))
+    let continueNow = false
+    if (actualLeftWords.length === 0 && tour !== 'One word') {
+      const input = prompt("Продолжить первыми в следующем туре с остатком в " + leftSeconds[currentTeam] + " секунд?")
+      if (input) {
+        continueNow = true
+      }
+    }
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
@@ -106,34 +120,42 @@ const GamePage = () => {
     setCurrentWord('')
     setIndex(0)
     // rotate asker in current team
-    const currentTeamPlayers = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam)
-    const currentAskerIdx = currentTeamPlayers.indexOf(currentAsker)
-    let newAskerIdx
-    if (currentAskerIdx === currentTeamPlayers.length - 1) {
-      newAskerIdx = 0
-    } else {
-      newAskerIdx = currentAskerIdx + 1
-    }
-    const newAsker = currentTeamPlayers[newAskerIdx]
-    const generalCurrentAskerIndex = players.indexOf(currentAsker)
-    const generalNewAskerIndex = players.indexOf(newAsker)
-    dispatch(updatePlayer({index: generalCurrentAskerIndex, updatedInfo: {...currentAsker, asker: 0}}))
-    dispatch(updatePlayer({index: generalNewAskerIndex, updatedInfo: {...newAsker, asker: 1}}))
+    if (!continueNow) {
+      const currentTeamPlayers = players.filter(
+          p => p.gameId === currentGameId && p.teamId === currentTeam)
+      const currentAskerIdx = currentTeamPlayers.indexOf(currentAsker)
+      let newAskerIdx
+      if (currentAskerIdx === currentTeamPlayers.length - 1) {
+        newAskerIdx = 0
+      } else {
+        newAskerIdx = currentAskerIdx + 1
+      }
+      const newAsker = currentTeamPlayers[newAskerIdx]
+      const generalCurrentAskerIndex = players.indexOf(currentAsker)
+      const generalNewAskerIndex = players.indexOf(newAsker)
+      dispatch(updatePlayer({
+        index: generalCurrentAskerIndex,
+        updatedInfo: {...currentAsker, asker: 0}
+      }))
+      dispatch(updatePlayer(
+          {index: generalNewAskerIndex, updatedInfo: {...newAsker, asker: 1}}))
 
-
-    // rotate team
-    const teamNames = removeDuplicates(players.filter(p => p.gameId === currentGameId).map(p => p.teamId))
-    const currentTeamIndex = teamNames.indexOf(currentTeam)
-    let newTeam
-    if (currentTeamIndex === teamNames.length - 1) {
-      newTeam = teamNames[0]
-      dispatch(setCurrentTeam(newTeam))
-    } else {
-      newTeam = teamNames[currentTeamIndex + 1]
-      dispatch(setCurrentTeam(newTeam))
+      // rotate team
+      const teamNames = removeDuplicates(
+          players.filter(p => p.gameId === currentGameId).map(p => p.teamId))
+      const currentTeamIndex = teamNames.indexOf(currentTeam)
+      let newTeam
+      if (currentTeamIndex === teamNames.length - 1) {
+        newTeam = teamNames[0]
+        dispatch(setCurrentTeam(newTeam))
+      } else {
+        newTeam = teamNames[currentTeamIndex + 1]
+        dispatch(setCurrentTeam(newTeam))
+      }
+      setCurrentAsker(players.filter(
+          p => p.gameId === currentGameId && p.teamId === newTeam && p.asker)[0])
     }
-    setCurrentAsker(players.filter(p => p.gameId === currentGameId && p.teamId === newTeam && p.asker)[0])
-    if (allWordsAnswered) {
+    if (actualLeftWords.length === 0) {
       dispatch(setLeftWords(words))
       if (tour === 'Alias') {
         dispatch(setTour('Crocodile'));
@@ -145,6 +167,7 @@ const GamePage = () => {
         dispatch(setCurrentPage(Pages.RESULTS_PAGE));
       }
     }
+    // setAllWordsAnswered(false)
   }
 
   function removeDuplicates(array) {
@@ -187,6 +210,7 @@ const GamePage = () => {
             </div>
         ))}
         {roundEnded && <button onClick={finishRound}>Finish round</button>}
+        <ResetFullGame/>
       </div>
   )
 }
