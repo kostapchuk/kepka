@@ -33,11 +33,11 @@ const GameSetupPage = () => {
 
   return (
       <div>
-        <p>Game settings</p>
-        <p>Round duration, seconds: {timer}</p>
-        <p>Game words, count: {wordsCount}</p>
+        <p>Настройки игры</p>
+        <p>Длительность раунд, секунды: {timer}</p>
+        <p>Количество слов в игре: {wordsCount}</p>
         <button onClick={goToGamePage}>
-          Start game
+          Начать игру
         </button>
         <ResetFullGame/>
       </div>

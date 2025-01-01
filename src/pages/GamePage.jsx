@@ -178,15 +178,19 @@ const GamePage = () => {
 
   return (
       <div className="App">
-        <p>Tour name: {tour}</p>
-        <p>Team: {currentTeam}</p>
-        <p>Asker: {currentAsker.name}</p>
-        <button onClick={openWord}>
-          {showed ? currentWord : 'Start round'}
+        <p>Название тура: {tour}</p>
+        <p>Команда: {currentTeam}</p>
+        <p>Загадыватель: {currentAsker.name}</p>
+        <button style={{
+          padding: '20px 45px',
+          fontSize: '25px',
+          borderRadius: '5px'
+        }} onClick={openWord}>
+          {showed ? currentWord : 'Начать'}
         </button>
-        <p>Team's score: {score[currentTeam] || 0}</p>
-        <p>Words left: {leftWords.length}</p>
-        {roundEnded && <p>answered words</p>}
+        <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
+        <p>Осталось слов в кепке: {leftWords.length}</p>
+        {roundEnded && <h4>Отгаданные слова:</h4>}
         {roundEnded && copyAnsweredWords.map(option => (
             <div key={Math.random()}>
               <label>
@@ -206,7 +210,7 @@ const GamePage = () => {
               </label>
             </div>
         ))}
-        {roundEnded && <button onClick={finishRound}>Finish round</button>}
+        {roundEnded && <button onClick={finishRound}>Закончить раунд</button>}
         <ResetFullGame/>
       </div>
   )
