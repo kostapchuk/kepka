@@ -7,11 +7,14 @@ import {
   setTour
 } from "../redux/gameSlice";
 import {updatePlayer} from "../redux/playersSlice";
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
 
 // add score
 // shuffle left words
 // shuffle first chosen asker
 // bug: when all words are guessed
+// check: all words answered but then one uncheck
 
 const GamePage = () => {
 
@@ -28,26 +31,22 @@ const GamePage = () => {
   const [isActive, setIsActive] = useState(false);
   const players = useSelector(state => state.players);
   const [currentAsker, setCurrentAsker] = useState(players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0])
+  const [allWordsAnswered, setAllWordsAnswered] = useState(false)
 
   useEffect(() => {
     let timer;
     if (isActive && timeLeft > 0) {
+      console.log(timeLeft)
       timer = setInterval(() => {
         console.log("setInterval")
         setTimeLeft(prevTime => prevTime - 1); // Decrement time left
       }, 1000); // Update every second
     } else if (isActive && timeLeft === 0) {
-      const newLeftSeconds = {
-        ...leftSeconds,
-        [currentTeam]: timeLeft,
-      }
-      dispatch(setLeftSeconds(newLeftSeconds))
       setIsActive(false);
       setRoundEnded(true)
       setShowed(false)
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
       setCopyAnsweredWords([...answeredWords, currentWord])
-
       alert('Time is over');
     }
     return () => clearInterval(timer);
@@ -56,6 +55,11 @@ const GamePage = () => {
   const startTimer = () => {
     setIsActive(true);
     setTimeLeft(5 + (leftSeconds[currentTeam] || 0))
+    const newLeftSeconds = {
+      ...leftSeconds,
+      [currentTeam]: 0,
+    }
+    dispatch(setLeftSeconds(newLeftSeconds))
   };
 
   const openWord = () => {
@@ -71,22 +75,21 @@ const GamePage = () => {
       }
       const word = leftWords[index];
       setIndex(index + 1);
-      setCurrentWord(word)
+      setCurrentWord(word);
+      setAllWordsAnswered(false);
     } else {
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: timeLeft,
+      }
+      dispatch(setLeftSeconds(newLeftSeconds))
       setTimeLeft(0);
       setIndex(0);
       setRoundEnded(true);
       setShowed(false);
-      dispatch(setLeftWords(words))
+      // dispatch(setLeftWords(words))
       alert('all words are answered');
-      // add additional time for team
-      if (tour === 'Alias') {
-        dispatch(setTour('Crocodile'));
-        alert('CROCODILE')
-      } else if (tour === 'Crocodile') {
-        dispatch(setTour('One word'));
-        alert('One word')
-      }
+      setAllWordsAnswered(true);
     }
   }
 
@@ -130,6 +133,18 @@ const GamePage = () => {
       dispatch(setCurrentTeam(newTeam))
     }
     setCurrentAsker(players.filter(p => p.gameId === currentGameId && p.teamId === newTeam && p.asker)[0])
+    if (allWordsAnswered) {
+      dispatch(setLeftWords(words))
+      if (tour === 'Alias') {
+        dispatch(setTour('Crocodile'));
+        alert('CROCODILE')
+      } else if (tour === 'Crocodile') {
+        dispatch(setTour('One word'));
+        alert('One word')
+      } else if (tour === 'One word') {
+        dispatch(setCurrentPage(Pages.RESULTS_PAGE));
+      }
+    }
   }
 
   function removeDuplicates(array) {

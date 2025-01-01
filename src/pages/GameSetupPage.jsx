@@ -128,7 +128,7 @@ const GameSetupPage = () => {
     dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(Math.random() * currentPlayersInGame.length)].teamId))
   }
 
-  function randomWords(count = 42) {
+  function randomWords(count = 4) {
     const shuffledArray = totalWords.sort(() => 0.5 - Math.random());
     return shuffledArray.slice(0, count);
   }

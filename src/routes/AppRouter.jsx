@@ -4,6 +4,7 @@ import WelcomePage from "../pages/WelcomePage";
 import TeamSetupPage from "../pages/TeamSetupPage";
 import GameSetupPage from "../pages/GameSetupPage";
 import GamePage from "../pages/GamePage";
+import ResultsPage from "../pages/ResultsPage";
 
 const AppRouter = () => {
 
@@ -15,6 +16,7 @@ const AppRouter = () => {
         {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
         {currentPage === Pages.GAME_SETUP_PAGE && <GameSetupPage/>}
         {currentPage === Pages.GAME_PAGE && <GamePage/>}
+        {currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}
       </>
   );
 };
