@@ -14,10 +14,10 @@ const WelcomePage = () => {
   return (
       <div className="App">
         <p>
-          Welcome to not a game just SHLYAPA
+          Приветствуем в игре Кепка!
         </p>
         <button onClick={handleStartGame}>
-          Start
+          Начать
         </button>
         <ResetFullGame/>
       </div>

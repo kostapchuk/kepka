@@ -1,19 +1,9 @@
-import {useDispatch, useSelector} from "react-redux";
-import {reset as resetPage} from "../redux/pageSlice";
-import {reset as resetGame} from "../redux/gameSlice";
-import {reset as resetPlayers} from "../redux/playersSlice";
+import {useSelector} from "react-redux";
 import ResetFullGame from "../components/ResetFullGame";
 
 const WelcomePage = () => {
 
-  const dispatch = useDispatch();
   const {score} = useSelector(state => state.game);
-
-  const resetFullGame = () => {
-    dispatch(resetGame)
-    dispatch(resetPage)
-    dispatch(resetPlayers)
-  }
 
   return (
       <div className="App">

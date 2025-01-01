@@ -19,6 +19,16 @@ const ResetFullGame = () => {
         <br/>
         <br/>
         <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
         <button onClick={resetFullGame}>Reset</button>
       </div>
   )

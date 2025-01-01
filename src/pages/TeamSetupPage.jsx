@@ -46,7 +46,7 @@ const TeamSetupPage = () => {
   return (
       <div>
         <button onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>
-          Add Players
+          Добавить игроков
         </button>
         {playerNames.map((name, index) => (
             <input
@@ -57,7 +57,7 @@ const TeamSetupPage = () => {
             />
         ))}
         <button onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
-          Go to game setup page
+          Перейти к настройке игровой команты
         </button>
         <ResetFullGame/>
       </div>
