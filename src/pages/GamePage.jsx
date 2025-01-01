@@ -12,10 +12,6 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import ResetFullGame from "../components/ResetFullGame";
 
-// shuffle left words
-// shuffle first chosen asker
-// check: all words answered but then one uncheck
-
 const GamePage = () => {
 
   const dispatch = useDispatch()
@@ -41,13 +37,12 @@ const GamePage = () => {
   const [currentAsker, setCurrentAsker] = useState(players.filter(
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
+  const [manuallyStopped, setManuallyStopped] = useState(false)
 
   useEffect(() => {
     let timer;
     if (isActive && timeLeft > 0) {
-      console.log(timeLeft)
       timer = setInterval(() => {
-        console.log("setInterval")
         setTimeLeft(prevTime => prevTime - 1); // Decrement time left
       }, 1000); // Update every second
     } else if (isActive && timeLeft === 0) {
@@ -56,14 +51,16 @@ const GamePage = () => {
       setShowed(false)
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
       setCopyAnsweredWords([...answeredWords, currentWord])
-      alert('Time is over');
+      if (!manuallyStopped) {
+        alert('Time is over');
+      }
     }
     return () => clearInterval(timer);
   }, [isActive, timeLeft]);
 
   const startTimer = () => {
     setIsActive(true);
-    setTimeLeft(5 + (leftSeconds[currentTeam] || 0))
+    setTimeLeft(30 + (leftSeconds[currentTeam] || 0))
     const newLeftSeconds = {
       ...leftSeconds,
       [currentTeam]: 0,
@@ -92,6 +89,7 @@ const GamePage = () => {
       }
       dispatch(setLeftSeconds(newLeftSeconds))
       setTimeLeft(0);
+      setManuallyStopped(true)
       setIndex(0);
       setRoundEnded(true);
       setShowed(false);
@@ -102,7 +100,7 @@ const GamePage = () => {
   const finishRound = () => {
     setRoundEnded(false)
     const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
-    dispatch(setLeftWords(actualLeftWords))
+    dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
     if (actualLeftWords.length === 0 && tour !== 'One word') {
       const input = prompt("Продолжить первыми в следующем туре с остатком в " + leftSeconds[currentTeam] + " секунд?")
@@ -167,7 +165,6 @@ const GamePage = () => {
         dispatch(setCurrentPage(Pages.RESULTS_PAGE));
       }
     }
-    // setAllWordsAnswered(false)
   }
 
   function removeDuplicates(array) {
