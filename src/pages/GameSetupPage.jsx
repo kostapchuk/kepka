@@ -11,6 +11,8 @@ import ResetFullGame from "../components/ResetFullGame";
 import {availableWords} from "../util/words";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import {TextField} from "@mui/material";
+import {useRef} from "react";
 
 const GameSetupPage = () => {
 
@@ -33,15 +35,24 @@ const GameSetupPage = () => {
     return shuffledArray.slice(0, wordsCount);
   }
 
+  const inputRef = useRef(null);
+
+  const handleFocus = () => {
+    inputRef.current.focus();
+  };
+
   return (
       <Stack spacing={2}>
         <p>Настройки игры</p>
         <p>Длительность раунд, секунды: {timer}</p>
-        <input
-            key={Math.random()}
-            type="text"
+        <TextField
+            inputRef={inputRef}
             value={timer}
             onChange={(e) => dispatch(setTimer(e.target.value))}
+            onFocus={handleFocus}
+            label="Type something"
+            variant="outlined"
+            fullWidth
         />
         <p>Количество слов в игре: {wordsCount}</p>
         <input
