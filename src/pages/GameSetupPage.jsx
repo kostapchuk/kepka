@@ -27,7 +27,7 @@ const GameSetupPage = () => {
     const words = randomWords()
     dispatch(setWords(words))
     dispatch(setLeftWords(words))
-    dispatch(setTour('Alias'))
+    dispatch(setTour('Алиас'))
     const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
     dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(
         Math.random() * currentPlayersInGame.length)].teamId))
