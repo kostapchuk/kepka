@@ -50,9 +50,9 @@ const GamePage = () => {
     if (isActive && timeLeft > 0) {
       console.log("timeLeft: ", timeLeft)
       timer = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1); // Decrement time left
-      }, 1000); // Update every second
-    } else if (isActive && timeLeft === 0) {
+        setTimeLeft(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (isActive && timeLeft <= 0) {
       if (!manuallyStopped) {
         audio.play();
         setTimeout(() => {
@@ -61,9 +61,9 @@ const GamePage = () => {
         }, 2500);
       }
       setIsActive(false);
-      setRoundEnded(true)
-      setShowed(false)
-      setManuallyStopped(false)
+      setRoundEnded(true);
+      setShowed(false);
+      setManuallyStopped(false);
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
       setCopyAnsweredWords([...answeredWords, currentWord])
     }
@@ -95,12 +95,6 @@ const GamePage = () => {
       setIndex(index + 1);
       setCurrentWord(word);
     } else {
-      const newLeftSeconds = {
-        ...leftSeconds,
-        [currentTeam]: timeLeft,
-      }
-      dispatch(setLeftSeconds(newLeftSeconds))
-      setTimeLeft(0);
       setManuallyStopped(true)
       setIndex(0);
       setRoundEnded(true);
@@ -115,13 +109,23 @@ const GamePage = () => {
         word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово') {
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && timeLeft >= 1) {
+      let actualTimeLeft = timeLeft
+      if (tour === 'Крокодил') {
+        actualTimeLeft = Math.round(timeLeft / 2)
+      }
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: actualTimeLeft,
+      }
+      dispatch(setLeftSeconds(newLeftSeconds));
       const input = prompt("Продолжить первыми в следующем туре с остатком в "
           + leftSeconds[currentTeam] + " секунд?")
       if (input) {
         continueNow = true
       }
     }
+    setTimeLeft(0);
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
@@ -221,10 +225,10 @@ const GamePage = () => {
                 }}
                 sx={{
                   '&.Mui-checked': {
-                    transform: 'scale(1.5)', // Increase size when checked
+                    transform: 'scale(1.5)',
                   },
-                  transform: 'scale(1.5)', // Increase size when unchecked
-                  padding: '10px', // Add padding for better click area
+                  transform: 'scale(1.5)',
+                  padding: '10px',
                 }}
             />} label={
               <Typography variant="body1" style={{ fontSize: '25px' }}>
