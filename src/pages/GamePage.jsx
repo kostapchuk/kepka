@@ -22,7 +22,8 @@ const GamePage = () => {
     words,
     currentTeam,
     currentGameId,
-    score
+    score,
+    timer
   } = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
@@ -67,7 +68,7 @@ const GamePage = () => {
 
   const startTimer = () => {
     setIsActive(true);
-    setTimeLeft(5 + (leftSeconds[currentTeam] || 0))
+    setTimeLeft(Number(timer) + Number((leftSeconds[currentTeam] || 0)))
     const newLeftSeconds = {
       ...leftSeconds,
       [currentTeam]: 0,

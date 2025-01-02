@@ -3,9 +3,9 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {
   setCurrentTeam,
-  setLeftWords,
+  setLeftWords, setTimer,
   setTour,
-  setWords
+  setWords, setWordsCount
 } from "../redux/gameSlice";
 import ResetFullGame from "../components/ResetFullGame";
 import {availableWords} from "../util/words";
@@ -26,16 +26,28 @@ const GameSetupPage = () => {
     dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(Math.random() * currentPlayersInGame.length)].teamId))
   }
 
-  function randomWords(count = 42) {
+  function randomWords() {
     const shuffledArray = availableWords.sort(() => 0.5 - Math.random());
-    return shuffledArray.slice(0, count);
+    return shuffledArray.slice(0, wordsCount);
   }
 
   return (
       <div>
         <p>Настройки игры</p>
         <p>Длительность раунд, секунды: {timer}</p>
+        <input
+            key={Math.random()}
+            type="text"
+            value={timer}
+            onChange={(e) => dispatch(setTimer(e.target.value))}
+        />
         <p>Количество слов в игре: {wordsCount}</p>
+        <input
+            key={Math.random()}
+            type="text"
+            value={wordsCount}
+            onChange={(e) => dispatch(setWordsCount(e.target.value))}
+        />
         <button onClick={goToGamePage}>
           Начать игру
         </button>
