@@ -8,6 +8,7 @@ import {setCurrentGameId} from "../redux/gameSlice";
 import ResetFullGame from "../components/ResetFullGame";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import {TextField} from "@mui/material";
 
 const TeamSetupPage = () => {
   const dispatch = useDispatch();
@@ -48,11 +49,13 @@ const TeamSetupPage = () => {
   return (
       <Stack spacing={2}>
         {playerNames.map((name, index) => (
-            <input
+            <TextField
                 key={index}
-                type="text"
+                label={`Имя игрока ${index + 1}`}
                 value={name}
                 onChange={(e) => handleInputChange(index, e.target.value)}
+                variant="outlined"
+                fullWidth
             />
         ))}
         <Button variant="contained" onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>

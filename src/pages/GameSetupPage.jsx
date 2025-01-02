@@ -3,9 +3,11 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {
   setCurrentTeam,
-  setLeftWords, setTimer,
+  setLeftWords,
+  setTimer,
   setTour,
-  setWords, setWordsCount
+  setWords,
+  setWordsCount
 } from "../redux/gameSlice";
 import ResetFullGame from "../components/ResetFullGame";
 import {availableWords} from "../util/words";
@@ -27,7 +29,8 @@ const GameSetupPage = () => {
     dispatch(setLeftWords(words))
     dispatch(setTour('Alias'))
     const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
-    dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(Math.random() * currentPlayersInGame.length)].teamId))
+    dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(
+        Math.random() * currentPlayersInGame.length)].teamId))
   }
 
   function randomWords() {
@@ -41,25 +44,32 @@ const GameSetupPage = () => {
     inputRef.current.focus();
   };
 
+  const inputRef2 = useRef(null);
+
+  const handleFocus2 = () => {
+    inputRef2.current.focus();
+  };
+
   return (
       <Stack spacing={2}>
         <p>Настройки игры</p>
-        <p>Длительность раунд, секунды: {timer}</p>
         <TextField
             inputRef={inputRef}
             value={timer}
             onChange={(e) => dispatch(setTimer(e.target.value))}
             onFocus={handleFocus}
-            label="Type something"
+            label="Длительность раунда"
             variant="outlined"
             fullWidth
         />
-        <p>Количество слов в игре: {wordsCount}</p>
-        <input
-            key={Math.random()}
-            type="text"
+        <TextField
+            inputRef={inputRef2}
             value={wordsCount}
             onChange={(e) => dispatch(setWordsCount(e.target.value))}
+            onFocus={handleFocus2}
+            label="Количество слов в игре"
+            variant="outlined"
+            fullWidth
         />
         <Button variant="contained" onClick={goToGamePage}>
           Начать игру
