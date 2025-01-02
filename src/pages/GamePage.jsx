@@ -201,7 +201,7 @@ const GamePage = () => {
           padding: '20px 45px',
           fontSize: '25px',
           borderRadius: '5px'
-        }} onClick={openWord}>
+        }} onClick={openWord} disabled={roundEnded}>
           {showed ? currentWord : 'Начать'}
         </button>
         <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
