@@ -65,7 +65,7 @@ const GamePage = () => {
           audio.pause();
           audio.currentTime = 0;
           alert('Время вышло!')
-        }, 1000);
+        }, 2500);
       }
     }
     return () => clearInterval(timer);
