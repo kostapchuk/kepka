@@ -44,15 +44,16 @@ const GamePage = () => {
           && p.asker)[0])
   const [manuallyStopped, setManuallyStopped] = useState(false)
   const audio = new Audio('/alarm-bell.mp3');
+  const [localTimeLeft, setLocalTimeLeft] = useState(0)
 
   useEffect(() => {
     let timer;
     if (isActive && timeLeft > 0) {
       console.log("timeLeft: ", timeLeft)
       timer = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1); // Decrement time left
-      }, 1000); // Update every second
-    } else if (isActive && timeLeft === 0) {
+        setTimeLeft(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (isActive && timeLeft <= 0) {
       if (!manuallyStopped) {
         audio.play();
         setTimeout(() => {
@@ -61,9 +62,9 @@ const GamePage = () => {
         }, 2500);
       }
       setIsActive(false);
-      setRoundEnded(true)
-      setShowed(false)
-      setManuallyStopped(false)
+      setRoundEnded(true);
+      setShowed(false);
+      setManuallyStopped(false);
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
       setCopyAnsweredWords([...answeredWords, currentWord])
     }
@@ -95,11 +96,7 @@ const GamePage = () => {
       setIndex(index + 1);
       setCurrentWord(word);
     } else {
-      const newLeftSeconds = {
-        ...leftSeconds,
-        [currentTeam]: timeLeft,
-      }
-      dispatch(setLeftSeconds(newLeftSeconds))
+      setLocalTimeLeft(timeLeft)
       setTimeLeft(0);
       setManuallyStopped(true)
       setIndex(0);
@@ -115,9 +112,19 @@ const GamePage = () => {
         word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово') {
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && localTimeLeft >= 1) {
+      let actualTimeLeft = localTimeLeft
+      if (tour === 'Крокодил') {
+        actualTimeLeft = Math.round(localTimeLeft / 2)
+      }
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: actualTimeLeft,
+      }
+      setLocalTimeLeft(0);
+      dispatch(setLeftSeconds(newLeftSeconds));
       const input = prompt("Продолжить первыми в следующем туре с остатком в "
-          + leftSeconds[currentTeam] + " секунд?")
+          + actualTimeLeft + " секунд?")
       if (input) {
         continueNow = true
       }
@@ -221,10 +228,10 @@ const GamePage = () => {
                 }}
                 sx={{
                   '&.Mui-checked': {
-                    transform: 'scale(1.5)', // Increase size when checked
+                    transform: 'scale(1.5)',
                   },
-                  transform: 'scale(1.5)', // Increase size when unchecked
-                  padding: '10px', // Add padding for better click area
+                  transform: 'scale(1.5)',
+                  padding: '10px',
                 }}
             />} label={
               <Typography variant="body1" style={{ fontSize: '25px' }}>
