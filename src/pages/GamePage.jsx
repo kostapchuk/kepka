@@ -16,8 +16,6 @@ import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 
 // save all state to session so no lose on refresh
-// fix inputs
-// add time left
 const GamePage = () => {
 
   const dispatch = useDispatch()
