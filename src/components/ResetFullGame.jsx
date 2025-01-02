@@ -2,6 +2,7 @@ import {useDispatch} from "react-redux";
 import {reset as resetPage} from "../redux/pageSlice";
 import {reset as resetGame} from "../redux/gameSlice";
 import {reset as resetPlayers} from "../redux/playersSlice";
+import Button from "@mui/material/Button";
 
 const ResetFullGame = () => {
 
@@ -29,7 +30,7 @@ const ResetFullGame = () => {
         <br/>
         <br/>
         <br/>
-        <button onClick={resetFullGame}>Reset</button>
+        <Button onClick={resetFullGame}>Reset</Button>
       </div>
   )
 }

@@ -11,7 +11,12 @@ import {updatePlayer} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import ResetFullGame from "../components/ResetFullGame";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 
+// save all state to session so no lose on refresh
+// add design
 const GamePage = () => {
 
   const dispatch = useDispatch()
@@ -107,11 +112,13 @@ const GamePage = () => {
 
   const finishRound = () => {
     setRoundEnded(false)
-    const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
+    const actualLeftWords = leftWords.filter(
+        word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
     if (actualLeftWords.length === 0 && tour !== 'Одно слово') {
-      const input = prompt("Продолжить первыми в следующем туре с остатком в " + leftSeconds[currentTeam] + " секунд?")
+      const input = prompt("Продолжить первыми в следующем туре с остатком в "
+          + leftSeconds[currentTeam] + " секунд?")
       if (input) {
         continueNow = true
       }
@@ -159,7 +166,8 @@ const GamePage = () => {
         dispatch(setCurrentTeam(newTeam))
       }
       setCurrentAsker(players.filter(
-          p => p.gameId === currentGameId && p.teamId === newTeam && p.asker)[0])
+          p => p.gameId === currentGameId && p.teamId === newTeam
+              && p.asker)[0])
     }
     if (actualLeftWords.length === 0) {
       dispatch(setLeftWords(words))
@@ -185,7 +193,7 @@ const GamePage = () => {
   }
 
   return (
-      <div className="App">
+      <Stack spacing={2}>
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
@@ -200,27 +208,35 @@ const GamePage = () => {
         <p>Осталось слов в кепке: {leftWords.length}</p>
         {roundEnded && <h4>Отгаданные слова:</h4>}
         {roundEnded && copyAnsweredWords.map(option => (
-            <div key={Math.random()}>
-              <label>
-                <input
-                    type="checkbox"
-                    checked={answeredWords.includes(option)}
-                    onChange={() => {
-                      if (answeredWords.includes(option)) {
-                        setAnsweredWords(prevWords => prevWords.filter(
-                            word => word !== option));
-                      } else {
-                        setAnsweredWords(prevWords => [...prevWords, option]);
-                      }
-                    }}
-                />
+            <FormControlLabel key={Math.random()} control={<Checkbox
+                key={Math.random()}
+                checked={answeredWords.includes(option)}
+                onChange={() => {
+                  if (answeredWords.includes(option)) {
+                    setAnsweredWords(prevWords => prevWords.filter(
+                        word => word !== option));
+                  } else {
+                    setAnsweredWords(prevWords => [...prevWords, option]);
+                  }
+                }}
+                sx={{
+                  '&.Mui-checked': {
+                    transform: 'scale(1.5)', // Increase size when checked
+                  },
+                  transform: 'scale(1.5)', // Increase size when unchecked
+                  padding: '10px', // Add padding for better click area
+                }}
+            />} label={
+              <Typography variant="body1" style={{ fontSize: '25px' }}>
                 {option}
-              </label>
-            </div>
+              </Typography>
+            } />
+
         ))}
-        {roundEnded && <button onClick={finishRound}>Закончить раунд</button>}
+        {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
+          раунд</Button>}
         <ResetFullGame/>
-      </div>
+      </Stack>
   )
 }
 
