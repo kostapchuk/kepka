@@ -38,10 +38,12 @@ const GamePage = () => {
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
   const [manuallyStopped, setManuallyStopped] = useState(false)
+  const audio = new Audio('/alarm-bell.mp3');
 
   useEffect(() => {
     let timer;
     if (isActive && timeLeft > 0) {
+      console.log("timeLeft: ", timeLeft)
       timer = setInterval(() => {
         setTimeLeft(prevTime => prevTime - 1); // Decrement time left
       }, 1000); // Update every second
@@ -52,7 +54,12 @@ const GamePage = () => {
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
       setCopyAnsweredWords([...answeredWords, currentWord])
       if (!manuallyStopped) {
-        alert('Time is over');
+        audio.play();
+        setTimeout(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          alert('Время вышло!')
+        }, 1000);
       }
     }
     return () => clearInterval(timer);
@@ -60,7 +67,7 @@ const GamePage = () => {
 
   const startTimer = () => {
     setIsActive(true);
-    setTimeLeft(30 + (leftSeconds[currentTeam] || 0))
+    setTimeLeft(5 + (leftSeconds[currentTeam] || 0))
     const newLeftSeconds = {
       ...leftSeconds,
       [currentTeam]: 0,
@@ -93,7 +100,7 @@ const GamePage = () => {
       setIndex(0);
       setRoundEnded(true);
       setShowed(false);
-      alert('all words are answered');
+      alert('Слова в кепке закончились');
     }
   }
 
@@ -102,7 +109,7 @@ const GamePage = () => {
     const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'One word') {
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово') {
       const input = prompt("Продолжить первыми в следующем туре с остатком в " + leftSeconds[currentTeam] + " секунд?")
       if (input) {
         continueNow = true
@@ -155,13 +162,13 @@ const GamePage = () => {
     }
     if (actualLeftWords.length === 0) {
       dispatch(setLeftWords(words))
-      if (tour === 'Alias') {
-        dispatch(setTour('Crocodile'));
-        alert('CROCODILE')
-      } else if (tour === 'Crocodile') {
-        dispatch(setTour('One word'));
-        alert('One word')
-      } else if (tour === 'One word') {
+      if (tour === 'Алиас') {
+        dispatch(setTour('Крокодил'));
+        alert('Следующий тур - крокодил')
+      } else if (tour === 'Крокодил') {
+        dispatch(setTour('Одно слово'));
+        alert('Cледующий тур - одно слово')
+      } else if (tour === 'Одно слово') {
         dispatch(setCurrentPage(Pages.RESULTS_PAGE));
       }
     }
