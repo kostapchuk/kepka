@@ -124,7 +124,7 @@ const GamePage = () => {
       setLocalTimeLeft(0);
       dispatch(setLeftSeconds(newLeftSeconds));
       const input = prompt("Продолжить первыми в следующем туре с остатком в "
-          + leftSeconds[currentTeam] + " секунд?")
+          + actualTimeLeft + " секунд?")
       if (input) {
         continueNow = true
       }
