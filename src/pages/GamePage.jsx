@@ -16,8 +16,8 @@ import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 
 // save all state to session so no lose on refresh
-// increase inputs
-// when typing in inuts it resets focus
+// fix inputs
+// add time left
 const GamePage = () => {
 
   const dispatch = useDispatch()
@@ -60,7 +60,6 @@ const GamePage = () => {
         setTimeout(() => {
           audio.pause();
           audio.currentTime = 0;
-          alert('Время вышло!')
         }, 2500);
       }
       setIsActive(false);
@@ -196,6 +195,7 @@ const GamePage = () => {
 
   return (
       <Stack spacing={2}>
+        {(timeLeft !== -1 && timeLeft !== 0) && <p>Осталось времени: {timeLeft}</p>}
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
