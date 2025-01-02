@@ -6,6 +6,8 @@ import {Pages} from "../routes";
 import {v4 as uuidv4} from 'uuid';
 import {setCurrentGameId} from "../redux/gameSlice";
 import ResetFullGame from "../components/ResetFullGame";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 const TeamSetupPage = () => {
   const dispatch = useDispatch();
@@ -44,10 +46,7 @@ const TeamSetupPage = () => {
   }
 
   return (
-      <div>
-        <button onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>
-          Добавить игроков
-        </button>
+      <Stack spacing={2}>
         {playerNames.map((name, index) => (
             <input
                 key={index}
@@ -56,11 +55,14 @@ const TeamSetupPage = () => {
                 onChange={(e) => handleInputChange(index, e.target.value)}
             />
         ))}
-        <button onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
+        <Button variant="contained" onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>
+          Добавить игроков
+        </Button>
+        <Button variant="contained" onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
           Перейти к настройке игровой команты
-        </button>
+        </Button>
         <ResetFullGame/>
-      </div>
+      </Stack>
   );
 };
 

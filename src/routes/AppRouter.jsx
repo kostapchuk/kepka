@@ -5,19 +5,20 @@ import TeamSetupPage from "../pages/TeamSetupPage";
 import GameSetupPage from "../pages/GameSetupPage";
 import GamePage from "../pages/GamePage";
 import ResultsPage from "../pages/ResultsPage";
+import {Container} from "@mui/material";
 
 const AppRouter = () => {
 
   const currentPage = useSelector(state => state.page.currentPage);
 
   return (
-      <>
+      <Container maxWidth="sm" sx={{mt: 4}}>
         {currentPage === Pages.WELCOME_PAGE && <WelcomePage/>}
         {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
         {currentPage === Pages.GAME_SETUP_PAGE && <GameSetupPage/>}
         {currentPage === Pages.GAME_PAGE && <GamePage/>}
         {currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}
-      </>
+      </Container>
   );
 };
 

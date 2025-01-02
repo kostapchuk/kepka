@@ -9,6 +9,8 @@ import {
 } from "../redux/gameSlice";
 import ResetFullGame from "../components/ResetFullGame";
 import {availableWords} from "../util/words";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 const GameSetupPage = () => {
 
@@ -32,7 +34,7 @@ const GameSetupPage = () => {
   }
 
   return (
-      <div>
+      <Stack spacing={2}>
         <p>Настройки игры</p>
         <p>Длительность раунд, секунды: {timer}</p>
         <input
@@ -48,11 +50,11 @@ const GameSetupPage = () => {
             value={wordsCount}
             onChange={(e) => dispatch(setWordsCount(e.target.value))}
         />
-        <button onClick={goToGamePage}>
+        <Button variant="contained" onClick={goToGamePage}>
           Начать игру
-        </button>
+        </Button>
         <ResetFullGame/>
-      </div>
+      </Stack>
   );
 };
 

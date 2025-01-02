@@ -2,6 +2,7 @@ import {useDispatch} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import ResetFullGame from "../components/ResetFullGame";
+import Button from '@mui/material/Button';
 
 const WelcomePage = () => {
 
@@ -13,12 +14,12 @@ const WelcomePage = () => {
 
   return (
       <div className="App">
-        <p>
+        <h3>
           Приветствуем в игре Кепка!
-        </p>
-        <button onClick={handleStartGame}>
+        </h3>
+        <Button onClick={handleStartGame} variant="contained">
           Начать
-        </button>
+        </Button>
         <ResetFullGame/>
       </div>
   )
