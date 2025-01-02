@@ -16,7 +16,8 @@ import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 
 // save all state to session so no lose on refresh
-// add design
+// increase inputs
+// when typing in inuts it resets focus
 const GamePage = () => {
 
   const dispatch = useDispatch()
@@ -54,11 +55,6 @@ const GamePage = () => {
         setTimeLeft(prevTime => prevTime - 1); // Decrement time left
       }, 1000); // Update every second
     } else if (isActive && timeLeft === 0) {
-      setIsActive(false);
-      setRoundEnded(true)
-      setShowed(false)
-      setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      setCopyAnsweredWords([...answeredWords, currentWord])
       if (!manuallyStopped) {
         audio.play();
         setTimeout(() => {
@@ -67,6 +63,12 @@ const GamePage = () => {
           alert('Время вышло!')
         }, 2500);
       }
+      setIsActive(false);
+      setRoundEnded(true)
+      setShowed(false)
+      setManuallyStopped(false)
+      setAnsweredWords(prevWords => [...prevWords, currentWord]);
+      setCopyAnsweredWords([...answeredWords, currentWord])
     }
     return () => clearInterval(timer);
   }, [isActive, timeLeft]);
