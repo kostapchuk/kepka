@@ -44,6 +44,7 @@ const GamePage = () => {
           && p.asker)[0])
   const [manuallyStopped, setManuallyStopped] = useState(false)
   const audio = new Audio('/alarm-bell.mp3');
+  const [localTimeLeft, setLocalTimeLeft] = useState(0)
 
   useEffect(() => {
     let timer;
@@ -95,6 +96,8 @@ const GamePage = () => {
       setIndex(index + 1);
       setCurrentWord(word);
     } else {
+      setLocalTimeLeft(timeLeft)
+      setTimeLeft(0);
       setManuallyStopped(true)
       setIndex(0);
       setRoundEnded(true);
@@ -109,15 +112,16 @@ const GamePage = () => {
         word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && timeLeft >= 1) {
-      let actualTimeLeft = timeLeft
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && localTimeLeft >= 1) {
+      let actualTimeLeft = localTimeLeft
       if (tour === 'Крокодил') {
-        actualTimeLeft = Math.round(timeLeft / 2)
+        actualTimeLeft = Math.round(localTimeLeft / 2)
       }
       const newLeftSeconds = {
         ...leftSeconds,
         [currentTeam]: actualTimeLeft,
       }
+      setLocalTimeLeft(0);
       dispatch(setLeftSeconds(newLeftSeconds));
       const input = prompt("Продолжить первыми в следующем туре с остатком в "
           + leftSeconds[currentTeam] + " секунд?")
@@ -125,7 +129,6 @@ const GamePage = () => {
         continueNow = true
       }
     }
-    setTimeLeft(0);
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
