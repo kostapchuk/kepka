@@ -63,11 +63,6 @@ const GamePage = () => {
     setIsTimerRunning(false);
     setRoundEnded(true);
     setShowed(false);
-    const newLeftSeconds = {
-      ...leftSeconds,
-      [currentTeam]: roundDuration,
-    }
-    dispatch(setLeftSeconds(newLeftSeconds))
   }
 
   const openWord = () => {
@@ -115,6 +110,12 @@ const GamePage = () => {
         [currentTeam]: continueNow ? continueNowTime : continueLaterTime,
       }
       dispatch(setLeftSeconds(newLeftSeconds));
+    } else {
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: roundDuration,
+      }
+      dispatch(setLeftSeconds(newLeftSeconds))
     }
     dispatch(setElapsedTime(0));
     const newScore = {
