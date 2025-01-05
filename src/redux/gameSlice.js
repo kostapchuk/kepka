@@ -10,7 +10,8 @@ const initialState = {
   leftSeconds: {},
   currentTeam: '',
   currentGameId: '',
-  score: {}
+  score: {},
+  elapsedTime: 0
 }
 
 export const gameSlice = createSlice({
@@ -47,6 +48,9 @@ export const gameSlice = createSlice({
     setScore: (state, action) => {
       state.score = action.payload
     },
+    setElapsedTime: (state, action) => {
+      state.elapsedTime = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -62,7 +66,8 @@ export const {
   setCurrentTeam,
   setCurrentGameId,
   setScore,
-  reset
+  reset,
+  setElapsedTime
 } = gameSlice.actions
 
 export default gameSlice.reducer

@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
-  setCurrentTeam,
+  setCurrentTeam, setElapsedTime,
   setLeftSeconds,
   setLeftWords,
   setScore,
@@ -10,11 +10,12 @@ import {
 import {updatePlayer} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import ResetFullGame from "../components/ResetFullGame";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
+import AlarmTimer from "../components/AlarmTimer";
+import RoundTimer from "../components/RoundTimer";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -28,7 +29,8 @@ const GamePage = () => {
     currentTeam,
     currentGameId,
     score,
-    timer
+    elapsedTime,
+    timer: roundDuration
   } = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
@@ -37,99 +39,84 @@ const GamePage = () => {
   const [copyAnsweredWords, setCopyAnsweredWords] = useState([])
 
   const [roundEnded, setRoundEnded] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(-1);
-  const [isActive, setIsActive] = useState(false);
   const players = useSelector(state => state.players);
   const [currentAsker, setCurrentAsker] = useState(players.filter(
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
-  const [manuallyStopped, setManuallyStopped] = useState(false)
-  const audio = new Audio('/alarm-bell.mp3');
-  const [localTimeLeft, setLocalTimeLeft] = useState(0)
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   useEffect(() => {
-    let timer;
-    if (isActive && timeLeft > 0) {
-      console.log("timeLeft: ", timeLeft)
-      timer = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-      }, 1000);
-    } else if (isActive && timeLeft <= 0) {
-      if (!manuallyStopped) {
-        audio.play();
-        setTimeout(() => {
-          audio.pause();
-          audio.currentTime = 0;
-        }, 2500);
-      }
-      setIsActive(false);
-      setRoundEnded(true);
-      setShowed(false);
-      setManuallyStopped(false);
-      setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      setCopyAnsweredWords([...answeredWords, currentWord])
-    }
-    return () => clearInterval(timer);
-  }, [isActive, timeLeft]);
+    // dispatch(setElapsedTime(0));
+  }, [leftSeconds]);
+
+  const [alarmTimerRunning, setAlarmTimerRunning] = useState(false);
 
   const startTimer = () => {
-    setIsActive(true);
-    setTimeLeft(Number(timer) + Number((leftSeconds[currentTeam] || 0)))
+    if (!isTimerRunning) {
+      setIsTimerRunning(true);
+      setAlarmTimerRunning(true);
+    }
+  };
+
+  const onRoundFinished = () => {
+    setAlarmTimerRunning(false);
+    setIsTimerRunning(false);
+    setRoundEnded(true);
+    setShowed(false);
     const newLeftSeconds = {
       ...leftSeconds,
-      [currentTeam]: 0,
+      [currentTeam]: roundDuration,
     }
     dispatch(setLeftSeconds(newLeftSeconds))
-  };
+  }
 
   const openWord = () => {
     if (!showed) {
       setShowed(true);
     }
-    if (!isActive) {
-      startTimer()
+    if (currentWord) {
+      setAnsweredWords(prevWords => [...prevWords, currentWord]);
+    } else {
+      startTimer();
     }
     if (index < leftWords.length) {
-      if (currentWord) {
-        setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      }
       const word = leftWords[index];
       setIndex(index + 1);
       setCurrentWord(word);
+      setCopyAnsweredWords(prev => [...prev, word])
     } else {
-      setLocalTimeLeft(timeLeft)
-      setTimeLeft(0);
-      setManuallyStopped(true)
-      setIndex(0);
+      setAlarmTimerRunning(false);
+      setIsTimerRunning(false);
       setRoundEnded(true);
       setShowed(false);
+      setIndex(0);
       alert('Слова в кепке закончились');
     }
   }
 
   const finishRound = () => {
     setRoundEnded(false)
-    const actualLeftWords = leftWords.filter(
-        word => !answeredWords.includes(word))
+    const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && localTimeLeft >= 1) {
-      let actualTimeLeft = localTimeLeft
-      if (tour === 'Крокодил') {
-        actualTimeLeft = Math.round(localTimeLeft / 2)
-      }
-      const newLeftSeconds = {
-        ...leftSeconds,
-        [currentTeam]: actualTimeLeft,
-      }
-      setLocalTimeLeft(0);
-      dispatch(setLeftSeconds(newLeftSeconds));
-      const input = prompt("Продолжить первыми в следующем туре с остатком в "
-          + actualTimeLeft + " секунд?")
+    const leftTime = leftSeconds[currentTeam] - elapsedTime
+    const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
+        : leftTime))
+    const continueLaterTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
+        : leftTime)) + Number(roundDuration)
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+      const input = prompt("Продолжить первыми в следующем туре с длительностью раунда "
+          + continueNowTime + " секунд или в следующем туре в свою очередь иметь " + continueLaterTime + " секунд?")
       if (input) {
         continueNow = true
       }
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: continueNow ? continueNowTime : continueLaterTime,
+      }
+      dispatch(setLeftSeconds(newLeftSeconds));
     }
+    dispatch(setElapsedTime(0));
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
@@ -201,7 +188,7 @@ const GamePage = () => {
 
   return (
       <Stack spacing={2}>
-        {(timeLeft !== -1 && timeLeft !== 0) && <p>Осталось времени: {timeLeft}</p>}
+        <RoundTimer running={isTimerRunning}/>
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
@@ -235,14 +222,15 @@ const GamePage = () => {
                   padding: '10px',
                 }}
             />} label={
-              <Typography variant="body1" style={{ fontSize: '25px' }}>
+              <Typography variant="body1" style={{fontSize: '25px'}}>
                 {option}
               </Typography>
-            } />
+            }/>
 
         ))}
-        {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
+        {roundEnded && <Button size="large" onClick={finishRound} variant="contained">Закончить
           раунд</Button>}
+        <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
         <Footer/>
       </Stack>
   )

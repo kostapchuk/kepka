@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {
-  setCurrentTeam,
+  setCurrentTeam, setLeftSeconds,
   setLeftWords,
   setTimer,
   setTour,
@@ -31,6 +31,11 @@ const GameSetupPage = () => {
     const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
     dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(
         Math.random() * currentPlayersInGame.length)].teamId))
+    const leftSeconds = {}
+    new Set(currentPlayersInGame.map(p => p.teamId)).forEach(teamId => {
+      leftSeconds[teamId] = timer
+    })
+    dispatch(setLeftSeconds(leftSeconds))
   }
 
   function randomWords() {
