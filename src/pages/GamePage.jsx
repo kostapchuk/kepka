@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {
   setCurrentTeam,
   setLeftSeconds,
@@ -14,6 +14,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
+import AlarmTimer from "../components/AlarmTimer";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -27,7 +28,7 @@ const GamePage = () => {
     currentTeam,
     currentGameId,
     score,
-    timer
+    timer: roundDuration
   } = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
@@ -36,45 +37,41 @@ const GamePage = () => {
   const [copyAnsweredWords, setCopyAnsweredWords] = useState([])
 
   const [roundEnded, setRoundEnded] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(-1);
-  const [isActive, setIsActive] = useState(false);
   const players = useSelector(state => state.players);
   const [currentAsker, setCurrentAsker] = useState(players.filter(
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
-  const [manuallyStopped, setManuallyStopped] = useState(false)
-  const audioRef = useRef(new Audio('/alarm-bell.mp3'));
-  const [localTimeLeft, setLocalTimeLeft] = useState(0)
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timerId, setTimerId] = useState(null);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [concreteRoundDuration, setConcreteRoundDuration] = useState(
+      Number(roundDuration) + Number((leftSeconds[currentTeam] || 0))
+  )
+
+  const [alarmTimerRunning, setAlarmTimerRunning] = useState(false);
 
   useEffect(() => {
-    let timer;
-    if (isActive && timeLeft > 0) {
-      console.log("timeLeft: ", timeLeft)
-      timer = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
+    let timer
+    if (isTimerRunning) {
+       timer = setInterval(() => {
+        setElapsedTime(prev => {
+          if (prev <= concreteRoundDuration - 1) {
+            return prev + 1;
+          } else {
+            clearInterval(timer);
+            return prev;
+          }
+        });
       }, 1000);
-    } else if (isActive && timeLeft <= 0) {
-      if (!manuallyStopped) {
-        const audio = audioRef.current
-        audio.play();
-        setTimeout(() => {
-          audio.pause();
-          audio.currentTime = 0;
-        }, 2500);
-      }
-      setIsActive(false);
-      setRoundEnded(true);
-      setShowed(false);
-      setManuallyStopped(false);
-      setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      setCopyAnsweredWords([...answeredWords, currentWord])
     }
     return () => clearInterval(timer);
-  }, [isActive, timeLeft]);
+  }, [isTimerRunning, elapsedTime]);
 
   const startTimer = () => {
-    setIsActive(true);
-    setTimeLeft(Number(timer) + Number((leftSeconds[currentTeam] || 0)))
+    if (!isTimerRunning) {
+      setIsTimerRunning(true);
+      setAlarmTimerRunning(true);
+    }
     const newLeftSeconds = {
       ...leftSeconds,
       [currentTeam]: 0,
@@ -82,12 +79,33 @@ const GamePage = () => {
     dispatch(setLeftSeconds(newLeftSeconds))
   };
 
+  const onAlarmTimerEnd = () => {
+    setAlarmTimerRunning(false);
+    setRoundEnded(true);
+    setIsTimerRunning(false);
+    setTimerId(null);
+    setShowed(false);
+    setAnsweredWords(prevWords => [...prevWords, currentWord]);
+    setCopyAnsweredWords([...answeredWords, currentWord])
+  }
+
+  const cancelTimer = () => {
+    if (timerId) {
+      clearInterval(timerId);
+      console.log('Timer canceled. Seconds left:',
+          concreteRoundDuration - elapsedTime);
+      setTimerId(null);
+      setElapsedTime(0);
+      setIsTimerRunning(false);
+    }
+  };
+
   const openWord = () => {
     if (!showed) {
       setShowed(true);
     }
-    if (!isActive) {
-      startTimer()
+    if (!currentWord) {
+      startTimer();
     }
     if (index < leftWords.length) {
       if (currentWord) {
@@ -97,9 +115,7 @@ const GamePage = () => {
       setIndex(index + 1);
       setCurrentWord(word);
     } else {
-      setLocalTimeLeft(timeLeft)
-      setTimeLeft(0);
-      setManuallyStopped(true)
+      cancelTimer();
       setIndex(0);
       setRoundEnded(true);
       setShowed(false);
@@ -113,23 +129,22 @@ const GamePage = () => {
         word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && localTimeLeft >= 1) {
-      let actualTimeLeft = localTimeLeft
-      if (tour === 'Крокодил') {
-        actualTimeLeft = Math.round(localTimeLeft / 2)
-      }
+    const leftTime = concreteRoundDuration - elapsedTime
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime
+        >= 1) {
       const newLeftSeconds = {
         ...leftSeconds,
-        [currentTeam]: actualTimeLeft,
+        [currentTeam]: tour === 'Крокодил' ? Math.round(leftTime / 2)
+            : leftTime,
       }
-      setLocalTimeLeft(0);
       dispatch(setLeftSeconds(newLeftSeconds));
       const input = prompt("Продолжить первыми в следующем туре с остатком в "
-          + actualTimeLeft + " секунд?")
+          + leftTime + " секунд?")
       if (input) {
         continueNow = true
       }
     }
+    setElapsedTime(0);
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
@@ -201,7 +216,7 @@ const GamePage = () => {
 
   return (
       <Stack spacing={2}>
-        {(timeLeft !== -1 && timeLeft !== 0) && <p>Осталось времени: {timeLeft}</p>}
+        <p>Осталось времени: {roundDuration - elapsedTime}</p>
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
@@ -235,14 +250,15 @@ const GamePage = () => {
                   padding: '10px',
                 }}
             />} label={
-              <Typography variant="body1" style={{ fontSize: '25px' }}>
+              <Typography variant="body1" style={{fontSize: '25px'}}>
                 {option}
               </Typography>
-            } />
+            }/>
 
         ))}
         {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
           раунд</Button>}
+        <AlarmTimer running={alarmTimerRunning} onTimerEnd={onAlarmTimerEnd}/>
         <Footer/>
       </Stack>
   )
