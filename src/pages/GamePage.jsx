@@ -14,6 +14,7 @@ import ResetFullGame from "../components/ResetFullGame";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
+import Footer from "../components/Footer";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -204,13 +205,13 @@ const GamePage = () => {
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
-        <button style={{
+        <Button size="large" variant="contained" sx={{
           padding: '20px 45px',
           fontSize: '25px',
           borderRadius: '5px'
         }} onClick={openWord} disabled={roundEnded}>
           {showed ? currentWord : 'Начать'}
-        </button>
+        </Button>
         <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
         <p>Осталось слов в кепке: {leftWords.length}</p>
         {roundEnded && <h4>Отгаданные слова:</h4>}
@@ -242,7 +243,7 @@ const GamePage = () => {
         ))}
         {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
           раунд</Button>}
-        <ResetFullGame/>
+        <Footer/>
       </Stack>
   )
 }

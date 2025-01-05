@@ -15,23 +15,9 @@ const ResetFullGame = () => {
   }
 
   return (
-      <div className="App">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <Button onClick={resetFullGame}>Reset</Button>
-      </div>
+      <Button size="small" variant="outlined" color="secondary" onClick={resetFullGame}>
+        Начать заново
+      </Button>
   )
 }
 
