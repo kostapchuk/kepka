@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {
   setCurrentTeam,
   setLeftSeconds,
@@ -10,7 +10,6 @@ import {
 import {updatePlayer} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import ResetFullGame from "../components/ResetFullGame";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
@@ -44,7 +43,7 @@ const GamePage = () => {
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
   const [manuallyStopped, setManuallyStopped] = useState(false)
-  const audio = new Audio('/alarm-bell.mp3');
+  const audioRef = useRef(new Audio('/alarm-bell.mp3'));
   const [localTimeLeft, setLocalTimeLeft] = useState(0)
 
   useEffect(() => {
@@ -56,6 +55,7 @@ const GamePage = () => {
       }, 1000);
     } else if (isActive && timeLeft <= 0) {
       if (!manuallyStopped) {
+        const audio = audioRef.current
         audio.play();
         setTimeout(() => {
           audio.pause();
