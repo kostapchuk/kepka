@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setElapsedTime} from "../redux/gameSlice";
 
-const RoundTimer = ({running, roundStarted}) => {
+const RoundTimer = ({running}) => {
 
   const {
     leftSeconds,
@@ -11,27 +11,23 @@ const RoundTimer = ({running, roundStarted}) => {
     elapsedTime
   } = useSelector(state => state.game);
   const dispatch = useDispatch();
-  const [concreteRoundDuration, setConcreteRoundDuration] = useState(
-      Number(roundDuration) + Number((leftSeconds[currentTeam] || 0))
-  )
 
   useEffect(() => {
     let timer
     if (running) {
       timer = setInterval(() => {
-        if (elapsedTime <= concreteRoundDuration - 1) {
+        if (elapsedTime <= leftSeconds[currentTeam] - 1) {
           dispatch(setElapsedTime(elapsedTime + 1));
         } else {
           clearInterval(timer);
         }
-
       }, 1000);
     }
     return () => clearInterval(timer);
   }, [currentTeam, leftSeconds, roundDuration, running, elapsedTime]);
 
   return (
-      <p>Осталось времени: {concreteRoundDuration - elapsedTime}</p>
+      <p>Осталось времени: {leftSeconds[currentTeam] - elapsedTime}</p>
   )
 }
 

@@ -44,12 +44,10 @@ const GamePage = () => {
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [concreteRoundDuration, setConcreteRoundDuration] = useState(
-      Number(roundDuration) + Number((leftSeconds[currentTeam] || 0))
-  )
 
   useEffect(() => {
-  }, [answeredWords, copyAnsweredWords, roundEnded, currentWord]);
+    // dispatch(setElapsedTime(0));
+  }, [leftSeconds]);
 
   const [alarmTimerRunning, setAlarmTimerRunning] = useState(false);
 
@@ -58,37 +56,39 @@ const GamePage = () => {
       setIsTimerRunning(true);
       setAlarmTimerRunning(true);
     }
-    const newLeftSeconds = {
-      ...leftSeconds,
-      [currentTeam]: 0,
-    }
-    dispatch(setLeftSeconds(newLeftSeconds))
   };
 
   const onRoundFinished = () => {
     setAlarmTimerRunning(false);
-    setRoundEnded(true);
     setIsTimerRunning(false);
+    setRoundEnded(true);
     setShowed(false);
+    const newLeftSeconds = {
+      ...leftSeconds,
+      [currentTeam]: roundDuration,
+    }
+    dispatch(setLeftSeconds(newLeftSeconds))
   }
 
   const openWord = () => {
     if (!showed) {
       setShowed(true);
     }
-    if (!currentWord) {
-      startTimer();
-    }
     if (currentWord) {
       setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      setCopyAnsweredWords([...answeredWords, currentWord])
+    } else {
+      startTimer();
     }
     if (index < leftWords.length) {
       const word = leftWords[index];
       setIndex(index + 1);
       setCurrentWord(word);
+      setCopyAnsweredWords(prev => [...prev, word])
     } else {
-      onRoundFinished();
+      setAlarmTimerRunning(false);
+      setIsTimerRunning(false);
+      setRoundEnded(true);
+      setShowed(false);
       setIndex(0);
       alert('Слова в кепке закончились');
     }
@@ -96,24 +96,25 @@ const GamePage = () => {
 
   const finishRound = () => {
     setRoundEnded(false)
-    const actualLeftWords = leftWords.filter(
-        word => !answeredWords.includes(word))
+    const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
     dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
     let continueNow = false
-    const leftTime = concreteRoundDuration - elapsedTime
-    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime
-        >= 1) {
-      const newLeftSeconds = {
-        ...leftSeconds,
-        [currentTeam]: tour === 'Крокодил' ? Math.round(leftTime / 2)
-            : leftTime,
-      }
-      dispatch(setLeftSeconds(newLeftSeconds));
-      const input = prompt("Продолжить первыми в следующем туре с остатком в "
-          + leftTime + " секунд?")
+    const leftTime = leftSeconds[currentTeam] - elapsedTime
+    const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
+        : leftTime))
+    const continueLaterTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
+        : leftTime)) + Number(roundDuration)
+    if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+      const input = prompt("Продолжить первыми в следующем туре с длительностью раунда "
+          + continueNowTime + " секунд или в следующем туре в свою очередь иметь " + continueLaterTime + " секунд?")
       if (input) {
         continueNow = true
       }
+      const newLeftSeconds = {
+        ...leftSeconds,
+        [currentTeam]: continueNow ? continueNowTime : continueLaterTime,
+      }
+      dispatch(setLeftSeconds(newLeftSeconds));
     }
     dispatch(setElapsedTime(0));
     const newScore = {
@@ -227,7 +228,7 @@ const GamePage = () => {
             }/>
 
         ))}
-        {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
+        {roundEnded && <Button size="large" onClick={finishRound} variant="contained">Закончить
           раунд</Button>}
         <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
         <Footer/>
