@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import ResetFullGame from "../components/ResetFullGame";
+import Footer from "../components/Footer";
 
 const WelcomePage = () => {
 
@@ -10,7 +10,7 @@ const WelcomePage = () => {
         {Object.entries(score).map(([team, score]) => (
             <p key={Math.random()}>{team}: {score}</p>
         ))}
-        <ResetFullGame/>
+        <Footer/>
       </div>
   )
 }

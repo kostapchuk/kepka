@@ -5,10 +5,10 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {v4 as uuidv4} from 'uuid';
 import {setCurrentGameId} from "../redux/gameSlice";
-import ResetFullGame from "../components/ResetFullGame";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import {TextField} from "@mui/material";
+import Footer from "../components/Footer";
 
 const TeamSetupPage = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const TeamSetupPage = () => {
         <Button variant="contained" onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
           Перейти к настройке игровой команты
         </Button>
-        <ResetFullGame/>
+        <Footer/>
       </Stack>
   );
 };

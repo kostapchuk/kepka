@@ -9,12 +9,12 @@ import {
   setWords,
   setWordsCount
 } from "../redux/gameSlice";
-import ResetFullGame from "../components/ResetFullGame";
 import {availableWords} from "../util/words";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {useRef} from "react";
+import Footer from "../components/Footer";
 
 const GameSetupPage = () => {
 
@@ -74,7 +74,7 @@ const GameSetupPage = () => {
         <Button variant="contained" onClick={goToGamePage}>
           Начать игру
         </Button>
-        <ResetFullGame/>
+        <Footer/>
       </Stack>
   );
 };

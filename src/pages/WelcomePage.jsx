@@ -1,8 +1,8 @@
 import {useDispatch} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import ResetFullGame from "../components/ResetFullGame";
 import Button from '@mui/material/Button';
+import Footer from "../components/Footer";
 
 const WelcomePage = () => {
 
@@ -17,10 +17,10 @@ const WelcomePage = () => {
         <h3>
           Приветствуем в игре Кепка!
         </h3>
-        <Button onClick={handleStartGame} variant="contained">
+        <Button size="large" onClick={handleStartGame} variant="contained">
           Начать
         </Button>
-        <ResetFullGame/>
+        <Footer/>
       </div>
   )
 }
