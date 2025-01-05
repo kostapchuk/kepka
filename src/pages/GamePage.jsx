@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
-  setCurrentTeam,
+  setCurrentTeam, setElapsedTime,
   setLeftSeconds,
   setLeftWords,
   setScore,
@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
+import RoundTimer from "../components/RoundTimer";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -28,6 +29,7 @@ const GamePage = () => {
     currentTeam,
     currentGameId,
     score,
+    elapsedTime,
     timer: roundDuration
   } = useSelector(state => state.game);
   const [index, setIndex] = useState(0)
@@ -41,31 +43,15 @@ const GamePage = () => {
   const [currentAsker, setCurrentAsker] = useState(players.filter(
       p => p.gameId === currentGameId && p.teamId === currentTeam
           && p.asker)[0])
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [timerId, setTimerId] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [concreteRoundDuration, setConcreteRoundDuration] = useState(
       Number(roundDuration) + Number((leftSeconds[currentTeam] || 0))
   )
 
-  const [alarmTimerRunning, setAlarmTimerRunning] = useState(false);
-
   useEffect(() => {
-    let timer
-    if (isTimerRunning) {
-       timer = setInterval(() => {
-        setElapsedTime(prev => {
-          if (prev <= concreteRoundDuration - 1) {
-            return prev + 1;
-          } else {
-            clearInterval(timer);
-            return prev;
-          }
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [isTimerRunning, elapsedTime]);
+  }, [answeredWords, copyAnsweredWords, roundEnded, currentWord]);
+
+  const [alarmTimerRunning, setAlarmTimerRunning] = useState(false);
 
   const startTimer = () => {
     if (!isTimerRunning) {
@@ -79,26 +65,12 @@ const GamePage = () => {
     dispatch(setLeftSeconds(newLeftSeconds))
   };
 
-  const onAlarmTimerEnd = () => {
+  const onRoundFinished = () => {
     setAlarmTimerRunning(false);
     setRoundEnded(true);
     setIsTimerRunning(false);
-    setTimerId(null);
     setShowed(false);
-    setAnsweredWords(prevWords => [...prevWords, currentWord]);
-    setCopyAnsweredWords([...answeredWords, currentWord])
   }
-
-  const cancelTimer = () => {
-    if (timerId) {
-      clearInterval(timerId);
-      console.log('Timer canceled. Seconds left:',
-          concreteRoundDuration - elapsedTime);
-      setTimerId(null);
-      setElapsedTime(0);
-      setIsTimerRunning(false);
-    }
-  };
 
   const openWord = () => {
     if (!showed) {
@@ -107,18 +79,17 @@ const GamePage = () => {
     if (!currentWord) {
       startTimer();
     }
+    if (currentWord) {
+      setAnsweredWords(prevWords => [...prevWords, currentWord]);
+      setCopyAnsweredWords([...answeredWords, currentWord])
+    }
     if (index < leftWords.length) {
-      if (currentWord) {
-        setAnsweredWords(prevWords => [...prevWords, currentWord]);
-      }
       const word = leftWords[index];
       setIndex(index + 1);
       setCurrentWord(word);
     } else {
-      cancelTimer();
+      onRoundFinished();
       setIndex(0);
-      setRoundEnded(true);
-      setShowed(false);
       alert('Слова в кепке закончились');
     }
   }
@@ -144,7 +115,7 @@ const GamePage = () => {
         continueNow = true
       }
     }
-    setElapsedTime(0);
+    dispatch(setElapsedTime(0));
     const newScore = {
       ...score,
       [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
@@ -216,7 +187,7 @@ const GamePage = () => {
 
   return (
       <Stack spacing={2}>
-        <p>Осталось времени: {roundDuration - elapsedTime}</p>
+        <RoundTimer running={isTimerRunning}/>
         <p>Название тура: {tour}</p>
         <p>Команда: {currentTeam}</p>
         <p>Загадыватель: {currentAsker.name}</p>
@@ -258,7 +229,7 @@ const GamePage = () => {
         ))}
         {roundEnded && <Button onClick={finishRound} variant="contained">Закончить
           раунд</Button>}
-        <AlarmTimer running={alarmTimerRunning} onTimerEnd={onAlarmTimerEnd}/>
+        <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
         <Footer/>
       </Stack>
   )

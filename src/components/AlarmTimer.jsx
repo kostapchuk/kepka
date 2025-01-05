@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 
 const AlarmTimer = ({running, onTimerEnd}) => {
@@ -9,11 +9,12 @@ const AlarmTimer = ({running, onTimerEnd}) => {
     currentTeam,
     timer: roundDuration
   } = useSelector(state => state.game);
+  const [concreteRoundDuration, setConcreteRoundDuration] = useState(
+      Number(roundDuration) + Number((leftSeconds[currentTeam] || 0))
+  )
 
   useEffect(() => {
     if (running) {
-      const concreteRoundDuration = Number(roundDuration) + Number(
-          (leftSeconds[currentTeam] || 0))
       const audioPlayTimeout = setTimeout(() => {
         audioRef.current.play();
         const audioPauseTimeout = setTimeout(() => {
