@@ -16,7 +16,7 @@ import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
-import {shuffle} from "../util/arrayUtils";
+import {distinct, random, shuffle} from "../util/arrayUtils";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -33,11 +33,11 @@ const GamePage = () => {
     elapsedTime,
     timer: roundDuration
   } = useSelector(state => state.game);
-  const [index, setIndex] = useState(0)
   const [showed, setShowed] = useState(false)
   const [currentWord, setCurrentWord] = useState('')
-  const [answeredWords, setAnsweredWords] = useState([])
-  const [copyAnsweredWords, setCopyAnsweredWords] = useState([])
+
+  const [roundWords, setRoundWords] = useState([]);
+  const [roundAnsweredWords, setRoundAnsweredWords] = useState([]);
 
   const [roundEnded, setRoundEnded] = useState(false)
   const players = useSelector(state => state.players);
@@ -71,28 +71,26 @@ const GamePage = () => {
       setShowed(true);
     }
     if (currentWord) {
-      setAnsweredWords(prevWords => [...prevWords, currentWord]);
+      setRoundAnsweredWords(prevWords => [...prevWords, currentWord]);
     } else {
       startTimer();
     }
-    if (index < tourLeftWords.length) {
-      const word = tourLeftWords[index];
-      setIndex(index + 1);
+    if (roundWords.length < tourLeftWords.length) {
+      const word = random(tourLeftWords.filter(item => !roundWords.includes(item)));
       setCurrentWord(word);
-      setCopyAnsweredWords(prev => [...prev, word])
+      setRoundWords(prevWords => [...prevWords, word]);
     } else {
       setAlarmTimerRunning(false);
       setIsTimerRunning(false);
       setRoundEnded(true);
       setShowed(false);
-      setIndex(0);
       alert('Слова в кепке закончились');
     }
   }
 
   const finishRound = () => {
     setRoundEnded(false)
-    const actualLeftWords = tourLeftWords.filter(word => !answeredWords.includes(word))
+    const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
     dispatch(setLeftWords(shuffle(actualLeftWords)))
     let continueNow = false
     const leftTime = leftSeconds[currentTeam] - elapsedTime
@@ -115,13 +113,12 @@ const GamePage = () => {
     dispatch(setElapsedTime(0));
     const newScore = {
       ...score,
-      [currentTeam]: (score[currentTeam] || 0) + answeredWords.length,
+      [currentTeam]: (score[currentTeam] || 0) + roundAnsweredWords.length,
     }
     dispatch(setScore(newScore))
-    setAnsweredWords([]);
-    setCopyAnsweredWords([])
+    setRoundWords([]);
+    setRoundAnsweredWords([]);
     setCurrentWord('')
-    setIndex(0)
     // rotate asker in current team
     if (!continueNow) {
       const currentTeamPlayers = players.filter(
@@ -188,22 +185,19 @@ const GamePage = () => {
         <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
         <p>Осталось слов в кепке: {tourLeftWords.length}</p>
         {roundEnded && <h4>Отгаданные слова:</h4>}
-        {roundEnded && copyAnsweredWords.map(option => (
+        {roundEnded && roundWords.map(option => (
             <FormControlLabel key={Math.random()} control={<Checkbox
                 key={Math.random()}
-                checked={answeredWords.includes(option)}
+                checked={roundAnsweredWords.includes(option)}
                 onChange={() => {
-                  if (answeredWords.includes(option)) {
-                    setAnsweredWords(prevWords => prevWords.filter(
-                        word => word !== option));
+                  if (roundAnsweredWords.includes(option)) {
+                    setRoundAnsweredWords(prevWords => prevWords.filter(word => word !== option));
                   } else {
-                    setAnsweredWords(prevWords => [...prevWords, option]);
+                    setRoundAnsweredWords(prevWords => [...prevWords, option])
                   }
                 }}
                 sx={{
-                  '&.Mui-checked': {
-                    transform: 'scale(1.5)',
-                  },
+                  '&.Mui-checked': { transform: 'scale(1.5)' },
                   transform: 'scale(1.5)',
                   padding: '10px',
                 }}
@@ -212,10 +206,8 @@ const GamePage = () => {
                 {option}
               </Typography>
             }/>
-
         ))}
-        {roundEnded && <Button size="large" onClick={finishRound} variant="contained">Закончить
-          раунд</Button>}
+        {roundEnded && <Button size="large" onClick={finishRound} variant="contained">Закончить раунд</Button>}
         <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
         <Footer/>
       </Stack>
