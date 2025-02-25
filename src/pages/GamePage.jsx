@@ -9,6 +9,7 @@ import {random} from "../util/arrayUtils";
 import GuessedWordsOptions from "../components/GuessedWordsOptions";
 import FinishRoundButton from "../components/FinishRoundButton";
 import OpenWordButton from "../components/OpenWordButton";
+import {Container} from "@mui/material";
 
 const GamePage = () => {
     const {
@@ -80,9 +81,11 @@ const GamePage = () => {
             <p>Название тура: {tour}</p>
             <p>Команда: {currentTeam}</p>
             <p>Загадыватель: {currentAsker.name}</p>
-            <OpenWordButton variant="contained" disabled={roundEnded} onClick={openWord}>
-                {showed ? currentWord : 'Начать'}
-            </OpenWordButton>
+            <Container sx={{display: 'flex'}}>
+                <OpenWordButton variant="contained" disabled={roundEnded} onClick={openWord}>
+                    {showed ? currentWord : 'Начать'}
+                </OpenWordButton>
+            </Container>
             <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
             <p>Осталось слов в кепке: {tourLeftWords.length}</p>
             {roundEnded && <GuessedWordsOptions

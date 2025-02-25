@@ -3,6 +3,7 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import Button from '@mui/material/Button';
 import Footer from "../components/Footer";
+import Stack from "@mui/material/Stack";
 
 const WelcomePage = () => {
 
@@ -13,7 +14,7 @@ const WelcomePage = () => {
   }
 
   return (
-      <div className="App">
+      <Stack spacing={6}>
         <h3>
           Приветствуем в игре Кепка!
         </h3>
@@ -21,7 +22,7 @@ const WelcomePage = () => {
           Начать
         </Button>
         <Footer/>
-      </div>
+      </Stack>
   )
 }
 

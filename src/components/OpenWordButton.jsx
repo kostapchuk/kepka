@@ -2,8 +2,8 @@ import {Button} from '@mui/material';
 import {styled} from '@mui/system';
 
 const OpenWordButton = styled(Button)({
-    height: '40vh',
-    width: '95vw',
+    minHeight: '40vh',
+    width: '95%',
     backgroundColor: '#7A51EC',
     color: '#FFFFFF',
     fontSize: '30px',
