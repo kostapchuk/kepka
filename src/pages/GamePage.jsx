@@ -12,12 +12,11 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {distinct, random, shuffle} from "../util/arrayUtils";
-
+import GuessedWordsOptions from "../components/GuessedWordsOptions";
 // save all state to session so no lose on refresh
 const GamePage = () => {
 
@@ -185,28 +184,7 @@ const GamePage = () => {
         <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
         <p>Осталось слов в кепке: {tourLeftWords.length}</p>
         {roundEnded && <h4>Отгаданные слова:</h4>}
-        {roundEnded && roundWords.map(option => (
-            <FormControlLabel key={Math.random()} control={<Checkbox
-                key={Math.random()}
-                checked={roundAnsweredWords.includes(option)}
-                onChange={() => {
-                  if (roundAnsweredWords.includes(option)) {
-                    setRoundAnsweredWords(prevWords => prevWords.filter(word => word !== option));
-                  } else {
-                    setRoundAnsweredWords(prevWords => [...prevWords, option])
-                  }
-                }}
-                sx={{
-                  '&.Mui-checked': { transform: 'scale(1.5)' },
-                  transform: 'scale(1.5)',
-                  padding: '10px',
-                }}
-            />} label={
-              <Typography variant="body1" style={{fontSize: '25px'}}>
-                {option}
-              </Typography>
-            }/>
-        ))}
+        {roundEnded && <GuessedWordsOptions roundWords={roundWords} roundAnsweredWords={roundAnsweredWords} setRoundAnsweredWords={setRoundAnsweredWords}/>}
         {roundEnded && <Button size="large" onClick={finishRound} variant="contained">Закончить раунд</Button>}
         <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
         <Footer/>
