@@ -166,7 +166,7 @@ const GamePage = () => {
               && p.asker)[0])
     }
     if (actualLeftWords.length === 0) {
-      dispatch(setLeftWords(words))
+      dispatch(setLeftWords(shuffle(words)))
       if (tour === 'Алиас') {
         dispatch(setTour('Крокодил'));
         alert('Следующий тур - крокодил')

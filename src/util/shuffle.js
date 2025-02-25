@@ -1,7 +1,8 @@
 export const shuffle = (input) => {
-    for (let i = input.length - 1; i > 0; i--) {
+    const output = [...input];
+    for (let i = output.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [input[i], input[j]] = [input[j], input[i]];
+        [output[i], output[j]] = [output[j], output[i]];
     }
-    return input;
+    return output;
 }
