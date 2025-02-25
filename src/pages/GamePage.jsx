@@ -81,9 +81,9 @@ const GamePage = () => {
             <p>Название тура: {tour}</p>
             <p>Команда: {currentTeam}</p>
             <p>Загадыватель: {currentAsker.name}</p>
-            <Container sx={{display: 'flex'}}>
-                <OpenWordButton variant="contained" disabled={roundEnded} onClick={openWord}>
-                    {showed ? currentWord : 'Начать'}
+            <Container sx={{display: 'flex', justifyContent: 'center', padding: 0}}>
+                <OpenWordButton disabled={roundEnded} onClick={openWord}>
+                    {showed ? currentWord : 'Начать игру'}
                 </OpenWordButton>
             </Container>
             <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
