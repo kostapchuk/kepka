@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import {TextField} from "@mui/material";
 import Footer from "../components/Footer";
+import {randomIndex} from "../util/arrayUtils";
 
 const TeamSetupPage = () => {
   const dispatch = useDispatch();
@@ -30,10 +31,11 @@ const TeamSetupPage = () => {
   const addPlayersToRedux = () => {
     const filledPlayerNames = playerNames.filter(name => name.trim() !== '')
     const teamId = playerNames.join(' ');
+    const askerIndex = randomIndex(filledPlayerNames);
     const newPlayers = filledPlayerNames
         .map((name, index) => ({
           name: name,
-          asker: index === 0,
+          asker: index === askerIndex,
           teamId: teamId,
           gameId: gameId,
         }));

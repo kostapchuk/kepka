@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {useRef} from "react";
 import Footer from "../components/Footer";
-import {shuffle} from "../util/shuffle";
+import {random, shuffle} from "../util/arrayUtils";
 
 const GameSetupPage = () => {
 
@@ -30,8 +30,7 @@ const GameSetupPage = () => {
     dispatch(setLeftWords(words))
     dispatch(setTour('Алиас'))
     const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
-    dispatch(setCurrentTeam(currentPlayersInGame[Math.floor(
-        Math.random() * currentPlayersInGame.length)].teamId))
+    dispatch(setCurrentTeam(random(currentPlayersInGame).teamId))
     const leftSeconds = {}
     new Set(currentPlayersInGame.map(p => p.teamId)).forEach(teamId => {
       leftSeconds[teamId] = timer

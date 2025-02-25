@@ -16,7 +16,7 @@ import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
-import {shuffle} from "../util/shuffle";
+import {shuffle} from "../util/arrayUtils";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {

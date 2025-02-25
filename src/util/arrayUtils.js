@@ -1,3 +1,11 @@
+export const random = (input) => {
+    return input[Math.floor((Math.random() * input.length))];
+}
+
+export const randomIndex = (input) => {
+    return Math.floor((Math.random() * input.length));
+}
+
 export const shuffle = (input) => {
     const output = [...input];
     for (let i = output.length - 1; i > 0; i--) {
