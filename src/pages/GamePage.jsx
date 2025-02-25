@@ -16,6 +16,7 @@ import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
+import {shuffle} from "../util/shuffle";
 
 // save all state to session so no lose on refresh
 const GamePage = () => {
@@ -92,7 +93,7 @@ const GamePage = () => {
   const finishRound = () => {
     setRoundEnded(false)
     const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
-    dispatch(setLeftWords(actualLeftWords.sort(() => 0.5 - Math.random())))
+    dispatch(setLeftWords(shuffle(actualLeftWords)))
     let continueNow = false
     const leftTime = leftSeconds[currentTeam] - elapsedTime
     const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
@@ -165,7 +166,7 @@ const GamePage = () => {
               && p.asker)[0])
     }
     if (actualLeftWords.length === 0) {
-      dispatch(setLeftWords(words))
+      dispatch(setLeftWords(shuffle(words)))
       if (tour === 'Алиас') {
         dispatch(setTour('Крокодил'));
         alert('Следующий тур - крокодил')
