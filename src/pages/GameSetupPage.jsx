@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {useRef} from "react";
 import Footer from "../components/Footer";
+import {shuffle} from "../util/shuffle";
 
 const GameSetupPage = () => {
 
@@ -24,7 +25,7 @@ const GameSetupPage = () => {
 
   const goToGamePage = () => {
     dispatch(setCurrentPage(Pages.GAME_PAGE));
-    const words = randomWords()
+    const words = shuffle(availableWords).slice(0, wordsCount);
     dispatch(setWords(words))
     dispatch(setLeftWords(words))
     dispatch(setTour('Алиас'))
@@ -36,11 +37,6 @@ const GameSetupPage = () => {
       leftSeconds[teamId] = timer
     })
     dispatch(setLeftSeconds(leftSeconds))
-  }
-
-  function randomWords() {
-    const shuffledArray = availableWords.sort(() => 0.5 - Math.random());
-    return shuffledArray.slice(0, wordsCount);
   }
 
   const inputRef = useRef(null);
