@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import Footer from "../components/Footer";
 
-const WelcomePage = () => {
+const ResultsPage = () => {
 
   const {score} = useSelector(state => state.game);
 
@@ -15,4 +15,4 @@ const WelcomePage = () => {
   )
 }
 
-export default WelcomePage;
+export default ResultsPage;
