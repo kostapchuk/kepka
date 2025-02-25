@@ -8,6 +8,7 @@ import RoundTimer from "../components/RoundTimer";
 import {random} from "../util/arrayUtils";
 import GuessedWordsOptions from "../components/GuessedWordsOptions";
 import FinishRoundButton from "../components/FinishRoundButton";
+import OpenWordButton from "../components/OpenWordButton";
 
 const GamePage = () => {
     const {
@@ -79,13 +80,9 @@ const GamePage = () => {
             <p>Название тура: {tour}</p>
             <p>Команда: {currentTeam}</p>
             <p>Загадыватель: {currentAsker.name}</p>
-            <Button size="large" variant="contained" sx={{
-                padding: '20px 45px',
-                fontSize: '25px',
-                borderRadius: '5px'
-            }} onClick={openWord} disabled={roundEnded}>
+            <OpenWordButton variant="contained" disabled={roundEnded} onClick={openWord}>
                 {showed ? currentWord : 'Начать'}
-            </Button>
+            </OpenWordButton>
             <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
             <p>Осталось слов в кепке: {tourLeftWords.length}</p>
             {roundEnded && <GuessedWordsOptions
