@@ -96,16 +96,10 @@ const GamePage = () => {
     dispatch(setLeftWords(shuffle(actualLeftWords)))
     let continueNow = false
     const leftTime = leftSeconds[currentTeam] - elapsedTime
-    const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
-        : leftTime))
-    const continueLaterTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2)
-        : leftTime)) + Number(roundDuration)
+    const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
+    const continueLaterTime = continueNowTime + Number(roundDuration)
     if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
-      const input = prompt("Продолжить первыми в следующем туре с длительностью раунда "
-          + continueNowTime + " секунд или в следующем туре в свою очередь иметь " + continueLaterTime + " секунд?")
-      if (input) {
-        continueNow = true
-      }
+      continueNow = window.confirm(`У вас осталось ${continueNowTime} секунд. Продолжите первыми с этим остатком в следующем туре?`);
       const newLeftSeconds = {
         ...leftSeconds,
         [currentTeam]: continueNow ? continueNowTime : continueLaterTime,
