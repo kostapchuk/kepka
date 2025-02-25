@@ -14,3 +14,7 @@ export const shuffle = (input) => {
     }
     return output;
 }
+
+export const distinct = (input) => {
+    return [...new Set(input)];
+}

@@ -23,7 +23,7 @@ const GamePage = () => {
 
   const dispatch = useDispatch()
   const {
-    leftWords,
+    leftWords: tourLeftWords,
     tour,
     leftSeconds,
     words,
@@ -75,8 +75,8 @@ const GamePage = () => {
     } else {
       startTimer();
     }
-    if (index < leftWords.length) {
-      const word = leftWords[index];
+    if (index < tourLeftWords.length) {
+      const word = tourLeftWords[index];
       setIndex(index + 1);
       setCurrentWord(word);
       setCopyAnsweredWords(prev => [...prev, word])
@@ -92,7 +92,7 @@ const GamePage = () => {
 
   const finishRound = () => {
     setRoundEnded(false)
-    const actualLeftWords = leftWords.filter(word => !answeredWords.includes(word))
+    const actualLeftWords = tourLeftWords.filter(word => !answeredWords.includes(word))
     dispatch(setLeftWords(shuffle(actualLeftWords)))
     let continueNow = false
     const leftTime = leftSeconds[currentTeam] - elapsedTime
@@ -144,8 +144,7 @@ const GamePage = () => {
           {index: generalNewAskerIndex, updatedInfo: {...newAsker, asker: 1}}))
 
       // rotate team
-      const teamNames = removeDuplicates(
-          players.filter(p => p.gameId === currentGameId).map(p => p.teamId))
+      const teamNames = distinct(players.filter(p => p.gameId === currentGameId).map(p => p.teamId))
       const currentTeamIndex = teamNames.indexOf(currentTeam)
       let newTeam
       if (currentTeamIndex === teamNames.length - 1) {
@@ -173,15 +172,6 @@ const GamePage = () => {
     }
   }
 
-  function removeDuplicates(array) {
-    return array.reduce((accumulator, current) => {
-      if (!accumulator.includes(current)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
-  }
-
   return (
       <Stack spacing={2}>
         <RoundTimer running={isTimerRunning}/>
@@ -196,7 +186,7 @@ const GamePage = () => {
           {showed ? currentWord : 'Начать'}
         </Button>
         <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
-        <p>Осталось слов в кепке: {leftWords.length}</p>
+        <p>Осталось слов в кепке: {tourLeftWords.length}</p>
         {roundEnded && <h4>Отгаданные слова:</h4>}
         {roundEnded && copyAnsweredWords.map(option => (
             <FormControlLabel key={Math.random()} control={<Checkbox
