@@ -1,5 +1,5 @@
 {
-  "name": "not-a-game-just-shlyapa",
+  "name": "kepka",
   "version": "0.6.0",
   "private": true,
   "dependencies": {
@@ -9,6 +9,7 @@
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
     "@reduxjs/toolkit": "2.5.0",
+    "@vercel/analytics": "^1.5.0",
     "cra-template": "1.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",

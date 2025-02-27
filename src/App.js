@@ -4,6 +4,7 @@ import {persistor, store} from './redux/store'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/integration/react';
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Analytics} from "@vercel/analytics/react";
 
 function App() {
     const theme = createTheme({
@@ -15,6 +16,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
+                    <Analytics/>
                     <AppRouter/>
                 </PersistGate>
             </Provider>
