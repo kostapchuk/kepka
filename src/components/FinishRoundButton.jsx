@@ -1,19 +1,20 @@
 import Button from "@mui/material/Button";
-import {setCurrentTeam, setElapsedTime, setLeftSeconds, setLeftWords, setScore, setTour} from "../redux/gameSlice";
+import {
+    setCurrentTeam,
+    setElapsedTime,
+    setLeftSeconds,
+    setLeftWords, setRoundAnsweredWords,
+    setRoundEnded, setRoundWords,
+    setScore,
+    setTour
+} from "../redux/gameSlice";
 import {distinct, shuffle} from "../util/arrayUtils";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 
-const FinishRoundButton = ({
-                               setRoundEnded,
-                               roundAnsweredWords,
-                               setRoundWords,
-                               setRoundAnsweredWords,
-                               setCurrentWord,
-                               setCurrentAsker
-                           }) => {
+const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
 
     const {
         leftWords: tourLeftWords,
@@ -24,7 +25,8 @@ const FinishRoundButton = ({
         currentGameId,
         score,
         elapsedTime,
-        timer: roundDuration
+        timer: roundDuration,
+        roundAnsweredWords
     } = useSelector(state => state.game);
 
     const dispatch = useDispatch()
@@ -33,7 +35,7 @@ const FinishRoundButton = ({
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
 
     const finishRound = () => {
-        setRoundEnded(false)
+        dispatch(setRoundEnded(false));
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         dispatch(setLeftWords(shuffle(actualLeftWords)))
         let continueNow = false
@@ -60,8 +62,8 @@ const FinishRoundButton = ({
             [currentTeam]: (score[currentTeam] || 0) + roundAnsweredWords.length
         }
         dispatch(setScore(newScore))
-        setRoundWords([]);
-        setRoundAnsweredWords([]);
+        dispatch(setRoundWords([]));
+        dispatch(setRoundAnsweredWords([]));
         setCurrentWord('')
         if (!continueNow) {
             rotatePlayer();
@@ -115,7 +117,20 @@ const FinishRoundButton = ({
     }
 
     return (
-        <Button size="large" onClick={finishRound} variant="contained">Закончить раунд</Button>
+        <Button
+            onClick={finishRound}
+            sx={{
+                width: '100%',
+                backgroundColor: '#000000',
+                borderRadius: '16px',
+                color: '#FFFFFF',
+                height: '48px',
+                fontWeight: '600',
+                textTransform: 'none'
+            }}
+        >
+            Продолжить
+        </Button>
     )
 
 }

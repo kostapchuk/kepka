@@ -1,34 +1,44 @@
-import {Checkbox, FormControlLabel, Typography} from "@mui/material";
+import {Box, Checkbox, FormControlLabel, Typography} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {setRoundAnsweredWords} from "../redux/gameSlice";
 
-const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWords}) => {
+const GuessedWordsOptions = () => {
+    const {roundWords, roundAnsweredWords} = useSelector(state => state.game);
+    const dispatch = useDispatch();
     return (
-        <>
-            <h4>Отгаданные слова:</h4>
+        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2}}>
             {
                 roundWords.map(option => (
-                    <FormControlLabel key={Math.random()} control={<Checkbox
+                    <FormControlLabel key={Math.random()} sx={{m: 0, p: 0}} control={<Checkbox
                         key={Math.random()}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
                             if (roundAnsweredWords.includes(option)) {
-                                setRoundAnsweredWords(prevWords => prevWords.filter(word => word !== option));
+                                dispatch(setRoundAnsweredWords(roundAnsweredWords.filter(word => word !== option)));
                             } else {
-                                setRoundAnsweredWords(prevWords => [...prevWords, option])
+                                dispatch(setRoundAnsweredWords([...roundAnsweredWords, option]));
                             }
                         }}
+                        checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '28px', height: '28px' }} />}
+                        icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '28px', height: '28px' }} />}
                         sx={{
-                            '&.Mui-checked': { transform: 'scale(1.5)' },
-                            transform: 'scale(1.5)',
-                            padding: '10px',
+                            height: '48px',
+                            '&.Mui-checked': {
+                                color: '#7A51EC'
+                            },
                         }}
                     />} label={
-                        <Typography variant="body1" style={{fontSize: '25px'}}>
+                        <Typography variant="body1" sx={{
+                            fontSize: '20px',
+                            fontWeight: '500'
+                        }}>
                             {option}
                         </Typography>
-                    }/>
+                    }
+                    />
                 ))
             }
-        </>
+        </Box>
     )
 };
 

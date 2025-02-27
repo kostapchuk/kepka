@@ -1,11 +1,11 @@
 {
   "name": "not-a-game-just-shlyapa",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@fontsource/roboto": "^5.1.1",
+    "@fontsource/montserrat": "^5.1.1",
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
     "@reduxjs/toolkit": "2.5.0",
