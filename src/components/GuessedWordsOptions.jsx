@@ -8,7 +8,7 @@ const GuessedWordsOptions = () => {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', mb: 2}}>
             {
-                roundWords.map(option => (
+                [...roundWords].reverse().map(option => (
                     <FormControlLabel key={Math.random()} sx={{m: 0, p: 0}} control={<Checkbox
                         key={Math.random()}
                         checked={roundAnsweredWords.includes(option)}
