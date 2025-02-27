@@ -1,9 +1,8 @@
-import {Checkbox, FormControlLabel, Typography} from "@mui/material";
+import {Box, Checkbox, FormControlLabel, Typography} from "@mui/material";
 
 const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWords}) => {
     return (
-        <>
-            <h4>Отгаданные слова:</h4>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {
                 roundWords.map(option => (
                     <FormControlLabel key={Math.random()} control={<Checkbox
@@ -17,9 +16,9 @@ const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWo
                             }
                         }}
                         sx={{
-                            '&.Mui-checked': { transform: 'scale(1.5)' },
+                            '&.Mui-checked': {transform: 'scale(1.5)'},
                             transform: 'scale(1.5)',
-                            padding: '10px',
+                            padding: '10px'
                         }}
                     />} label={
                         <Typography variant="body1" style={{fontSize: '25px'}}>
@@ -28,7 +27,7 @@ const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWo
                     }/>
                 ))
             }
-        </>
+        </Box>
     )
 };
 

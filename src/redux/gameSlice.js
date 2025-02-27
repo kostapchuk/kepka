@@ -6,12 +6,14 @@ const initialState = {
   wordsCount: 42,
   leftWords: [],
   answeredWords: [],
+  roundWords: [],
   tour: '',
   leftSeconds: {},
   currentTeam: '',
   currentGameId: '',
   score: {},
-  elapsedTime: 0
+  elapsedTime: 0,
+  roundEnded: false
 }
 
 export const gameSlice = createSlice({
@@ -33,6 +35,9 @@ export const gameSlice = createSlice({
     setAnsweredWords: (state, action) => {
       state.answeredWords = action.payload
     },
+    setRoundWords: (state, action) => {
+      state.roundWords = action.payload
+    },
     setTour: (state, action) => {
       state.tour = action.payload
     },
@@ -51,6 +56,9 @@ export const gameSlice = createSlice({
     setElapsedTime: (state, action) => {
       state.elapsedTime = action.payload
     },
+    setRoundEnded: (state, action) => {
+      state.roundEnded = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -61,13 +69,15 @@ export const {
   setWordsCount,
   setLeftWords,
   setAnsweredWords,
+  setRoundWords,
   setTour,
   setLeftSeconds,
   setCurrentTeam,
   setCurrentGameId,
   setScore,
   reset,
-  setElapsedTime
+  setElapsedTime,
+  setRoundEnded
 } = gameSlice.actions
 
 export default gameSlice.reducer

@@ -1,15 +1,14 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Footer from "../components/Footer";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {random} from "../util/arrayUtils";
-import GuessedWordsOptions from "../components/GuessedWordsOptions";
-import FinishRoundButton from "../components/FinishRoundButton";
 import OpenWordButton from "../components/OpenWordButton";
 import {Container} from "@mui/material";
+import GuessedWordsModal from "../components/GuessedWordsModal";
+import {setRoundEnded} from "../redux/gameSlice";
 
 const GamePage = () => {
     const {
@@ -19,14 +18,15 @@ const GamePage = () => {
         currentTeam,
         currentGameId,
         score,
+        roundEnded
     } = useSelector(state => state.game);
+    const dispatch = useDispatch();
     const [showed, setShowed] = useState(false)
     const [currentWord, setCurrentWord] = useState('')
 
     const [roundWords, setRoundWords] = useState([]);
     const [roundAnsweredWords, setRoundAnsweredWords] = useState([]);
 
-    const [roundEnded, setRoundEnded] = useState(false)
     const players = useSelector(state => state.players);
     const [currentAsker, setCurrentAsker] = useState(players.filter(
         p => p.gameId === currentGameId && p.teamId === currentTeam
@@ -49,7 +49,7 @@ const GamePage = () => {
     const onRoundFinished = () => {
         setAlarmTimerRunning(false);
         setIsTimerRunning(false);
-        setRoundEnded(true);
+        dispatch(setRoundEnded(true));
         setShowed(false);
     }
 
@@ -69,7 +69,7 @@ const GamePage = () => {
         } else {
             setAlarmTimerRunning(false);
             setIsTimerRunning(false);
-            setRoundEnded(true);
+            dispatch(setRoundEnded(true));
             setShowed(false);
             alert('Слова в кепке закончились');
         }
@@ -88,19 +88,14 @@ const GamePage = () => {
             </Container>
             <p>Баллы твоей команды: {score[currentTeam] || 0}</p>
             <p>Осталось слов в кепке: {tourLeftWords.length}</p>
-            {roundEnded && <GuessedWordsOptions
+            <GuessedWordsModal
                 roundWords={roundWords}
-                roundAnsweredWords={roundAnsweredWords}
-                setRoundAnsweredWords={setRoundAnsweredWords}
-            />}
-            {roundEnded && <FinishRoundButton
-                setRoundEnded={setRoundEnded}
                 roundAnsweredWords={roundAnsweredWords}
                 setRoundWords={setRoundWords}
                 setRoundAnsweredWords={setRoundAnsweredWords}
                 setCurrentWord={setCurrentWord}
                 setCurrentAsker={setCurrentAsker}
-            />}
+            />
             <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
             <Footer/>
         </Stack>

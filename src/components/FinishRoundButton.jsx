@@ -1,5 +1,13 @@
 import Button from "@mui/material/Button";
-import {setCurrentTeam, setElapsedTime, setLeftSeconds, setLeftWords, setScore, setTour} from "../redux/gameSlice";
+import {
+    setCurrentTeam,
+    setElapsedTime,
+    setLeftSeconds,
+    setLeftWords,
+    setRoundEnded,
+    setScore,
+    setTour
+} from "../redux/gameSlice";
 import {distinct, shuffle} from "../util/arrayUtils";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
@@ -7,7 +15,6 @@ import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const FinishRoundButton = ({
-                               setRoundEnded,
                                roundAnsweredWords,
                                setRoundWords,
                                setRoundAnsweredWords,
@@ -33,7 +40,7 @@ const FinishRoundButton = ({
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
 
     const finishRound = () => {
-        setRoundEnded(false)
+        dispatch(setRoundEnded(false));
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         dispatch(setLeftWords(shuffle(actualLeftWords)))
         let continueNow = false
@@ -115,7 +122,9 @@ const FinishRoundButton = ({
     }
 
     return (
-        <Button size="large" onClick={finishRound} variant="contained">Закончить раунд</Button>
+        <Button size="large" onClick={finishRound} variant="contained">
+            Продолжить
+        </Button>
     )
 
 }
