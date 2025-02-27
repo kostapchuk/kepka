@@ -10,15 +10,24 @@ const GuessedWordsModal = ({setCurrentWord, setCurrentAsker}) => {
             open={roundEnded}
             onClose={() => {
             }}
-            scroll='paper'
+            scroll="paper"
             PaperProps={{
                 style: {
                     minWidth: '90%',
-                },
+                    borderRadius: '20px'
+                }
             }}
         >
-            <DialogTitle>Счет: {roundAnsweredWords.length}</DialogTitle>
-            <DialogContent>
+            <DialogTitle sx={{padding: '20px 8px 16px 16px'}}>Счет: {roundAnsweredWords.length}</DialogTitle>
+            <DialogContent sx={{
+                padding: '0px 8px 20px 8px',
+                '&::-webkit-scrollbar': {
+                    display: 'none'
+                },
+                '&::-moz-scrollbar': {
+                    display: 'none'
+                }
+            }}>
                 <GuessedWordsOptions/>
                 <FinishRoundButton
                     setCurrentWord={setCurrentWord}

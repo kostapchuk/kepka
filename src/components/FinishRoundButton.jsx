@@ -122,9 +122,11 @@ const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
             sx={{
                 width: '100%',
                 backgroundColor: '#000000',
-                borderRadius: '10px 10px 10px 10px',
+                borderRadius: '16px',
                 color: '#FFFFFF',
-                height: '48px'
+                height: '48px',
+                fontWeight: '600',
+                textTransform: 'none'
             }}
         >
             Продолжить

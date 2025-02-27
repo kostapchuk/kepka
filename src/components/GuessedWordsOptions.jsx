@@ -9,7 +9,7 @@ const GuessedWordsOptions = () => {
         <Box sx={{display: 'flex', flexDirection: 'column', mb: 2}}>
             {
                 roundWords.map(option => (
-                    <FormControlLabel key={Math.random()} sx={{margin: 0}} control={<Checkbox
+                    <FormControlLabel key={Math.random()} sx={{m: 0, p: 0}} control={<Checkbox
                         key={Math.random()}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
@@ -19,21 +19,18 @@ const GuessedWordsOptions = () => {
                                 dispatch(setRoundAnsweredWords([...roundAnsweredWords, option]));
                             }
                         }}
+                        checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '28px', height: '28px' }} />}
+                        icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '28px', height: '28px' }} />}
                         sx={{
+                            height: '48px',
                             '&.Mui-checked': {
-                                transform: 'scale(1.5)',
                                 color: '#7A51EC'
                             },
-                            transform: 'scale(1.5)',
-                            pb: '4px',
-                            height: '48px'
                         }}
-                    />}label={
+                    />} label={
                         <Typography variant="body1" sx={{
                             fontSize: '20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            height: '48px'
+                            fontWeight: '500'
                         }}>
                             {option}
                         </Typography>
