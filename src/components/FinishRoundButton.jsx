@@ -117,7 +117,16 @@ const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
     }
 
     return (
-        <Button size="large" onClick={finishRound} variant="contained">
+        <Button
+            onClick={finishRound}
+            sx={{
+                width: '100%',
+                backgroundColor: '#000000',
+                borderRadius: '10px 10px 10px 10px',
+                color: '#FFFFFF',
+                height: '48px'
+            }}
+        >
             Продолжить
         </Button>
     )
