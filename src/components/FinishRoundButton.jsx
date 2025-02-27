@@ -3,8 +3,8 @@ import {
     setCurrentTeam,
     setElapsedTime,
     setLeftSeconds,
-    setLeftWords,
-    setRoundEnded,
+    setLeftWords, setRoundAnsweredWords,
+    setRoundEnded, setRoundWords,
     setScore,
     setTour
 } from "../redux/gameSlice";
@@ -14,13 +14,7 @@ import {Pages} from "../routes";
 import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 
-const FinishRoundButton = ({
-                               roundAnsweredWords,
-                               setRoundWords,
-                               setRoundAnsweredWords,
-                               setCurrentWord,
-                               setCurrentAsker
-                           }) => {
+const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
 
     const {
         leftWords: tourLeftWords,
@@ -31,7 +25,8 @@ const FinishRoundButton = ({
         currentGameId,
         score,
         elapsedTime,
-        timer: roundDuration
+        timer: roundDuration,
+        roundAnsweredWords
     } = useSelector(state => state.game);
 
     const dispatch = useDispatch()
@@ -67,8 +62,8 @@ const FinishRoundButton = ({
             [currentTeam]: (score[currentTeam] || 0) + roundAnsweredWords.length
         }
         dispatch(setScore(newScore))
-        setRoundWords([]);
-        setRoundAnsweredWords([]);
+        dispatch(setRoundWords([]));
+        dispatch(setRoundAnsweredWords([]));
         setCurrentWord('')
         if (!continueNow) {
             rotatePlayer();

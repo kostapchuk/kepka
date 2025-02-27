@@ -5,7 +5,7 @@ const initialState = {
   words: [],
   wordsCount: 42,
   leftWords: [],
-  answeredWords: [],
+  roundAnsweredWords: [],
   roundWords: [],
   tour: '',
   leftSeconds: {},
@@ -32,8 +32,8 @@ export const gameSlice = createSlice({
     setWordsCount: (state, action) => {
       state.wordsCount = action.payload
     },
-    setAnsweredWords: (state, action) => {
-      state.answeredWords = action.payload
+    setRoundAnsweredWords: (state, action) => {
+      state.roundAnsweredWords = action.payload
     },
     setRoundWords: (state, action) => {
       state.roundWords = action.payload
@@ -68,7 +68,7 @@ export const {
   setWords,
   setWordsCount,
   setLeftWords,
-  setAnsweredWords,
+  setRoundAnsweredWords,
   setRoundWords,
   setTour,
   setLeftSeconds,

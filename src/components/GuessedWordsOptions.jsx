@@ -1,6 +1,10 @@
 import {Box, Checkbox, FormControlLabel, Typography} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {setRoundAnsweredWords} from "../redux/gameSlice";
 
-const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWords}) => {
+const GuessedWordsOptions = () => {
+    const {roundWords, roundAnsweredWords} = useSelector(state => state.game);
+    const dispatch = useDispatch();
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {
@@ -10,9 +14,9 @@ const GuessedWordsOptions = ({roundWords, roundAnsweredWords, setRoundAnsweredWo
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
                             if (roundAnsweredWords.includes(option)) {
-                                setRoundAnsweredWords(prevWords => prevWords.filter(word => word !== option));
+                                dispatch(setRoundAnsweredWords(roundAnsweredWords.filter(word => word !== option)));
                             } else {
-                                setRoundAnsweredWords(prevWords => [...prevWords, option])
+                                dispatch(setRoundAnsweredWords([...roundAnsweredWords, option]));
                             }
                         }}
                         sx={{
