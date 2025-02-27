@@ -10,7 +10,7 @@ const ResetFullGame = () => {
     const dispatch = useDispatch();
     const [isHolding, setIsHolding] = useState(false);
     const [holdTime, setHoldTime] = useState(0);
-    const maxHoldTime = 100;
+    const maxHoldTime = 3000;
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
     useEffect(() => {
