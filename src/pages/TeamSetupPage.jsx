@@ -11,6 +11,7 @@ import {randomIndex} from "../util/arrayUtils";
 
 // todo: design
 // todo: save to redux
+// todo: separate components
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
     const {currentGameId} = useSelector(state => state.game)
@@ -32,10 +33,8 @@ const TeamSetupPage = () => {
         const allTrimmedNames = teams.flatMap(team => team.players.map(player => player.trim()));
         const allUniquePlayerNames = new Set(allTrimmedNames);
 
-        // Clear previous errors for this player
         setPlayerError(prevState => prevState.filter(error => !(error.teamIndex === teamIndex && error.playerIndex === playerIndex)));
 
-        // Check for empty player names
         if (allTrimmedNames[playerIndex] === '') {
             setPlayerError(prevState => [
                 ...prevState,
@@ -44,7 +43,6 @@ const TeamSetupPage = () => {
             return;
         }
 
-        // Check for non-unique player names
         if (allUniquePlayerNames.size !== allTrimmedNames.length) {
             setPlayerError(prevState => [
                 ...prevState,
@@ -112,10 +110,8 @@ const TeamSetupPage = () => {
     const handleTeamBlur = (teamIndex) => {
         const allTeamNames = teams.map(t => t.name.trim());
         const allUniqueTeamNames = new Set(allTeamNames);
-        // If everything is okay, remove errors for this team index
         setTeamError(prevState => prevState.filter(error => error.index !== teamIndex));
 
-        // Check for empty team names
         if (allUniqueTeamNames.has('')) {
             setTeamError(prevState => [
                 ...prevState.filter(error => error.index !== teamIndex),
@@ -124,7 +120,6 @@ const TeamSetupPage = () => {
             return;
         }
 
-        // Check for non-unique team names
         if (allUniqueTeamNames.size !== allTeamNames.length) {
             const existingError = teamError.find(error => error.index === teamIndex);
             if (!existingError) {
@@ -135,9 +130,6 @@ const TeamSetupPage = () => {
             }
             return;
         }
-
-        // If everything is okay, remove errors for this team index
-        setTeamError(prevState => prevState.filter(error => error.index !== teamIndex));
     };
 
     const handleTeamNameChangeByIndex = (index, name) => {
@@ -172,29 +164,9 @@ const TeamSetupPage = () => {
             return false;
         }
 
-        const allTrimmedNames = teams.flatMap(t => t.players.map(p => p.trim()))
-        const allUniquePlayerNames = new Set(allTrimmedNames);
-        const hasEmptyName = allTrimmedNames.filter(n => n === '').length > 0;
-        if (hasEmptyName) {
-            console.error("Empty player name isn't allowed");
-            return false;
+        if (teamError.length > 0 || playerError.length > 0 || newPlayerError.error || newTeamError.error) {
+            return false
         }
-        if (allUniquePlayerNames.size !== allTrimmedNames.length) {
-            console.error("Player name already exists");
-            return false;
-        }
-
-        const allTeamNames = teams.map(t => t.name.trim())
-        const allUniqueTeamNames = new Set(allTeamNames);
-        if (allUniqueTeamNames.has('')) {
-            console.error("Empty team name isn't allowed");
-            return false;
-        }
-        if (allUniqueTeamNames.size !== allTeamNames.length) {
-            console.error("Team name already exists");
-            return false;
-        }
-
         return true;
     }
 
