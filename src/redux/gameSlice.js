@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import {v4 as uuidv4} from "uuid";
 
 const initialState = {
   timer: 30,
@@ -10,7 +11,7 @@ const initialState = {
   tour: '',
   leftSeconds: {},
   currentTeam: '',
-  currentGameId: '',
+  currentGameId: uuidv4(),
   score: {},
   elapsedTime: 0,
   roundEnded: false
