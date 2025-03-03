@@ -26,6 +26,18 @@ const TeamSetupPage = () => {
     };
 
     const handlePlayerBlur = (teamIndex) => {
+        const trimmedName = playerNames[teamIndex].trim();
+        const allTrimmedNames = teams.flatMap(t => t.players.map(p => p.trim()))
+        const allUniquePlayerNames = new Set(allTrimmedNames);
+        const hasEmptyName = allTrimmedNames.filter(n => n === '').length > 0;
+        if (trimmedName === '' || hasEmptyName) {
+            console.error("Empty player name isn't allowed");
+            return;
+        }
+        if (allUniquePlayerNames.has(trimmedName)) {
+            console.error("Player name already exists");
+            return;
+        }
         const updatedTeams = [...teams];
         updatedTeams[teamIndex] = {
             ...updatedTeams[teamIndex],
@@ -50,9 +62,32 @@ const TeamSetupPage = () => {
         setTeamName(name);
     };
 
-    const handleTeamBlur = () => {
+    const handleNewTeamBlur = () => {
+        const trimmedName = teamName.trim();
+        const allTeamNames = new Set(teams.map(t => t.name.trim()));
+        if (trimmedName === '') {
+            console.error("Empty team name isn't allowed");
+            return;
+        }
+        if (allTeamNames.has(trimmedName)) {
+            console.error("Team name already exists");
+            return;
+        }
         setTeams(prevState => [...prevState, {name: teamName, players: []}]);
         setTeamName('');
+    }
+
+    const handleTeamBlur = () => {
+        const allTeamNames = teams.map(t => t.name.trim())
+        const allUniqueTeamNames = new Set(allTeamNames);
+        if (allUniqueTeamNames.has('')) {
+            console.error("Empty team name isn't allowed");
+            return;
+        }
+        if (allUniqueTeamNames.size !== allTeamNames.length) {
+            console.error("Team name already exists");
+            return;
+        }
     }
 
     const handleTeamNameChangeByIndex = (index, name) => {
@@ -77,7 +112,7 @@ const TeamSetupPage = () => {
         dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
     }
 
-    const areTeamsValid = () => {
+    const areTeamsAndPlayersValid = () => {
         if (teams.length === 0) {
             return false
         }
@@ -87,23 +122,23 @@ const TeamSetupPage = () => {
         if (anyPlayerNameOrTeamNameEmpty > 0) {
             return false;
         }
-
-        const allTeamNames = teams.flatMap(t => t.name)
-        const teamNamesUnique = allTeamNames.length === new Set(allTeamNames).size
-        if (!teamNamesUnique) {
-            return false;
-        }
+        //
+        // const allTeamNames = teams.flatMap(t => t.name.trim())
+        // const teamNamesUnique = allTeamNames.length === new Set(allTeamNames).size
+        // if (!teamNamesUnique) {
+        //     return false;
+        // }
 
         const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
         if (eachTeamHasAtLeastOnePlayer.length > 0) {
             return false;
         }
 
-        const allPlayers = teams.flatMap(t => t.players)
-        const playerNamesUnique = allPlayers.length === new Set(allPlayers).size
-        if (!playerNamesUnique) {
-            return false;
-        }
+        // const allPlayers = teams.flatMap(t => t.players.trim())
+        // const playerNamesUnique = allPlayers.length === new Set(allPlayers).size
+        // if (!playerNamesUnique) {
+        //     return false;
+        // }
 
         return true;
     }
@@ -135,6 +170,7 @@ const TeamSetupPage = () => {
                             onChange={(e) => handleTeamNameChangeByIndex(teamIndex, e.target.value)}
                             variant="outlined"
                             fullWidth
+                            onBlur={handleTeamBlur}
                             slotProps={{
                                 input: {
                                     startAdornment: (
@@ -159,6 +195,7 @@ const TeamSetupPage = () => {
                                 value={player}
                                 onChange={(e) => handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)}
                                 variant="outlined"
+                                onBlur={() => handlePlayerBlur(teamIndex)}
                                 fullWidth
                             />
                             <img
@@ -188,7 +225,7 @@ const TeamSetupPage = () => {
                 value={teamName}
                 onChange={(e) => handleTeamNameChange(e.target.value)}
                 variant="outlined"
-                onBlur={handleTeamBlur}
+                onBlur={handleNewTeamBlur}
                 fullWidth
                 slotProps={{
                     input: {
@@ -200,7 +237,7 @@ const TeamSetupPage = () => {
                     }
                 }}
             />
-            <Button variant="contained" onClick={goToNextPage} disabled={!areTeamsValid()}>
+            <Button variant="contained" onClick={goToNextPage} disabled={!areTeamsAndPlayersValid()}>
                 Продолжить
             </Button>
             <Footer/>
