@@ -11,7 +11,6 @@ import {randomIndex} from "../util/arrayUtils";
 
 // todo: design
 // todo: save to redux
-// todo: prohibit empty inputs && same player names
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
     const {currentGameId} = useSelector(state => state.game)
@@ -29,21 +28,31 @@ const TeamSetupPage = () => {
         setPlayerNames(updatedNames);
     };
 
-    const handlePlayerBlur = () => {
-        const allTrimmedNames = teams.flatMap(t => t.players.map(p => p.trim()))
+    const handlePlayerBlur = (teamIndex, playerIndex) => {
+        const allTrimmedNames = teams.flatMap(team => team.players.map(player => player.trim()));
         const allUniquePlayerNames = new Set(allTrimmedNames);
-        const hasEmptyName = allTrimmedNames.filter(n => n === '').length > 0;
-        if (hasEmptyName) {
-            // add error + helperText
-            console.error("Empty player name isn't allowed");
+
+        // Clear previous errors for this player
+        setPlayerError(prevState => prevState.filter(error => !(error.teamIndex === teamIndex && error.playerIndex === playerIndex)));
+
+        // Check for empty player names
+        if (allTrimmedNames[playerIndex] === '') {
+            setPlayerError(prevState => [
+                ...prevState,
+                {teamIndex, playerIndex, helperText: "Empty player name isn't allowed"}
+            ]);
             return;
         }
+
+        // Check for non-unique player names
         if (allUniquePlayerNames.size !== allTrimmedNames.length) {
-            // add error + helperText
-            console.error("Player name already exists");
+            setPlayerError(prevState => [
+                ...prevState,
+                {teamIndex, playerIndex, helperText: "Player name already exists"}
+            ]);
             return;
         }
-    }
+    };
 
     const handleNewPlayerBlur = (teamIndex) => {
         const trimmedName = playerNames[teamIndex].trim();
@@ -100,20 +109,36 @@ const TeamSetupPage = () => {
         setTeamName('');
     }
 
-    const handleTeamBlur = () => {
-        const allTeamNames = teams.map(t => t.name.trim())
+    const handleTeamBlur = (teamIndex) => {
+        const allTeamNames = teams.map(t => t.name.trim());
         const allUniqueTeamNames = new Set(allTeamNames);
+        // If everything is okay, remove errors for this team index
+        setTeamError(prevState => prevState.filter(error => error.index !== teamIndex));
+
+        // Check for empty team names
         if (allUniqueTeamNames.has('')) {
-            // add error + helperText
-            console.error("Empty team name isn't allowed");
+            setTeamError(prevState => [
+                ...prevState.filter(error => error.index !== teamIndex),
+                {index: teamIndex, helperText: "Empty team name isn't allowed"}
+            ]);
             return;
         }
+
+        // Check for non-unique team names
         if (allUniqueTeamNames.size !== allTeamNames.length) {
-            // add error + helperText
-            console.error("Team name already exists");
+            const existingError = teamError.find(error => error.index === teamIndex);
+            if (!existingError) {
+                setTeamError(prevState => [
+                    ...prevState,
+                    {index: teamIndex, helperText: "Team name already exists"}
+                ]);
+            }
             return;
         }
-    }
+
+        // If everything is okay, remove errors for this team index
+        setTeamError(prevState => prevState.filter(error => error.index !== teamIndex));
+    };
 
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
@@ -200,7 +225,7 @@ const TeamSetupPage = () => {
                             onChange={(e) => handleTeamNameChangeByIndex(teamIndex, e.target.value)}
                             variant="outlined"
                             fullWidth
-                            onBlur={handleTeamBlur}
+                            onBlur={() => handleTeamBlur(teamIndex)}
                             slotProps={{
                                 input: {
                                     startAdornment: (
@@ -210,6 +235,8 @@ const TeamSetupPage = () => {
                                     )
                                 }
                             }}
+                            error={teamError.find(error => error.index === teamIndex)}
+                            helperText={teamError.find(error => error.index === teamIndex)?.helperText}
                         />
                         <img
                             src="/close.svg"
@@ -225,8 +252,10 @@ const TeamSetupPage = () => {
                                 value={player}
                                 onChange={(e) => handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)}
                                 variant="outlined"
-                                onBlur={() => handlePlayerBlur()}
+                                onBlur={() => handlePlayerBlur(teamIndex, playerIndex)}
                                 fullWidth
+                                error={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)}
+                                helperText={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)?.helperText}
                             />
                             <img
                                 src="/close.svg"
