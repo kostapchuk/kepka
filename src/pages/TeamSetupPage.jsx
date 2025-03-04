@@ -13,6 +13,8 @@ import PlayerInputBlock from "../components/PlayerInputBlock";
 // todo: design
 // todo: save to redux
 // todo: separate components
+// todo: players errors
+// todo: team errors (when one exists and then delete previous team)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
     const {currentGameId} = useSelector(state => state.game)
