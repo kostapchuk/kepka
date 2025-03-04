@@ -26,12 +26,14 @@ const PlayerInputBlock = ({
                 error={error}
                 helperText={error?.helperText}
             />
-            <img
-                src="/close.svg"
-                alt="Delete player"
-                onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
-                style={{cursor: 'pointer', marginLeft: '8px'}}
-            />
+            {!newPlayer &&
+                <img
+                    src="/close.svg"
+                    alt="Delete player"
+                    onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
+                    style={{cursor: 'pointer', marginLeft: '8px'}}
+                />
+            }
         </Box>
     )
 }

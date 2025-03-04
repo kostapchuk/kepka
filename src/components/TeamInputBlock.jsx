@@ -36,9 +36,7 @@ const TeamInputBlock = ({
                 error={error?.error}
                 helperText={error?.helperText}
             />
-            {newTeam ?
-                <></>
-                :
+            {!newTeam &&
                 <img
                     src="/close.svg"
                     alt="Delete team"
