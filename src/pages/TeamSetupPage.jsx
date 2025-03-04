@@ -13,15 +13,13 @@ import {Box, Typography} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import {setTeams} from "../redux/gameSlice";
 
-// todo: save to redux
 // todo: separate components
 // todo: design
 // todo: trim everything before save (not allow user to enter something with around spaces)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
-    const {currentGameId, teams: newTeams, teamMembers} = useSelector(state => state.game)
+    const {currentGameId, teams} = useSelector(state => state.game)
     const [playerNames, setPlayerNames] = useState([]);
-    const [teams, setTeamsOld] = useState([]);
     const [teamName, setTeamName] = useState('');
     const [teamError, setTeamError] = useState([])
     const [playerError, setPlayerError] = useState([])
@@ -41,7 +39,7 @@ const TeamSetupPage = () => {
                 ...updatedTeams[teamIndex],
                 players: [...updatedTeams[teamIndex].players, playerNames[teamIndex]]
             };
-            setTeamsOld(updatedTeams);
+            dispatch(setTeams(updatedTeams));
             handlePlayerNameChange(teamIndex, '');
         }
     }
@@ -54,7 +52,7 @@ const TeamSetupPage = () => {
             ...updatedTeams[teamIndex],
             players: updatedPlayers
         };
-        setTeamsOld(updatedTeams);
+        dispatch(setTeams(updatedTeams));
     };
 
     const handleTeamNameChange = (name) => {
@@ -64,7 +62,7 @@ const TeamSetupPage = () => {
     const handleNewTeamBlur = () => {
         const trimmedName = teamName.trim();
         if (trimmedName !== '') {
-            setTeamsOld(prevState => [...prevState, {name: teamName, players: []}]);
+            dispatch(setTeams([...teams, {name: teamName, players: []}]));
             setTeamName('');
         }
     }
@@ -72,7 +70,7 @@ const TeamSetupPage = () => {
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
         updatedTeams[index] = {...updatedTeams[index], name: name};
-        setTeamsOld(updatedTeams);
+        dispatch(setTeams(updatedTeams));
         setPlayerNames(prevState => [...prevState, ''])
     };
 
@@ -176,17 +174,16 @@ const TeamSetupPage = () => {
     }
 
     const handleDeleteTeam = (teamIndexToDelete) => {
-        setTeamsOld([...teams].filter((team, teamIndex) => teamIndex !== teamIndexToDelete))
+        dispatch(setTeams([...teams].filter((team, teamIndex) => teamIndex !== teamIndexToDelete)));
     }
 
     const handleDeletePlayer = (teamIndex, playerIndexToDelete) => {
         const updatedTeams = [...teams]
-        const updatedTeam = {
+        updatedTeams[teamIndex] = {
             ...teams[teamIndex],
             players: teams[teamIndex].players.filter((player, playerIndex) => playerIndex !== playerIndexToDelete)
         }
-        updatedTeams[teamIndex] = updatedTeam
-        setTeamsOld(updatedTeams)
+        dispatch(setTeams(updatedTeams))
     }
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
