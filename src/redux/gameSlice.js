@@ -14,7 +14,9 @@ const initialState = {
   currentGameId: uuidv4(),
   score: {},
   elapsedTime: 0,
-  roundEnded: false
+  roundEnded: false,
+  teams: [],
+  teamMembers: []
 }
 
 export const gameSlice = createSlice({
@@ -60,6 +62,12 @@ export const gameSlice = createSlice({
     setRoundEnded: (state, action) => {
       state.roundEnded = action.payload
     },
+    setTeams: (state, action) => {
+      state.teams = action.payload
+    },
+    setTeamMembers: (state, action) => {
+      state.teamMembers = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -78,7 +86,9 @@ export const {
   setScore,
   reset,
   setElapsedTime,
-  setRoundEnded
+  setRoundEnded,
+  setTeams,
+  setTeamMembers
 } = gameSlice.actions
 
 export default gameSlice.reducer
