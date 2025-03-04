@@ -12,10 +12,9 @@ import PlayerInputBlock from "../components/PlayerInputBlock";
 import {Box, Typography} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 
-// todo: design
 // todo: save to redux
 // todo: separate components
-
+// todo: design
 // todo: trim everything before save (not allow user to enter something with around spaces)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
@@ -80,7 +79,6 @@ const TeamSetupPage = () => {
         if (!areTeamsAndPlayersValid()) {
             return;
         }
-
         teams.forEach(team => {
             const players = team.players
             const askerIndex = randomIndex(team.players);
@@ -95,24 +93,25 @@ const TeamSetupPage = () => {
         dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
     }
 
-    const areTeamsAndPlayersValid = () => {
-        let errorCount = 0;
-        setTeamError([]);
-        setPlayerError([]);
-        setCommonErrors([]);
+    function validateTeamsCount() {
         if (teams.length < 2) {
             setCommonErrors(prevState => [...prevState, 'At least 2 teams should present to start game'])
-            errorCount++;
+            return 1;
         }
+        return 0;
+    }
 
+    function validateEachTeamHasPlayer() {
         const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
         if (eachTeamHasAtLeastOnePlayer.length > 0) {
             setCommonErrors(prevState => [...prevState, 'At least 1 player should be in team'])
-            errorCount++;
+            return 1;
         }
+        return 0;
+    }
 
-        // validate empty & unique team names
-
+    function validateTeamsUniqueAndEmptyNames() {
+        let errorCount = 0;
         const uniqueTeamNames = new Set();
         teams.forEach((team, teamIndex) => {
             if (team.name === '') {
@@ -133,6 +132,11 @@ const TeamSetupPage = () => {
                 }
             }
         })
+        return errorCount;
+    }
+
+    function validatePlayersUniqueAndEmptyNames() {
+        let errorCount = 0;
         teams.forEach((team, teamIndex) => {
             const uniquePlayerNamesInTeam = new Set();
             team.players.forEach((player, playerIndex) => {
@@ -155,10 +159,19 @@ const TeamSetupPage = () => {
                 }
             })
         })
-        if (errorCount > 0) {
-            return false;
-        }
-        return true;
+        return errorCount;
+    }
+
+    const areTeamsAndPlayersValid = () => {
+        let errorCount = 0;
+        setTeamError([]);
+        setPlayerError([]);
+        setCommonErrors([]);
+        errorCount += validateTeamsCount();
+        errorCount += validateEachTeamHasPlayer();
+        errorCount += validateTeamsUniqueAndEmptyNames();
+        errorCount += validatePlayersUniqueAndEmptyNames();
+        return errorCount === 0;
     }
 
     const handleDeleteTeam = (teamIndexToDelete) => {
