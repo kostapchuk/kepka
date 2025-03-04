@@ -9,12 +9,14 @@ import {addPlayers} from "../redux/playersSlice";
 import {randomIndex} from "../util/arrayUtils";
 import TeamInputBlock from "../components/TeamInputBlock";
 import PlayerInputBlock from "../components/PlayerInputBlock";
+import {Box, Typography} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 // todo: design
 // todo: save to redux
 // todo: separate components
-// todo: players errors
-// todo: team errors (when one exists and then delete previous team)
+
+// todo: trim everything before save (not allow user to enter something with around spaces)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
     const {currentGameId} = useSelector(state => state.game)
@@ -23,8 +25,7 @@ const TeamSetupPage = () => {
     const [teamName, setTeamName] = useState('');
     const [teamError, setTeamError] = useState([])
     const [playerError, setPlayerError] = useState([])
-    const [newTeamError, setNewTeamError] = useState({error: false, helperText: ''});
-    const [newPlayerError, setNewPlayerError] = useState({error: false, helperText: ''});
+    const [commonErrors, setCommonErrors] = useState([])
 
     const handlePlayerNameChange = (teamIndex, name) => {
         const updatedNames = [...playerNames];
@@ -32,50 +33,17 @@ const TeamSetupPage = () => {
         setPlayerNames(updatedNames);
     };
 
-    const handlePlayerBlur = (teamIndex, playerIndex) => {
-        const allTrimmedNames = teams.flatMap(team => team.players.map(player => player.trim()));
-        const allUniquePlayerNames = new Set(allTrimmedNames);
-
-        setPlayerError(prevState => prevState.filter(error => !(error.teamIndex === teamIndex && error.playerIndex === playerIndex)));
-
-        if (allTrimmedNames[playerIndex] === '') {
-            setPlayerError(prevState => [
-                ...prevState,
-                {teamIndex, playerIndex, helperText: "Empty player name isn't allowed"}
-            ]);
-            return;
-        }
-
-        if (allUniquePlayerNames.size !== allTrimmedNames.length) {
-            setPlayerError(prevState => [
-                ...prevState,
-                {teamIndex, playerIndex, helperText: "Player name already exists"}
-            ]);
-            return;
-        }
-    };
-
     const handleNewPlayerBlur = (teamIndex) => {
-        const trimmedName = playerNames[teamIndex].trim();
-        const allTrimmedNames = teams.flatMap(t => t.players.map(p => p.trim()))
-        const allUniquePlayerNames = new Set(allTrimmedNames);
-        if (trimmedName === '') {
-            setNewPlayerError({})
-            return;
+        const trimmedName = playerNames[teamIndex]?.trim();
+        if (trimmedName && trimmedName !== '') {
+            const updatedTeams = [...teams];
+            updatedTeams[teamIndex] = {
+                ...updatedTeams[teamIndex],
+                players: [...updatedTeams[teamIndex].players, playerNames[teamIndex]]
+            };
+            setTeams(updatedTeams);
+            handlePlayerNameChange(teamIndex, '');
         }
-        if (allUniquePlayerNames.has(trimmedName)) {
-            setNewPlayerError({error: true, helperText: "Player name already exists"})
-            return;
-        }
-
-        setNewPlayerError({})
-        const updatedTeams = [...teams];
-        updatedTeams[teamIndex] = {
-            ...updatedTeams[teamIndex],
-            players: [...updatedTeams[teamIndex].players, playerNames[teamIndex]]
-        };
-        setTeams(updatedTeams);
-        handlePlayerNameChange(teamIndex, '');
     }
 
     const handlePlayerNameChangeByIndex = (playerIndex, teamIndex, name) => {
@@ -95,44 +63,11 @@ const TeamSetupPage = () => {
 
     const handleNewTeamBlur = () => {
         const trimmedName = teamName.trim();
-        const allTeamNames = new Set(teams.map(t => t.name.trim()));
-        if (trimmedName === '') {
-            setNewTeamError({})
-            return;
+        if (trimmedName !== '') {
+            setTeams(prevState => [...prevState, {name: teamName, players: []}]);
+            setTeamName('');
         }
-        if (allTeamNames.has(trimmedName)) {
-            setNewTeamError({error: true, helperText: "Team name already exists"})
-            return;
-        }
-        setNewTeamError({})
-        setTeams(prevState => [...prevState, {name: teamName, players: []}]);
-        setTeamName('');
     }
-
-    const handleTeamBlur = (teamIndex) => {
-        const allTeamNames = teams.map(t => t.name.trim());
-        const allUniqueTeamNames = new Set(allTeamNames);
-        setTeamError(prevState => prevState.filter(error => error.error !== teamIndex));
-
-        if (allUniqueTeamNames.has('')) {
-            setTeamError(prevState => [
-                ...prevState.filter(error => error.index !== teamIndex),
-                {error: teamIndex, helperText: "Empty team name isn't allowed"}
-            ]);
-            return;
-        }
-
-        if (allUniqueTeamNames.size !== allTeamNames.length) {
-            const existingError = teamError.find(error => error.index === teamIndex);
-            if (!existingError) {
-                setTeamError(prevState => [
-                    ...prevState,
-                    {error: teamIndex, helperText: "Team name already exists"}
-                ]);
-            }
-            return;
-        }
-    };
 
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
@@ -142,6 +77,10 @@ const TeamSetupPage = () => {
     };
 
     const goToNextPage = () => {
+        if (!areTeamsAndPlayersValid()) {
+            return;
+        }
+
         teams.forEach(team => {
             const players = team.players
             const askerIndex = randomIndex(team.players);
@@ -157,17 +96,67 @@ const TeamSetupPage = () => {
     }
 
     const areTeamsAndPlayersValid = () => {
-        if (teams.length === 0) {
-            return false
+        let errorCount = 0;
+        setTeamError([]);
+        setPlayerError([]);
+        setCommonErrors([]);
+        if (teams.length < 2) {
+            setCommonErrors(prevState => [...prevState, 'At least 2 teams should present to start game'])
+            errorCount++;
         }
 
         const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
         if (eachTeamHasAtLeastOnePlayer.length > 0) {
-            return false;
+            setCommonErrors(prevState => [...prevState, 'At least 1 player should be in team'])
+            errorCount++;
         }
 
-        if (teamError.length > 0 || playerError.length > 0 || newPlayerError.error || newTeamError.error) {
-            return false
+        // validate empty & unique team names
+
+        const uniqueTeamNames = new Set();
+        teams.forEach((team, teamIndex) => {
+            if (team.name === '') {
+                errorCount++;
+                setTeamError(prevState => [
+                    ...prevState,
+                    {error: teamIndex, helperText: "Empty team name isn't allowed"}
+                ]);
+            } else {
+                if (uniqueTeamNames.has(team.name)) {
+                    errorCount++;
+                    setTeamError(prevState => [
+                        ...prevState,
+                        {error: teamIndex, helperText: "Team name already exists"}
+                    ]);
+                } else {
+                    uniqueTeamNames.add(team.name);
+                }
+            }
+        })
+        teams.forEach((team, teamIndex) => {
+            const uniquePlayerNamesInTeam = new Set();
+            team.players.forEach((player, playerIndex) => {
+                if (player === '') {
+                    errorCount++;
+                    setPlayerError(prevState => [
+                        ...prevState,
+                        {teamIndex, playerIndex, helperText: "Empty player name isn't allowed"}
+                    ]);
+                } else {
+                    if (uniquePlayerNamesInTeam.has(player)) {
+                        errorCount++;
+                        setPlayerError(prevState => [
+                            ...prevState,
+                            {teamIndex, playerIndex, helperText: "Player name already exists in the team"}
+                        ]);
+                    } else {
+                        uniquePlayerNamesInTeam.add(player);
+                    }
+                }
+            })
+        })
+        if (errorCount > 0) {
+            return false;
         }
         return true;
     }
@@ -185,15 +174,27 @@ const TeamSetupPage = () => {
         updatedTeams[teamIndex] = updatedTeam
         setTeams(updatedTeams)
     }
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     return (
         <Stack spacing={2}>
+            <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                <Typography>Настройка игры 1 / 3</Typography>
+                <Tooltip
+                    title="Скоро"
+                    arrow
+                    open={tooltipOpen}
+                    onClose={() => setTooltipOpen(false)}
+                >
+                    <img src="/language.svg" alt="Change language" width="28" onClick={() => setTooltipOpen(true)}/>
+                </Tooltip>
+            </Box>
             {teams.map((team, teamIndex) => (
                 <>
-                    <h3>Команда</h3>
                     <TeamInputBlock
                         teamName={team.name}
-                        handleTeamBlur={handleTeamBlur}
+                        handleTeamBlur={() => {
+                        }}
                         handleNewTeamBlur={() => {
                         }}
                         handleTeamNameChange={() => {
@@ -211,7 +212,8 @@ const TeamSetupPage = () => {
                             handlePlayerNameChange={() => {
                             }}
                             handlePlayerNameChangeByIndex={handlePlayerNameChangeByIndex}
-                            handlePlayerBlur={handlePlayerBlur}
+                            handlePlayerBlur={() => {
+                            }}
                             handleNewPlayerBlur={() => {
                             }}
                             error={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)}
@@ -228,28 +230,27 @@ const TeamSetupPage = () => {
                         handlePlayerBlur={() => {
                         }}
                         handleNewPlayerBlur={handleNewPlayerBlur}
-                        error={newPlayerError.error}
                         handleDeletePlayer={() => {
                         }}
                         newPlayer
                     />
                 </>
             ))}
-            <h3>Новая Команда</h3>
             <TeamInputBlock
                 teamName={teamName}
-                handleTeamBlur={handleTeamBlur}
+                handleTeamBlur={() => {
+                }}
                 handleNewTeamBlur={handleNewTeamBlur}
                 handleTeamNameChange={handleTeamNameChange}
                 handleTeamNameChangeByIndex={() => {
                 }}
                 newTeam
-                error={newTeamError}
                 teamIndex={-1}
                 handleDeleteTeam={() => {
                 }}
             />
-            <Button variant="contained" onClick={goToNextPage} disabled={!areTeamsAndPlayersValid()}>
+            {commonErrors.map(error => <p>{error}</p>)}
+            <Button variant="contained" onClick={goToNextPage}>
                 Продолжить
             </Button>
             <Footer/>

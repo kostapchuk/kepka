@@ -15,10 +15,10 @@ const PlayerInputBlock = ({
     return (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
             <TextField
-                key={teamIndex + playerIndex}
+                key={`${teamIndex}${playerIndex}`}
                 value={player}
                 onChange={(e) =>
-                    newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(teamIndex, playerIndex, e.target.value)
+                    newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
                 variant="outlined"
                 onBlur={()=> newPlayer ? handleNewPlayerBlur(teamIndex) : handlePlayerBlur(teamIndex, playerIndex)}
