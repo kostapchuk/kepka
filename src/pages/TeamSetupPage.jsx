@@ -4,10 +4,11 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import {Box, InputAdornment, TextField} from "@mui/material";
 import Footer from "../components/Footer";
 import {addPlayers} from "../redux/playersSlice";
 import {randomIndex} from "../util/arrayUtils";
+import TeamInputBlock from "../components/TeamInputBlock";
+import PlayerInputBlock from "../components/PlayerInputBlock";
 
 // todo: design
 // todo: save to redux
@@ -58,7 +59,6 @@ const TeamSetupPage = () => {
         const allUniquePlayerNames = new Set(allTrimmedNames);
         if (trimmedName === '') {
             setNewPlayerError({})
-            // console.error("Empty player name isn't allowed");
             return;
         }
         if (allUniquePlayerNames.has(trimmedName)) {
@@ -110,12 +110,12 @@ const TeamSetupPage = () => {
     const handleTeamBlur = (teamIndex) => {
         const allTeamNames = teams.map(t => t.name.trim());
         const allUniqueTeamNames = new Set(allTeamNames);
-        setTeamError(prevState => prevState.filter(error => error.index !== teamIndex));
+        setTeamError(prevState => prevState.filter(error => error.error !== teamIndex));
 
         if (allUniqueTeamNames.has('')) {
             setTeamError(prevState => [
                 ...prevState.filter(error => error.index !== teamIndex),
-                {index: teamIndex, helperText: "Empty team name isn't allowed"}
+                {error: teamIndex, helperText: "Empty team name isn't allowed"}
             ]);
             return;
         }
@@ -125,7 +125,7 @@ const TeamSetupPage = () => {
             if (!existingError) {
                 setTeamError(prevState => [
                     ...prevState,
-                    {index: teamIndex, helperText: "Team name already exists"}
+                    {error: teamIndex, helperText: "Team name already exists"}
                 ]);
             }
             return;
@@ -189,88 +189,63 @@ const TeamSetupPage = () => {
             {teams.map((team, teamIndex) => (
                 <>
                     <h3>Команда</h3>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <TextField
-                            sx={{backgroundColor: '#F6F5F8'}}
-                            key={teamIndex}
-                            value={team.name}
-                            onChange={(e) => handleTeamNameChangeByIndex(teamIndex, e.target.value)}
-                            variant="outlined"
-                            fullWidth
-                            onBlur={() => handleTeamBlur(teamIndex)}
-                            slotProps={{
-                                input: {
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <img src="/cap.svg" alt="Cap"/>
-                                        </InputAdornment>
-                                    )
-                                }
-                            }}
-                            error={teamError.find(error => error.index === teamIndex)}
-                            helperText={teamError.find(error => error.index === teamIndex)?.helperText}
-                        />
-                        <img
-                            src="/close.svg"
-                            alt="Delete team"
-                            onClick={() => handleDeleteTeam(teamIndex)}
-                            style={{cursor: 'pointer', marginLeft: '8px'}}
-                        />
-                    </Box>
+                    <TeamInputBlock
+                        teamName={team.name}
+                        handleTeamBlur={handleTeamBlur}
+                        handleNewTeamBlur={() => {
+                        }}
+                        handleTeamNameChange={() => {
+                        }}
+                        handleTeamNameChangeByIndex={handleTeamNameChangeByIndex}
+                        error={teamError.find(error => error.error === teamIndex)}
+                        teamIndex={teamIndex}
+                        handleDeleteTeam={() => handleDeleteTeam(teamIndex)}
+                    />
                     {team.players.map((player, playerIndex) => (
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            <TextField
-                                key={teamIndex + playerIndex}
-                                value={player}
-                                onChange={(e) => handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)}
-                                variant="outlined"
-                                onBlur={() => handlePlayerBlur(teamIndex, playerIndex)}
-                                fullWidth
-                                error={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)}
-                                helperText={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)?.helperText}
-                            />
-                            <img
-                                src="/close.svg"
-                                alt="Delete player"
-                                onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
-                                style={{cursor: 'pointer', marginLeft: '8px'}}
-                            />
-                        </Box>
+                        <PlayerInputBlock
+                            teamIndex={teamIndex}
+                            playerIndex={playerIndex}
+                            player={player}
+                            handlePlayerNameChange={() => {
+                            }}
+                            handlePlayerNameChangeByIndex={handlePlayerNameChangeByIndex}
+                            handlePlayerBlur={handlePlayerBlur}
+                            handleNewPlayerBlur={() => {
+                            }}
+                            error={playerError.find(error => error.teamIndex === teamIndex && error.playerIndex === playerIndex)}
+                            handleDeletePlayer={() => handleDeletePlayer(teamIndex, playerIndex)}
+                        />
                     ))}
-                    <TextField
-                        key={teamIndex + 'emptyPlayerInputKey'}
-                        label="Введите имя игрока"
-                        value={playerNames[teamIndex]}
-                        onChange={(e) => handlePlayerNameChange(teamIndex, e.target.value)}
-                        variant="outlined"
-                        onBlur={() => handleNewPlayerBlur(teamIndex)}
-                        fullWidth
+                    <PlayerInputBlock
+                        teamIndex={teamIndex}
+                        playerIndex={-1}
+                        player={playerNames[teamIndex]}
+                        handlePlayerNameChange={handlePlayerNameChange}
+                        handlePlayerNameChangeByIndex={() => {
+                        }}
+                        handlePlayerBlur={() => {
+                        }}
+                        handleNewPlayerBlur={handleNewPlayerBlur}
                         error={newPlayerError.error}
-                        helperText={newPlayerError.helperText}
+                        handleDeletePlayer={() => {
+                        }}
+                        newPlayer
                     />
                 </>
             ))}
             <h3>Новая Команда</h3>
-            <TextField
-                sx={{backgroundColor: '#F6F5F8'}}
-                key="emptyTeamInputKey"
-                label="Введите имя новой команды"
-                value={teamName}
-                onChange={(e) => handleTeamNameChange(e.target.value)}
-                variant="outlined"
-                onBlur={handleNewTeamBlur}
-                fullWidth
-                slotProps={{
-                    input: {
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <img src="/cap.svg" alt="Cap"/>
-                            </InputAdornment>
-                        )
-                    }
+            <TeamInputBlock
+                teamName={teamName}
+                handleTeamBlur={handleTeamBlur}
+                handleNewTeamBlur={handleNewTeamBlur}
+                handleTeamNameChange={handleTeamNameChange}
+                handleTeamNameChangeByIndex={() => {
                 }}
-                error={newTeamError.error}
-                helperText={newTeamError.helperText}
+                newTeam
+                error={newTeamError}
+                teamIndex={-1}
+                handleDeleteTeam={() => {
+                }}
             />
             <Button variant="contained" onClick={goToNextPage} disabled={!areTeamsAndPlayersValid()}>
                 Продолжить
