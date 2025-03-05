@@ -140,8 +140,7 @@ const TeamSetupPage = () => {
         <>
             <Stack sx={{
                 marginBottom: '80px',
-                maxHeight: 'calc(100vh - 80px)',
-                overflowY: 'auto'
+                maxHeight: 'calc(100vh - 80px)'
             }} ref={contentRef}>
                 <TeamSetupHeader/>
                 <TeamsAndPlayersList
