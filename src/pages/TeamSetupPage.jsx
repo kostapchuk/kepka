@@ -2,7 +2,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import Stack from '@mui/material/Stack';
-import Footer from "../components/Footer";
 import {addPlayers} from "../redux/playersSlice";
 import {randomIndex} from "../util/arrayUtils";
 import TeamSetupHeader from "../components/TeamSetupHeader";
@@ -141,8 +140,8 @@ const TeamSetupPage = () => {
         <>
             <Stack sx={{
                 marginBottom: '80px',
-                maxHeight: 'calc(100vh - 80px)', // Adjust as needed
-                overflowY: 'auto' // Allow scrolling
+                maxHeight: 'calc(100vh - 80px)',
+                overflowY: 'auto'
             }} ref={contentRef}>
                 <TeamSetupHeader/>
                 <TeamsAndPlayersList
