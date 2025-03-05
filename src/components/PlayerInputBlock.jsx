@@ -55,7 +55,29 @@ const PlayerInputBlock = ({
     return (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
             <TextField
+                sx={{
+                    borderRadius: '12px',
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        '& fieldset': {
+                            borderColor: '#D1D1D1'
+                        },
+                        '&:hover fieldset': {
+                            borderColor: '#D1D1D1'
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#7A51EC'
+                        }
+                    },
+                    '&:focus': {
+                        backgroundColor: 'transparent'
+                    },
+                    flex: 1,
+                    minWidth: '50px',
+                    marginBottom: '16px'
+                }}
                 key={`${teamIndex}${playerIndex}`}
+                placeholder={newPlayer && "Введите имя игрока"}
                 value={newPlayer ? newPlayerName : player}
                 onChange={(e) =>
                     newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
@@ -66,14 +88,17 @@ const PlayerInputBlock = ({
                 error={error}
                 helperText={error?.helperText}
             />
-            {!newPlayer &&
-                <img
-                    src="/close.svg"
-                    alt="Delete player"
-                    onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
-                    style={{cursor: 'pointer', marginLeft: '8px'}}
-                />
-            }
+            <img
+                src="/close.svg"
+                alt="Delete player"
+                onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
+                style={{
+                    cursor: 'pointer',
+                    width: '24px',
+                    visibility: newPlayer ? "hidden" : "visible",
+                    marginLeft: '8px'
+                }}
+            />
         </Box>
     )
 }

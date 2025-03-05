@@ -37,18 +37,38 @@ const TeamInputBlock = ({
     }
 
     return (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Box sx={{display: 'flex'}}>
             <TextField
-                sx={{backgroundColor: '#F6F5F8'}}
+                sx={{
+                    backgroundColor: '#F6F5F8',
+                    borderRadius: '12px',
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        '& fieldset': {
+                            borderColor: 'transparent'
+                        },
+                        '&:hover fieldset': {
+                            borderColor: 'transparent'
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#D1D1D1'
+                        }
+                    },
+                    '&:focus': {
+                        backgroundColor: 'transparent'
+                    },
+                    flex: 1,
+                    minWidth: '50px',
+                    marginBottom: '16px',
+                    marginTop: '16px'
+                }}
                 key={newTeam ? "emptyTeamInputKey" : teamIndex + "teamInputKey"}
-                label={newTeam ? "Введите имя новой команды" : ""}
+                placeholder={newTeam ? "Название команды" : ""}
                 value={newTeam ? newTeamName : teamName}
                 onChange={(e) =>
                     newTeam ? handleTeamNameChange(e.target.value) : handleTeamNameChangeByIndex(teamIndex, e.target.value)
                 }
-                variant="outlined"
                 onBlur={() => newTeam && handleNewTeamBlur()}
-                fullWidth
                 slotProps={{
                     input: {
                         startAdornment: (
@@ -61,14 +81,17 @@ const TeamInputBlock = ({
                 error={error?.error}
                 helperText={error?.helperText}
             />
-            {!newTeam &&
-                <img
-                    src="/close.svg"
-                    alt="Delete team"
-                    onClick={() => handleDeleteTeam(teamIndex)}
-                    style={{cursor: 'pointer', marginLeft: '8px'}}
-                />
-            }
+            <img
+                src="/close.svg"
+                alt="Delete team"
+                onClick={() => handleDeleteTeam(teamIndex)}
+                style={{
+                    cursor: 'pointer',
+                    width: '24px',
+                    visibility: newTeam ? "hidden" : "visible",
+                    marginLeft: '8px'
+                }}
+            />
         </Box>
     )
 }

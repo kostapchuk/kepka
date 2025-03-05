@@ -2,13 +2,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Footer from "../components/Footer";
 import {addPlayers} from "../redux/playersSlice";
 import {randomIndex} from "../util/arrayUtils";
-import LanguageSwitcher from "../components/LanguageSwitcher";
+import TeamSetupHeader from "../components/TeamSetupHeader";
 import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import PrimaryButton from "../components/PrimaryButton";
+import {Box} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 // todo: design
 // todo: trim everything before save (not allow user to enter something with around spaces)
@@ -118,17 +120,67 @@ const TeamSetupPage = () => {
         dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
     }
 
+    const contentRef = useRef(null);
+    const [isContentOverflowing, setIsContentOverflowing] = useState(false);
+
+    const checkContentOverflow = () => {
+        if (contentRef.current) {
+            const isOverflowing = contentRef.current.scrollHeight > contentRef.current.clientHeight;
+            setIsContentOverflowing(isOverflowing);
+        }
+    };
+
+    useEffect(() => {
+        checkContentOverflow();
+        window.addEventListener('resize', checkContentOverflow);
+        return () => window.removeEventListener('resize', checkContentOverflow);
+    }, [teams]);
+
+    const [tooltipOpen, setTooltipOpen] = useState(false);
     return (
-        <Stack spacing={2}>
-            <LanguageSwitcher/>
-            <TeamsAndPlayersList
-                teamError={teamError}
-                playerError={playerError}
-                commonErrors={commonErrors}
-            />
-            <Button variant="contained" onClick={goToNextPage}>Продолжить</Button>
-            <Footer/>
-        </Stack>
+        <>
+            <Stack sx={{
+                marginBottom: '80px',
+                maxHeight: 'calc(100vh - 80px)', // Adjust as needed
+                overflowY: 'auto' // Allow scrolling
+            }} ref={contentRef}>
+                <TeamSetupHeader/>
+                <TeamsAndPlayersList
+                    teamError={teamError}
+                    playerError={playerError}
+                    commonErrors={commonErrors}
+                />
+            </Stack>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    padding: '16px',
+                    borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
+                }}
+            >
+                <Tooltip
+                    title="Скоро"
+                    arrow
+                    open={tooltipOpen}
+                    onClose={() => setTooltipOpen(false)}
+                >
+                    <img src="/random-arrows.svg" onClick={() => setTooltipOpen(true)} alt="Generate teams" style={{
+                        backgroundColor: '#f0f0f0',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        marginRight: '12px'
+                    }}/>
+                </Tooltip>
+                <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
+            </Box>
+        </>
     )
 };
 export default TeamSetupPage;

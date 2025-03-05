@@ -1,10 +1,11 @@
-import Button from "@mui/material/Button";
 import {
     setCurrentTeam,
     setElapsedTime,
     setLeftSeconds,
-    setLeftWords, setRoundAnsweredWords,
-    setRoundEnded, setRoundWords,
+    setLeftWords,
+    setRoundAnsweredWords,
+    setRoundEnded,
+    setRoundWords,
     setScore,
     setTour
 } from "../redux/gameSlice";
@@ -13,6 +14,7 @@ import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
+import PrimaryButton from "./PrimaryButton";
 
 const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
 
@@ -117,20 +119,7 @@ const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
     }
 
     return (
-        <Button
-            onClick={finishRound}
-            sx={{
-                width: '100%',
-                backgroundColor: '#000000',
-                borderRadius: '16px',
-                color: '#FFFFFF',
-                height: '48px',
-                fontWeight: '600',
-                textTransform: 'none'
-            }}
-        >
-            Продолжить
-        </Button>
+        <PrimaryButton onClick={finishRound} content="Продолжить"/>
     )
 
 }

@@ -12,7 +12,7 @@ const AppRouter = () => {
     const currentPage = useSelector(state => state.page.currentPage);
 
     return (
-        <Container sx={{ mt: 4}} maxWidth={'sm'}>
+        <Container sx={{ mt: 2}} maxWidth={'sm'}>
             {currentPage === Pages.WELCOME_PAGE && <WelcomePage/>}
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
             {currentPage === Pages.GAME_SETUP_PAGE && <GameSetupPage/>}
