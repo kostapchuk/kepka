@@ -57,7 +57,6 @@ const GuessedWordsModal = ({setCurrentWord}) => {
                 >
                     <FinishRoundButton
                         setCurrentWord={setCurrentWord}
-                        // setCurrentAsker={setCurrentAsker}
                     />
                 </Box>
             </DialogContent>
