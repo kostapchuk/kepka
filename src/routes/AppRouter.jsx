@@ -1,6 +1,5 @@
 import {useSelector} from "react-redux";
 import {Pages} from "./index";
-import WelcomePage from "../pages/WelcomePage";
 import TeamSetupPage from "../pages/TeamSetupPage";
 import WordsSetupPage from "../pages/WordsSetupPage";
 import GamePage from "../pages/GamePage";
@@ -17,7 +16,6 @@ const AppRouter = () => {
 
     return (
         <Container sx={{mt: 2}} maxWidth>
-            {currentPage === Pages.WELCOME_PAGE && <WelcomePage/>}
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
             {currentPage === Pages.WORDS_SETUP_PAGE && <WordsSetupPage/>}
             {currentPage === Pages.TOUR_SETUP_PAGE && <TourSetupPage/>}
