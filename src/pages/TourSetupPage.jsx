@@ -4,7 +4,7 @@ import {Pages} from "../routes";
 import {
     setCurrentTeam,
     setLeftSeconds,
-    setLeftWords,
+    setLeftWords, setScore,
     setTimer,
     setTour,
     setWords,
@@ -34,9 +34,12 @@ const TourSetupPage = () => {
         const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
         dispatch(setCurrentTeam(random(currentPlayersInGame).teamId))
         const leftSeconds = {}
+        const newScore = {}
         new Set(currentPlayersInGame.map(p => p.teamId)).forEach(teamId => {
             leftSeconds[teamId] = timer
+            newScore[teamId] = 0
         })
+        dispatch(setScore(newScore))
         dispatch(setLeftSeconds(leftSeconds))
     }
 

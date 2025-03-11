@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 import {Pages} from "../routes";
 
 const initialState = {
-  currentPage: Pages.WELCOME_PAGE
+  currentPage: Pages.TEAM_SETUP_PAGE
 }
 
 export const pageSlice = createSlice({

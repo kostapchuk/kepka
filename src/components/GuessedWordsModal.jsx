@@ -4,7 +4,7 @@ import {Box, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 
-const GuessedWordsModal = ({setCurrentWord, setCurrentAsker}) => {
+const GuessedWordsModal = ({setCurrentWord}) => {
     const {roundEnded, roundAnsweredWords} = useSelector(state => state.game);
 
     const contentRef = useRef(null);
@@ -57,7 +57,6 @@ const GuessedWordsModal = ({setCurrentWord, setCurrentAsker}) => {
                 >
                     <FinishRoundButton
                         setCurrentWord={setCurrentWord}
-                        setCurrentAsker={setCurrentAsker}
                     />
                 </Box>
             </DialogContent>
