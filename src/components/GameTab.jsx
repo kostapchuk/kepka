@@ -6,7 +6,7 @@ import {setRoundAnsweredWords, setRoundEnded, setRoundWords, setTimerRunning} fr
 import {random} from "../util/arrayUtils";
 import {useState} from "react";
 
-const GameTab = () => {
+const GameTab = ({showed, setShowed}) => {
 
     const hideWordsLeft = false
 
@@ -18,7 +18,6 @@ const GameTab = () => {
         roundAnsweredWords
     } = useSelector(state => state.game);
     const dispatch = useDispatch();
-    const [showed, setShowed] = useState(false)
     const [currentWord, setCurrentWord] = useState('')
 
     const startTimer = () => {

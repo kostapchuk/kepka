@@ -3,19 +3,15 @@ import {useEffect, useState} from "react";
 import Stack from "@mui/material/Stack";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
-import {random} from "../util/arrayUtils";
 import {ButtonGroup} from "@mui/material";
-import {setRoundAnsweredWords, setRoundEnded, setRoundWords, setTimerRunning} from "../redux/gameSlice";
+import {setRoundEnded, setTimerRunning} from "../redux/gameSlice";
 import GameHeader from "../components/GameHeader";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
 import GameTab from "../components/GameTab";
 
 const GamePage = () => {
-    const {
-        leftSeconds,
-        timerRunning,
-    } = useSelector(state => state.game);
+    const {leftSeconds} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const [showed, setShowed] = useState(false)
     const [currentBlock, setCurrentBlock] = useState('game')
@@ -23,13 +19,11 @@ const GamePage = () => {
     useEffect(() => {
     }, [leftSeconds, currentBlock]);
 
-
     const onRoundFinished = () => {
         dispatch(setTimerRunning(false));
         dispatch(setRoundEnded(true));
         setShowed(false);
     }
-
 
     const activeTabStyles = {
         backgroundColor: "#F0F0F0",
@@ -39,6 +33,7 @@ const GamePage = () => {
         borderColor: '#D1D1D1',
         borderRadius: '100px'
     }
+
     const inactiveTabStyles = {
         backgroundColor: "#000000",
         fontSize: '16px',
@@ -57,7 +52,7 @@ const GamePage = () => {
                 <Button sx={currentBlock === 'team' ? activeTabStyles : inactiveTabStyles}
                         onClick={() => !showed && setCurrentBlock('game')}>Игра</Button>
             </ButtonGroup>
-            {currentBlock === 'game' && <GameTab/>}
+            {currentBlock === 'game' && <GameTab showed={showed} setShowed={setShowed}/>}
             {currentBlock === 'team' && <ScoresTab/>}
             <RoundTimer/>
             <AlarmTimer onTimerEnd={onRoundFinished}/>
