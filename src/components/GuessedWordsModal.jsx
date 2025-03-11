@@ -29,6 +29,7 @@ const GuessedWordsModal = ({setCurrentWord}) => {
             open={roundEnded}
             onClose={() => {
             }}
+            sx={{marginBottom: '65px'}}
             ref={contentRef}
             scroll="paper"
         >
