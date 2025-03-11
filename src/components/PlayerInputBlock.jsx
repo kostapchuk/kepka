@@ -1,4 +1,4 @@
-import {Box, TextField} from "@mui/material";
+import {Box, InputAdornment, TextField} from "@mui/material";
 import {setTeams} from "../redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
@@ -82,6 +82,13 @@ const PlayerInputBlock = ({
                 onChange={(e) =>
                     newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
+                slotProps={{
+                    input: {
+                        sx: {
+                            fontWeight: '500'
+                        }
+                    }
+                }}
                 variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
                 fullWidth

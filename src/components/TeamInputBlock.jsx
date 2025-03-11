@@ -1,7 +1,7 @@
 import {Box, InputAdornment, TextField} from "@mui/material";
 import {setTeams} from "../redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const TeamInputBlock = ({
                             teamName,
@@ -36,9 +36,26 @@ const TeamInputBlock = ({
         dispatch(setTeams([...teams].filter((team, teamIndex) => teamIndex !== teamIndexToDelete)));
     }
 
+    const handleClick = () => {
+        if (newTeamName.trim() === '') {
+            setNewTeamName('Команда ' + (teams.length + 1));
+        }
+    }
+    const inputRef = useRef(null);
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (newTeam) {
+                handleNewTeamBlur();
+            }
+            inputRef.current.blur();
+        }
+    };
+
     return (
         <Box sx={{display: 'flex'}}>
             <TextField
+                inputRef={inputRef}
                 sx={{
                     backgroundColor: '#F6F5F8',
                     borderRadius: '12px',
@@ -60,7 +77,8 @@ const TeamInputBlock = ({
                     flex: 1,
                     minWidth: '50px',
                     marginBottom: '16px',
-                    marginTop: '16px'
+                    marginTop: '16px',
+                    fontWeight: '600'
                 }}
                 key={newTeam ? "emptyTeamInputKey" : teamIndex + "teamInputKey"}
                 placeholder={newTeam ? "Название команды" : ""}
@@ -68,9 +86,13 @@ const TeamInputBlock = ({
                 onChange={(e) =>
                     newTeam ? handleTeamNameChange(e.target.value) : handleTeamNameChangeByIndex(teamIndex, e.target.value)
                 }
+                onClick={() => newTeam && handleClick()}
                 onBlur={() => newTeam && handleNewTeamBlur()}
                 slotProps={{
                     input: {
+                        sx: {
+                            fontWeight: '600'
+                        },
                         startAdornment: (
                             <InputAdornment position="start">
                                 <img src="/cap.svg" alt="Cap"/>
@@ -78,6 +100,7 @@ const TeamInputBlock = ({
                         )
                     }
                 }}
+                onKeyDown={handleKeyDown}
                 error={error?.error}
                 helperText={error?.helperText}
             />

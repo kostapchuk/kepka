@@ -11,7 +11,6 @@ import PrimaryButton from "../components/PrimaryButton";
 import {Box} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 
-// todo: design
 // todo: trim everything before save (not allow user to enter something with around spaces)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const TeamSetupPage = () => {
 
     function validateTeamsCount() {
         if (teams.length < 2) {
-            setCommonErrors(prevState => [...prevState, 'At least 2 teams should present to start game'])
+            setCommonErrors(prevState => [...prevState, 'Нужны минимум 2 команды, чтобы начать игру'])
             return 1;
         }
         return 0;
@@ -31,7 +30,7 @@ const TeamSetupPage = () => {
     function validateEachTeamHasPlayer() {
         const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
         if (eachTeamHasAtLeastOnePlayer.length > 0) {
-            setCommonErrors(prevState => [...prevState, 'At least 1 player should be in team'])
+            setCommonErrors(prevState => [...prevState, 'Нужен минимум 1 игрок в каждой команде'])
             return 1;
         }
         return 0;
@@ -45,14 +44,14 @@ const TeamSetupPage = () => {
                 errorCount++;
                 setTeamError(prevState => [
                     ...prevState,
-                    {error: teamIndex, helperText: "Empty team name isn't allowed"}
+                    {error: teamIndex, helperText: "Пустое название команды не разрешено"}
                 ]);
             } else {
                 if (uniqueTeamNames.has(team.name)) {
                     errorCount++;
                     setTeamError(prevState => [
                         ...prevState,
-                        {error: teamIndex, helperText: "Team name already exists"}
+                        {error: teamIndex, helperText: "Команда с таким именем уже существует"}
                     ]);
                 } else {
                     uniqueTeamNames.add(team.name);
@@ -71,14 +70,14 @@ const TeamSetupPage = () => {
                     errorCount++;
                     setPlayerError(prevState => [
                         ...prevState,
-                        {teamIndex, playerIndex, helperText: "Empty player name isn't allowed"}
+                        {teamIndex, playerIndex, helperText: "Пустое имя игрока не разрешено"}
                     ]);
                 } else {
                     if (uniquePlayerNamesInTeam.has(player)) {
                         errorCount++;
                         setPlayerError(prevState => [
                             ...prevState,
-                            {teamIndex, playerIndex, helperText: "Player name already exists in the team"}
+                            {teamIndex, playerIndex, helperText: "Игрок с таким именем уже существует"}
                         ]);
                     } else {
                         uniquePlayerNamesInTeam.add(player);
@@ -139,8 +138,7 @@ const TeamSetupPage = () => {
     return (
         <>
             <Stack sx={{
-                marginBottom: '80px',
-                maxHeight: 'calc(100vh - 80px)'
+                marginBottom: '85px',
             }} ref={contentRef}>
                 <TeamSetupHeader/>
                 <TeamsAndPlayersList
