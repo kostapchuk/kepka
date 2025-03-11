@@ -114,7 +114,7 @@ const TeamSetupPage = () => {
             }));
             dispatch(addPlayers(newPlayers));
         })
-        dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
+        dispatch(setCurrentPage(Pages.WORDS_SETUP_PAGE));
     }
 
     const contentRef = useRef(null);

@@ -21,7 +21,6 @@ const WelcomePage = () => {
         <Button size="large" onClick={handleStartGame} variant="contained">
           Начать
         </Button>
-        <Footer/>
       </Stack>
   )
 }

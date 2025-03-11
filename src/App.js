@@ -9,7 +9,10 @@ import {Analytics} from "@vercel/analytics/react";
 function App() {
     const theme = createTheme({
         typography: {
-            fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif'
+            fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
+            fontWeightRegular: 500,
+            fontWeightMedium: 500,
+            fontWeightBold: 600,
         }
     });
     return (

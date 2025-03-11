@@ -92,7 +92,6 @@ const GamePage = () => {
                 setCurrentAsker={setCurrentAsker}
             />
             <AlarmTimer running={alarmTimerRunning} onTimerEnd={onRoundFinished}/>
-            <Footer/>
         </Stack>
     )
 }
