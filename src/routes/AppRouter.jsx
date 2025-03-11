@@ -8,6 +8,7 @@ import {Container} from "@mui/material";
 import TourSetupPage from "../pages/TourSetupPage";
 import {useState} from "react";
 import Footer from "../components/Footer";
+import GuessedWordsPage from "../pages/GuessedWordsPage";
 
 const AppRouter = () => {
 
@@ -21,6 +22,7 @@ const AppRouter = () => {
             {currentPage === Pages.TOUR_SETUP_PAGE && <TourSetupPage/>}
             {currentPage === Pages.GAME_PAGE && <GamePage/>}
             {currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}
+            {currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}
             {pathname.endsWith('info') && <Footer/>}
         </Container>
     );
