@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import {Box, Typography} from "@mui/material";
 
-const ScoresBlock = () => {
+const ScoresTab = () => {
 
     const {score} = useSelector(state => state.game);
 
@@ -22,4 +22,4 @@ const ScoresBlock = () => {
     )
 }
 
-export default ScoresBlock
+export default ScoresTab
