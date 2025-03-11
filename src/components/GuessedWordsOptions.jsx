@@ -6,10 +6,10 @@ const GuessedWordsOptions = () => {
     const {roundWords, roundAnsweredWords} = useSelector(state => state.game);
     const dispatch = useDispatch();
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, marginTop: '24px'}}>
             {
                 [...roundWords].reverse().map(option => (
-                    <FormControlLabel key={Math.random()} sx={{m: 0, p: 0}} control={<Checkbox
+                    <FormControlLabel key={Math.random()} sx={{m: 0, p: 0, marginBottom: '16px'}} control={<Checkbox
                         key={Math.random()}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
@@ -22,7 +22,7 @@ const GuessedWordsOptions = () => {
                         checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '28px', height: '28px' }} />}
                         icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '28px', height: '28px' }} />}
                         sx={{
-                            height: '48px',
+                            height: '28px',
                             '&.Mui-checked': {
                                 color: '#7A51EC'
                             },
