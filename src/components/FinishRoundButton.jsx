@@ -16,7 +16,7 @@ import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PrimaryButton from "./PrimaryButton";
 
-const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
+const FinishRoundButton = ({setCurrentWord}) => {
 
     const {
         leftWords: tourLeftWords,
@@ -115,7 +115,6 @@ const FinishRoundButton = ({setCurrentWord, setCurrentAsker}) => {
             newTeam = teamNames[currentTeamIndex + 1]
             dispatch(setCurrentTeam(newTeam))
         }
-        setCurrentAsker(players.filter(p => p.gameId === currentGameId && p.teamId === newTeam && p.asker)[0])
     }
 
     return (

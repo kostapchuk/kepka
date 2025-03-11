@@ -1,17 +1,18 @@
 import {useEffect, useRef} from "react";
 import {useSelector} from "react-redux";
 
-const AlarmTimer = ({running, onTimerEnd}) => {
+const AlarmTimer = ({onTimerEnd}) => {
 
   const audioRef = useRef(new Audio('/alarm-bell.mp3'));
   const {
     leftSeconds,
     currentTeam,
+    timerRunning,
     timer: roundDuration
   } = useSelector(state => state.game);
 
   useEffect(() => {
-    if (running) {
+    if (timerRunning) {
       const audioPlayTimeout = setTimeout(() => {
         audioRef.current.play();
         const audioPauseTimeout = setTimeout(() => {
@@ -23,7 +24,7 @@ const AlarmTimer = ({running, onTimerEnd}) => {
       }, (leftSeconds[currentTeam] - 1) * 1000)
       return () => clearTimeout(audioPlayTimeout);
     }
-  }, [currentTeam, leftSeconds, roundDuration, running]);
+  }, [currentTeam, leftSeconds, roundDuration, timerRunning]);
 
   return (
       <></>
