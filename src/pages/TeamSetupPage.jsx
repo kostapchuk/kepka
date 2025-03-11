@@ -11,7 +11,6 @@ import PrimaryButton from "../components/PrimaryButton";
 import {Box} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 
-// todo: trim everything before save (not allow user to enter something with around spaces)
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
     const {currentGameId, teams} = useSelector(state => state.game);
