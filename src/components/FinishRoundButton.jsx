@@ -61,7 +61,7 @@ const FinishRoundButton = ({setCurrentWord}) => {
         dispatch(setElapsedTime(0));
         const newScore = {
             ...score,
-            [currentTeam]: (score[currentTeam] || 0) + roundAnsweredWords.length
+            [currentTeam]: score[currentTeam] + roundAnsweredWords.length
         }
         dispatch(setScore(newScore))
         dispatch(setRoundWords([]));
