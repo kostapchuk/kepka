@@ -3,13 +3,9 @@ import {Box, Typography} from "@mui/material";
 
 const ScoresBlock = () => {
 
-    const {
-        leftWords,
-        score
-    } = useSelector(state => state.game);
+    const {score} = useSelector(state => state.game);
 
     const hideScore = false
-    const hideWordsLeft = false
 
     return (
         <>
@@ -22,7 +18,6 @@ const ScoresBlock = () => {
                     </Box>
                 </Box>
             ))}
-            {!hideWordsLeft && <p>Осталось слов: {leftWords.length}</p>}
         </>
     )
 }

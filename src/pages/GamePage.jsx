@@ -5,7 +5,7 @@ import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {random} from "../util/arrayUtils";
 import OpenWordButton from "../components/OpenWordButton";
-import {ButtonGroup, Container} from "@mui/material";
+import {Box, ButtonGroup, Container, Typography} from "@mui/material";
 import GuessedWordsModal from "../components/GuessedWordsModal";
 import {setRoundAnsweredWords, setRoundEnded, setRoundWords, setTimerRunning} from "../redux/gameSlice";
 import GameHeader from "../components/GameHeader";
@@ -79,6 +79,8 @@ const GamePage = () => {
         borderRadius: '100px'
     };
 
+    const hideWordsLeft = false
+
     return (
         <Stack spacing={2}>
             <GameHeader/>
@@ -92,7 +94,16 @@ const GamePage = () => {
                 <>
                     <Container sx={{display: 'flex', justifyContent: 'center', padding: 0}}>
                         <OpenWordButton disabled={roundEnded} onClick={openWord}>
-                            {showed ? currentWord : 'Начать игру'}
+                            <Box>
+                                {showed
+                                    ? <Typography variant="h2" sx={{fontWeight: '600', fontSize: '30px'}}>{currentWord}</Typography>
+                                    : <>
+                                        <Typography variant="h2" sx={{fontWeight: '600', fontSize: '30px'}}>Начать игру</Typography>
+                                        {!hideWordsLeft &&
+                                            <Typography sx={{fontSize: '14px', display: 'block', opacity: '60%'}}>Осталось
+                                                слов: {tourLeftWords.length}</Typography>}
+                                    </>}
+                            </Box>
                         </OpenWordButton>
                     </Container>
                     <GuessedWordsModal
