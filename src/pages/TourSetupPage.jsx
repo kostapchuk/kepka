@@ -13,7 +13,7 @@ import {
 import {availableWords} from "../util/words";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
 import Footer from "../components/Footer";
 import {random, shuffle} from "../util/arrayUtils";
@@ -46,10 +46,16 @@ const TourSetupPage = () => {
         inputRef.current.focus();
     };
 
+    const onBackClick = () => {
+        dispatch(setCurrentPage(Pages.WORDS_SETUP_PAGE));
+    }
+
     return (
         <Stack spacing={0}>
-            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
-
+            <Box sx={{display: "flex", marginBottom: "8px"}}>
+                <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
+                <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
+            </Box>
             <TextField
                 inputRef={inputRef}
                 value={timer}
