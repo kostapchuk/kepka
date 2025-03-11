@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import {v4 as uuidv4} from "uuid";
 
 const initialState = {
   timer: 30,
@@ -10,10 +11,11 @@ const initialState = {
   tour: '',
   leftSeconds: {},
   currentTeam: '',
-  currentGameId: '',
+  currentGameId: uuidv4(),
   score: {},
   elapsedTime: 0,
-  roundEnded: false
+  roundEnded: false,
+  teams: []
 }
 
 export const gameSlice = createSlice({
@@ -59,6 +61,9 @@ export const gameSlice = createSlice({
     setRoundEnded: (state, action) => {
       state.roundEnded = action.payload
     },
+    setTeams: (state, action) => {
+      state.teams = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -77,7 +82,8 @@ export const {
   setScore,
   reset,
   setElapsedTime,
-  setRoundEnded
+  setRoundEnded,
+  setTeams
 } = gameSlice.actions
 
 export default gameSlice.reducer

@@ -1,74 +1,181 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {addPlayers} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import {v4 as uuidv4} from 'uuid';
-import {setCurrentGameId} from "../redux/gameSlice";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import {TextField} from "@mui/material";
-import Footer from "../components/Footer";
+import {addPlayers} from "../redux/playersSlice";
 import {randomIndex} from "../util/arrayUtils";
+import TeamSetupHeader from "../components/TeamSetupHeader";
+import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
+import {useEffect, useRef, useState} from "react";
+import PrimaryButton from "../components/PrimaryButton";
+import {Box} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 const TeamSetupPage = () => {
-  const dispatch = useDispatch();
-  const [playerNames, setPlayerNames] = useState(['', '', '']);
-  const [gameId, setGameId] = useState('');
-  const players = useSelector(state => state.players);
+    const dispatch = useDispatch();
+    const {currentGameId, teams} = useSelector(state => state.game);
+    const [teamError, setTeamError] = useState([]);
+    const [playerError, setPlayerError] = useState([]);
+    const [commonErrors, setCommonErrors] = useState([]);
 
-  useEffect(() => {
-    const newGameId = uuidv4();
-    setGameId(newGameId);
-  }, []);
+    function validateTeamsCount() {
+        if (teams.length < 2) {
+            setCommonErrors(prevState => [...prevState, 'Нужны минимум 2 команды, чтобы начать игру'])
+            return 1;
+        }
+        return 0;
+    }
 
-  const handleInputChange = (index, value) => {
-    const newPlayerNames = [...playerNames];
-    newPlayerNames[index] = value;
-    setPlayerNames(newPlayerNames);
-  };
+    function validateEachTeamHasPlayer() {
+        const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
+        if (eachTeamHasAtLeastOnePlayer.length > 0) {
+            setCommonErrors(prevState => [...prevState, 'Нужен минимум 1 игрок в каждой команде'])
+            return 1;
+        }
+        return 0;
+    }
 
-  const addPlayersToRedux = () => {
-    const filledPlayerNames = playerNames.filter(name => name.trim() !== '')
-    const teamId = playerNames.join(' ');
-    const askerIndex = randomIndex(filledPlayerNames);
-    const newPlayers = filledPlayerNames
-        .map((name, index) => ({
-          name: name,
-          asker: index === askerIndex,
-          teamId: teamId,
-          gameId: gameId,
-        }));
-    dispatch(addPlayers(newPlayers));
-    setPlayerNames(['', '', '']);
-  };
+    function validateTeamsUniqueAndEmptyNames() {
+        let errorCount = 0;
+        const uniqueTeamNames = new Set();
+        teams.forEach((team, teamIndex) => {
+            if (team.name === '') {
+                errorCount++;
+                setTeamError(prevState => [
+                    ...prevState,
+                    {error: teamIndex, helperText: "Пустое название команды не разрешено"}
+                ]);
+            } else {
+                if (uniqueTeamNames.has(team.name)) {
+                    errorCount++;
+                    setTeamError(prevState => [
+                        ...prevState,
+                        {error: teamIndex, helperText: "Команда с таким именем уже существует"}
+                    ]);
+                } else {
+                    uniqueTeamNames.add(team.name);
+                }
+            }
+        })
+        return errorCount;
+    }
 
-  const goToNextPage = () => {
-    dispatch(setCurrentGameId(gameId))
-    dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
-  }
+    function validatePlayersUniqueAndEmptyNames() {
+        let errorCount = 0;
+        teams.forEach((team, teamIndex) => {
+            const uniquePlayerNamesInTeam = new Set();
+            team.players.forEach((player, playerIndex) => {
+                if (player === '') {
+                    errorCount++;
+                    setPlayerError(prevState => [
+                        ...prevState,
+                        {teamIndex, playerIndex, helperText: "Пустое имя игрока не разрешено"}
+                    ]);
+                } else {
+                    if (uniquePlayerNamesInTeam.has(player)) {
+                        errorCount++;
+                        setPlayerError(prevState => [
+                            ...prevState,
+                            {teamIndex, playerIndex, helperText: "Игрок с таким именем уже существует"}
+                        ]);
+                    } else {
+                        uniquePlayerNamesInTeam.add(player);
+                    }
+                }
+            })
+        })
+        return errorCount;
+    }
 
-  return (
-      <Stack spacing={2}>
-        {playerNames.map((name, index) => (
-            <TextField
-                key={index}
-                label={`Имя игрока ${index + 1}`}
-                value={name}
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                variant="outlined"
-                fullWidth
-            />
-        ))}
-        <Button variant="contained" onClick={addPlayersToRedux} disabled={playerNames.filter(name => name.trim() !== '').length < 2 || playerNames.length !== new Set(playerNames).size}>
-          Добавить игроков
-        </Button>
-        <Button variant="contained" onClick={goToNextPage} disabled={new Set(players.filter(p => p.gameId === gameId).map(p => p.teamId)).size < 2}>
-          Перейти к настройке игровой команты
-        </Button>
-        <Footer/>
-      </Stack>
-  );
+    const areTeamsAndPlayersValid = () => {
+        let errorCount = 0;
+        setTeamError([]);
+        setPlayerError([]);
+        setCommonErrors([]);
+        errorCount += validateTeamsCount();
+        errorCount += validateEachTeamHasPlayer();
+        errorCount += validateTeamsUniqueAndEmptyNames();
+        errorCount += validatePlayersUniqueAndEmptyNames();
+        return errorCount === 0;
+    }
+
+    const goToNextPage = () => {
+        if (!areTeamsAndPlayersValid()) {
+            return;
+        }
+        teams.forEach(team => {
+            const players = team.players
+            const askerIndex = randomIndex(team.players);
+            const newPlayers = players.map((name, index) => ({
+                name: name,
+                asker: index === askerIndex,
+                teamId: team.name,
+                gameId: currentGameId
+            }));
+            dispatch(addPlayers(newPlayers));
+        })
+        dispatch(setCurrentPage(Pages.GAME_SETUP_PAGE));
+    }
+
+    const contentRef = useRef(null);
+    const [isContentOverflowing, setIsContentOverflowing] = useState(false);
+
+    const checkContentOverflow = () => {
+        if (contentRef.current) {
+            const isOverflowing = contentRef.current.scrollHeight > contentRef.current.clientHeight;
+            setIsContentOverflowing(isOverflowing);
+        }
+    };
+
+    useEffect(() => {
+        checkContentOverflow();
+        window.addEventListener('resize', checkContentOverflow);
+        return () => window.removeEventListener('resize', checkContentOverflow);
+    }, [teams]);
+
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    return (
+        <>
+            <Stack sx={{
+                marginBottom: '85px',
+            }} ref={contentRef}>
+                <TeamSetupHeader/>
+                <TeamsAndPlayersList
+                    teamError={teamError}
+                    playerError={playerError}
+                    commonErrors={commonErrors}
+                />
+            </Stack>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    padding: '16px',
+                    borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
+                }}
+            >
+                <Tooltip
+                    title="Скоро"
+                    arrow
+                    open={tooltipOpen}
+                    onClose={() => setTooltipOpen(false)}
+                >
+                    <img src="/random-arrows.svg" onClick={() => setTooltipOpen(true)} alt="Generate teams" style={{
+                        backgroundColor: '#f0f0f0',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        marginRight: '12px'
+                    }}/>
+                </Tooltip>
+                <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
+            </Box>
+        </>
+    )
 };
-
 export default TeamSetupPage;
