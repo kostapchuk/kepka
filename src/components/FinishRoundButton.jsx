@@ -1,10 +1,9 @@
 import {
-    setCurrentTeam,
+    setCurrentTeam, setCurrentWord,
     setElapsedTime,
     setLeftSeconds,
     setLeftWords,
     setRoundAnsweredWords,
-    setRoundEnded,
     setRoundWords,
     setScore,
     setTour
@@ -16,7 +15,7 @@ import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PrimaryButton from "./PrimaryButton";
 
-const FinishRoundButton = ({setCurrentWord}) => {
+const FinishRoundButton = () => {
 
     const {
         leftWords: tourLeftWords,
@@ -37,7 +36,7 @@ const FinishRoundButton = ({setCurrentWord}) => {
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
 
     const finishRound = () => {
-        dispatch(setRoundEnded(false));
+        dispatch(setCurrentPage(Pages.GAME_PAGE))
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         dispatch(setLeftWords(shuffle(actualLeftWords)))
         let continueNow = false
@@ -66,7 +65,7 @@ const FinishRoundButton = ({setCurrentWord}) => {
         dispatch(setScore(newScore))
         dispatch(setRoundWords([]));
         dispatch(setRoundAnsweredWords([]));
-        setCurrentWord('')
+        dispatch(setCurrentWord(''))
         if (!continueNow) {
             rotatePlayer();
             rotateTeam();

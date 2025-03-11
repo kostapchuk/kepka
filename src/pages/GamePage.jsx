@@ -4,11 +4,13 @@ import Stack from "@mui/material/Stack";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {ButtonGroup} from "@mui/material";
-import {setRoundEnded, setTimerRunning} from "../redux/gameSlice";
+import {setTimerRunning} from "../redux/gameSlice";
 import GameHeader from "../components/GameHeader";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
 import GameTab from "../components/GameTab";
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
 
 const GamePage = () => {
     const {leftSeconds} = useSelector(state => state.game);
@@ -21,7 +23,7 @@ const GamePage = () => {
 
     const onRoundFinished = () => {
         dispatch(setTimerRunning(false));
-        dispatch(setRoundEnded(true));
+        dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
         setShowed(false);
     }
 
