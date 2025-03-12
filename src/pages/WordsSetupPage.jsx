@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const WordsSetupPage = () => {
 
@@ -33,6 +34,18 @@ const WordsSetupPage = () => {
         dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE));
     }
     const [open, setOpen] = useState(false);
+
+    const [state, setState] = useState({
+        checkedA: true,
+        checkedB: false,
+    });
+
+    const handleChangeSwitcher = (event) => {
+        setState({
+            ...state,
+            [event.target.name]: event.target.checked,
+        });
+    };
 
     return (
         <Stack spacing={0}>
@@ -110,6 +123,16 @@ const WordsSetupPage = () => {
                     <MenuItem sx={{height: 48, margin: '0 8px'}} value={30}>Сложная</MenuItem>
                 </Select>
             </FormControl>
+            <Box>
+                <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>
+                    Показывать количество оставшихся слов
+                </Typography>
+                <PurpleSwitcherNoLabel
+                    checked={state.checkedB}
+                    onChange={handleChangeSwitcher}
+                    name="checkedB"
+                />
+            </Box>
             <Box
                 sx={{
                     position: 'fixed',
