@@ -1,7 +1,7 @@
 import {Box, InputAdornment, TextField} from "@mui/material";
 import {setTeams} from "../redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const TeamInputBlock = ({
                             teamName,
@@ -10,23 +10,23 @@ const TeamInputBlock = ({
                             teamIndex
                         }) => {
     const dispatch = useDispatch();
-    const {teams} = useSelector(state => state.game);
-
+    const { teams } = useSelector(state => state.game);
     const [newTeamName, setNewTeamName] = useState('');
+    const inputRef = useRef(null);
 
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
-        updatedTeams[index] = {...updatedTeams[index], name: name};
+        updatedTeams[index] = { ...updatedTeams[index], name: name };
         dispatch(setTeams(updatedTeams));
     };
 
     const handleNewTeamBlur = () => {
         const trimmedName = newTeamName.trim();
         if (trimmedName !== '') {
-            dispatch(setTeams([...teams, {name: newTeamName, players: []}]));
+            dispatch(setTeams([...teams, { name: trimmedName, players: [] }]));
             setNewTeamName('');
         }
-    }
+    };
 
     const handleTeamNameChange = (name) => {
         setNewTeamName(name);
@@ -34,26 +34,43 @@ const TeamInputBlock = ({
 
     const handleDeleteTeam = (teamIndexToDelete) => {
         dispatch(setTeams([...teams].filter((team, teamIndex) => teamIndex !== teamIndexToDelete)));
-    }
+    };
 
     const handleClick = () => {
         if (newTeamName.trim() === '') {
             setNewTeamName('Команда ' + (teams.length + 1));
         }
-    }
-    const inputRef = useRef(null);
+    };
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             if (newTeam) {
                 handleNewTeamBlur();
             }
-            inputRef.current.blur();
+            if (inputRef.current) {
+                inputRef.current.blur();
+            }
         }
     };
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (inputRef.current && !inputRef.current.contains(event.target)) {
+                if (newTeam) {
+                    handleNewTeamBlur();
+                }
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [newTeam, newTeamName]);
+
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{ display: 'flex' }}>
             <TextField
                 inputRef={inputRef}
                 sx={{
@@ -80,7 +97,6 @@ const TeamInputBlock = ({
                     marginTop: '16px',
                     fontWeight: '600'
                 }}
-                key={newTeam ? "emptyTeamInputKey" : teamIndex + "teamInputKey"}
                 placeholder={newTeam ? "Название команды" : ""}
                 value={newTeam ? newTeamName : teamName}
                 onChange={(e) =>
@@ -116,7 +132,7 @@ const TeamInputBlock = ({
                 }}
             />
         </Box>
-    )
-}
+    );
+};
 
-export default TeamInputBlock
+export default TeamInputBlock;

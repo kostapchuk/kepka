@@ -1,7 +1,7 @@
-import {Box, InputAdornment, TextField} from "@mui/material";
-import {setTeams} from "../redux/gameSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { Box, TextField } from "@mui/material";
+import { setTeams } from "../redux/gameSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const PlayerInputBlock = ({
                               teamIndex,
@@ -11,27 +11,27 @@ const PlayerInputBlock = ({
                               newPlayer
                           }) => {
     const [newPlayerName, setNewPlayerName] = useState('');
+    const inputRef = useRef(null);
+    const dispatch = useDispatch();
+    const { teams } = useSelector(state => state.game);
 
     const handlePlayerNameChange = (teamIndex, name) => {
-        setNewPlayerName(name)
+        setNewPlayerName(name);
     };
 
-    const dispatch = useDispatch();
-    const {teams} = useSelector(state => state.game);
-
     const handleDeletePlayer = (teamIndex, playerIndexToDelete) => {
-        const updatedTeams = [...teams]
+        const updatedTeams = [...teams];
         updatedTeams[teamIndex] = {
             ...teams[teamIndex],
             players: teams[teamIndex].players.filter((player, playerIndex) => playerIndex !== playerIndexToDelete)
-        }
-        dispatch(setTeams(updatedTeams))
-    }
+        };
+        dispatch(setTeams(updatedTeams));
+    };
 
     const handlePlayerNameChangeByIndex = (playerIndex, teamIndex, name) => {
         const updatedTeams = [...teams];
-        const updatedPlayers = [...updatedTeams[teamIndex].players]
-        updatedPlayers[playerIndex] = name
+        const updatedPlayers = [...updatedTeams[teamIndex].players];
+        updatedPlayers[playerIndex] = name;
         updatedTeams[teamIndex] = {
             ...updatedTeams[teamIndex],
             players: updatedPlayers
@@ -50,11 +50,39 @@ const PlayerInputBlock = ({
             dispatch(setTeams(updatedTeams));
             handlePlayerNameChange(teamIndex, '');
         }
-    }
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (newPlayer) {
+                handleNewPlayerBlur(teamIndex);
+            }
+            if (inputRef.current) {
+                inputRef.current.blur();
+            }
+        }
+    };
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (inputRef.current && !inputRef.current.contains(event.target)) {
+                if (newPlayer) {
+                    handleNewPlayerBlur(teamIndex);
+                }
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [newPlayer, newPlayerName, teamIndex, teams]);
 
     return (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
             <TextField
+                inputRef={inputRef}
                 sx={{
                     borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
@@ -73,26 +101,20 @@ const PlayerInputBlock = ({
                         backgroundColor: 'transparent'
                     },
                     flex: 1,
-                    minWidth: '50px',
-                    marginBottom: '16px'
+                    minWidth: '50px'
                 }}
-                key={`${teamIndex}${playerIndex}`}
-                placeholder={newPlayer && "Введите имя игрока"}
+                placeholder={newPlayer ? "Введите имя игрока" : ""}
                 value={newPlayer ? newPlayerName : player}
                 onChange={(e) =>
-                    newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
+                    newPlayer
+                        ? handlePlayerNameChange(teamIndex, e.target.value)
+                        : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
-                slotProps={{
-                    input: {
-                        sx: {
-                            fontWeight: '500'
-                        }
-                    }
-                }}
                 variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
+                onKeyDown={handleKeyDown}
                 fullWidth
-                error={error}
+                error={!!error}
                 helperText={error?.helperText}
             />
             <img
@@ -107,7 +129,7 @@ const PlayerInputBlock = ({
                 }}
             />
         </Box>
-    )
-}
+    );
+};
 
-export default PlayerInputBlock
+export default PlayerInputBlock;
