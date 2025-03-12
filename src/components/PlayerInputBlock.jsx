@@ -1,7 +1,7 @@
 import {Box, InputAdornment, TextField} from "@mui/material";
 import {setTeams} from "../redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const PlayerInputBlock = ({
                               teamIndex,
@@ -52,9 +52,22 @@ const PlayerInputBlock = ({
         }
     }
 
+    const inputRef = useRef(null);
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (newPlayer) {
+                handleNewPlayerBlur(teamIndex);
+            }
+            inputRef.current.blur();
+        }
+    };
+
     return (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '16px'}}>
             <TextField
+                inputRef={inputRef}
                 sx={{
                     borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
@@ -73,8 +86,7 @@ const PlayerInputBlock = ({
                         backgroundColor: 'transparent'
                     },
                     flex: 1,
-                    minWidth: '50px',
-                    marginBottom: '16px'
+                    minWidth: '50px'
                 }}
                 key={`${teamIndex}${playerIndex}`}
                 placeholder={newPlayer && "Введите имя игрока"}
@@ -91,6 +103,7 @@ const PlayerInputBlock = ({
                 }}
                 variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
+                onKeyDown={handleKeyDown}
                 fullWidth
                 error={error}
                 helperText={error?.helperText}
