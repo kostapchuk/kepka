@@ -1,5 +1,6 @@
 import {
-    setCurrentTeam, setCurrentWord,
+    setCurrentTeam,
+    setCurrentWord,
     setElapsedTime,
     setLeftSeconds,
     setLeftWords,
@@ -14,6 +15,8 @@ import {Pages} from "../routes";
 import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PrimaryButton from "./PrimaryButton";
+import ConfirmationModal from "./TimeLeftInRoundModal";
+import {useState} from "react";
 
 const FinishRoundButton = () => {
 
@@ -29,6 +32,7 @@ const FinishRoundButton = () => {
         timer: roundDuration,
         roundAnsweredWords
     } = useSelector(state => state.game);
+    const [continueNowTime, setContinueNowTime] = useState(0)
 
     const dispatch = useDispatch()
 
@@ -36,15 +40,24 @@ const FinishRoundButton = () => {
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
 
     const finishRound = () => {
-        dispatch(setCurrentPage(Pages.GAME_PAGE))
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         dispatch(setLeftWords(shuffle(actualLeftWords)))
-        let continueNow = false
+        const leftTime = leftSeconds[currentTeam] - elapsedTime
+        const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
+        setContinueNowTime(continueNowTime)
+        if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+            setIsModalOpen(true);
+        } else {
+            doFinishRound(false);
+        }
+    }
+
+    const doFinishRound = (continueNow) => {
+        dispatch(setCurrentPage(Pages.GAME_PAGE))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
         const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
         const continueLaterTime = continueNowTime + Number(roundDuration)
-        if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
-            continueNow = window.confirm(`У вас осталось ${continueNowTime} секунд. Продолжите первыми с этим остатком в следующем туре?`);
+        if (tourLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
             const newLeftSeconds = {
                 ...leftSeconds,
                 [currentTeam]: continueNow ? continueNowTime : continueLaterTime
@@ -70,7 +83,7 @@ const FinishRoundButton = () => {
             rotatePlayer();
             rotateTeam();
         }
-        if (actualLeftWords.length === 0) {
+        if (tourLeftWords.length === 0) {
             dispatch(setLeftWords(shuffle(words)))
             if (tour === 'Алиас') {
                 dispatch(setTour('Крокодил'));
@@ -116,8 +129,32 @@ const FinishRoundButton = () => {
         }
     }
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handlePrimaryAction = () => {
+        setIsModalOpen(false);
+        doFinishRound(true)
+    };
+
+    const handleSecondaryAction = () => {
+        setIsModalOpen(false);
+        doFinishRound(false)
+    };
+
     return (
-        <PrimaryButton onClick={finishRound} content="Продолжить"/>
+        <>
+            <ConfirmationModal
+                open={isModalOpen}
+                title={`Осталось ${continueNowTime} секунд`}
+                content={`Ваша команда закончила тур. У вас осталось ${continueNowTime} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?`}
+                primaryButtonText="Играть сразу"
+                secondaryButtonText="Перенести"
+                onPrimaryAction={handlePrimaryAction}
+                onSecondaryAction={handleSecondaryAction}
+            />
+            <PrimaryButton onClick={finishRound} content="Продолжить"/>
+        </>
+
     )
 
 }
