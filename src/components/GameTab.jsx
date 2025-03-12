@@ -41,7 +41,6 @@ const GameTab = ({showed, setShowed}) => {
             dispatch(setTimerRunning(false));
             dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
             setShowed(false);
-            alert('Слова в кепке закончились');
         }
     }
 
