@@ -4,22 +4,23 @@ import Stack from "@mui/material/Stack";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {ButtonGroup} from "@mui/material";
-import {setTimerRunning} from "../redux/gameSlice";
+import {setTimerRunning, setTourChangeModalOpen} from "../redux/gameSlice";
 import GameHeader from "../components/GameHeader";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
 import GameTab from "../components/GameTab";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
+import ConfirmationTourChangeModal from "../components/TourChangeModal";
 
 const GamePage = () => {
-    const {leftSeconds} = useSelector(state => state.game);
+    const {leftSeconds, tourChangeModalOpen, score} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const [showed, setShowed] = useState(false)
     const [currentBlock, setCurrentBlock] = useState('game')
 
     useEffect(() => {
-    }, [leftSeconds, currentBlock]);
+    }, [leftSeconds, currentBlock, tourChangeModalOpen]);
 
     const onRoundFinished = () => {
         dispatch(setTimerRunning(false));
@@ -45,6 +46,10 @@ const GamePage = () => {
         borderRadius: '100px'
     };
 
+    const handleSecondaryActionV2 = () => {
+        dispatch(setTourChangeModalOpen(false));
+    };
+
     return (
         <Stack spacing={2}>
             <GameHeader/>
@@ -57,6 +62,17 @@ const GamePage = () => {
             {currentBlock === 'game' && <GameTab showed={showed} setShowed={setShowed}/>}
             {currentBlock === 'team' && <ScoresTab/>}
             <RoundTimer/>
+            <ConfirmationTourChangeModal
+                open={tourChangeModalOpen}
+                title={`Тур завершен`}
+                content={
+                    Object.entries(score).map(([team, score]) => (
+                        <p key={Math.random()}>{team}: {score}</p>
+                    ))
+                }
+                secondaryButtonText={`Следующий тур`}
+                onSecondaryAction={handleSecondaryActionV2}
+            />
             <AlarmTimer onTimerEnd={onRoundFinished}/>
         </Stack>
     )

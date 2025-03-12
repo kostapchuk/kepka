@@ -1,4 +1,5 @@
 import {
+    setActualLeftTimeInTour,
     setCurrentTeam,
     setCurrentWord,
     setElapsedTime,
@@ -7,7 +8,7 @@ import {
     setRoundAnsweredWords,
     setRoundWords,
     setScore,
-    setTour
+    setTour, setTourChangeModalOpen
 } from "../redux/gameSlice";
 import {distinct, shuffle} from "../util/arrayUtils";
 import {setCurrentPage} from "../redux/pageSlice";
@@ -16,7 +17,6 @@ import {updatePlayer} from "../redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PrimaryButton from "./PrimaryButton";
 import ConfirmationModal from "./TimeLeftInRoundModal";
-import {useState} from "react";
 
 const FinishRoundButton = () => {
 
@@ -30,9 +30,10 @@ const FinishRoundButton = () => {
         score,
         elapsedTime,
         timer: roundDuration,
-        roundAnsweredWords
+        roundAnsweredWords,
+        tourChangeModalOpen,
+        actualLeftTimeInTour
     } = useSelector(state => state.game);
-    const [continueNowTime, setContinueNowTime] = useState(0)
 
     const dispatch = useDispatch()
 
@@ -41,12 +42,11 @@ const FinishRoundButton = () => {
 
     const finishRound = () => {
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
-        dispatch(setLeftWords(shuffle(actualLeftWords)))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
-        const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
-        setContinueNowTime(continueNowTime)
+        const actualLeftTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
+        dispatch(setActualLeftTimeInTour(actualLeftTime))
         if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
-            setIsModalOpen(true);
+            dispatch(setTourChangeModalOpen(true))
         } else {
             doFinishRound(false);
         }
@@ -54,6 +54,8 @@ const FinishRoundButton = () => {
 
     const doFinishRound = (continueNow) => {
         dispatch(setCurrentPage(Pages.GAME_PAGE))
+        const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
+        dispatch(setLeftWords(shuffle(actualLeftWords)))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
         const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
         const continueLaterTime = continueNowTime + Number(roundDuration)
@@ -83,14 +85,14 @@ const FinishRoundButton = () => {
             rotatePlayer();
             rotateTeam();
         }
-        if (tourLeftWords.length === 0) {
+        if (actualLeftWords.length === 0) {
             dispatch(setLeftWords(shuffle(words)))
             if (tour === 'Алиас') {
                 dispatch(setTour('Крокодил'));
-                alert('Следующий тур - крокодил')
+                dispatch(setTourChangeModalOpen(true));
             } else if (tour === 'Крокодил') {
                 dispatch(setTour('Одно слово'));
-                alert('Cледующий тур - одно слово')
+                dispatch(setTourChangeModalOpen(true));
             } else if (tour === 'Одно слово') {
                 dispatch(setCurrentPage(Pages.RESULTS_PAGE));
             }
@@ -129,24 +131,22 @@ const FinishRoundButton = () => {
         }
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
     const handlePrimaryAction = () => {
-        setIsModalOpen(false);
+        dispatch(setTourChangeModalOpen(false))
         doFinishRound(true)
     };
 
     const handleSecondaryAction = () => {
-        setIsModalOpen(false);
+        dispatch(setTourChangeModalOpen(false))
         doFinishRound(false)
     };
 
     return (
         <>
             <ConfirmationModal
-                open={isModalOpen}
-                title={`Осталось ${continueNowTime} секунд`}
-                content={`Ваша команда закончила тур. У вас осталось ${continueNowTime} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?`}
+                open={tourChangeModalOpen}
+                title={`Осталось ${actualLeftTimeInTour} секунд`}
+                content={`Ваша команда закончила тур. У вас осталось ${actualLeftTimeInTour} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?`}
                 primaryButtonText="Играть сразу"
                 secondaryButtonText="Перенести"
                 onPrimaryAction={handlePrimaryAction}

@@ -4,7 +4,7 @@ import {Pages} from "../routes";
 import {
     setCurrentTeam,
     setLeftSeconds,
-    setLeftWords, setScore,
+    setLeftWords, setScore, setShowLeftWords, setShowScoreDuringGame,
     setTimer,
     setTour,
     setWords,
@@ -18,10 +18,11 @@ import {useRef, useState} from "react";
 import Footer from "../components/Footer";
 import {random, shuffle} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
+import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const TourSetupPage = () => {
 
-    const {timer, wordsCount, currentGameId} = useSelector(state => state.game);
+    const {timer, wordsCount, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const players = useSelector(state => state.players);
 
@@ -52,6 +53,10 @@ const TourSetupPage = () => {
     const onBackClick = () => {
         dispatch(setCurrentPage(Pages.WORDS_SETUP_PAGE));
     }
+
+    const handleChangeSwitcher = () => {
+        dispatch(setShowScoreDuringGame(!showScoreDuringGame));
+    };
 
     return (
         <Stack>
@@ -87,6 +92,15 @@ const TourSetupPage = () => {
                 onChange={(e) => dispatch(setTimer(e.target.value))}
                 onFocus={handleFocus}
             />
+            <Box>
+                <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>
+                    Показывать очки команд во время игры
+                </Typography>
+                <PurpleSwitcherNoLabel
+                    checked={showScoreDuringGame}
+                    onChange={handleChangeSwitcher}
+                />
+            </Box>
             <Box
                 sx={{
                     position: 'fixed',
