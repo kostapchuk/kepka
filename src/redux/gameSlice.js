@@ -16,7 +16,8 @@ const initialState = {
   elapsedTime: 0,
   teams: [],
   timerRunning: false,
-  currentWord: ''
+  currentWord: '',
+  showLeftWords: true
 }
 
 export const gameSlice = createSlice({
@@ -68,6 +69,9 @@ export const gameSlice = createSlice({
     setCurrentWord: (state, action) => {
       state.currentWord = action.payload
     },
+    setShowLeftWords: (state, action) => {
+      state.showLeftWords = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -88,7 +92,8 @@ export const {
   setElapsedTime,
   setTeams,
   setTimerRunning,
-  setCurrentWord
+  setCurrentWord,
+  setShowLeftWords
 } = gameSlice.actions
 
 export default gameSlice.reducer

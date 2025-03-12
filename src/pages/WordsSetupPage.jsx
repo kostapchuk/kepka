@@ -1,17 +1,17 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import {setWordsCount} from "../redux/gameSlice";
+import {setShowLeftWords, setWordsCount} from "../redux/gameSlice";
 import Stack from "@mui/material/Stack";
 import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const WordsSetupPage = () => {
 
-    const {timer, wordsCount, currentGameId} = useSelector(state => state.game);
+    const {wordsCount, showLeftWords} = useSelector(state => state.game);
     const dispatch = useDispatch();
-    const players = useSelector(state => state.players);
 
     const goToTourSetupPage = () => {
         dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));
@@ -33,6 +33,10 @@ const WordsSetupPage = () => {
         dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE));
     }
     const [open, setOpen] = useState(false);
+
+    const handleChangeSwitcher = () => {
+        dispatch(setShowLeftWords(!showLeftWords));
+    };
 
     return (
         <Stack spacing={0}>
@@ -110,6 +114,15 @@ const WordsSetupPage = () => {
                     <MenuItem sx={{height: 48, margin: '0 8px'}} value={30}>Сложная</MenuItem>
                 </Select>
             </FormControl>
+            <Box>
+                <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>
+                    Показывать количество оставшихся слов
+                </Typography>
+                <PurpleSwitcherNoLabel
+                    checked={showLeftWords}
+                    onChange={handleChangeSwitcher}
+                />
+            </Box>
             <Box
                 sx={{
                     position: 'fixed',
