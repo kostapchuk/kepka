@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import {setWordsCount} from "../redux/gameSlice";
+import {setShowLeftWords, setWordsCount} from "../redux/gameSlice";
 import Stack from "@mui/material/Stack";
 import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
@@ -10,9 +10,8 @@ import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const WordsSetupPage = () => {
 
-    const {timer, wordsCount, currentGameId} = useSelector(state => state.game);
+    const {wordsCount, showLeftWords} = useSelector(state => state.game);
     const dispatch = useDispatch();
-    const players = useSelector(state => state.players);
 
     const goToTourSetupPage = () => {
         dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));
@@ -35,16 +34,8 @@ const WordsSetupPage = () => {
     }
     const [open, setOpen] = useState(false);
 
-    const [state, setState] = useState({
-        checkedA: true,
-        checkedB: false,
-    });
-
-    const handleChangeSwitcher = (event) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
+    const handleChangeSwitcher = () => {
+        dispatch(setShowLeftWords(!showLeftWords));
     };
 
     return (
@@ -128,9 +119,8 @@ const WordsSetupPage = () => {
                     Показывать количество оставшихся слов
                 </Typography>
                 <PurpleSwitcherNoLabel
-                    checked={state.checkedB}
+                    checked={showLeftWords}
                     onChange={handleChangeSwitcher}
-                    name="checkedB"
                 />
             </Box>
             <Box

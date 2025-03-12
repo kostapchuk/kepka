@@ -8,14 +8,13 @@ import {Pages} from "../routes";
 
 const GameTab = ({showed, setShowed}) => {
 
-    const hideWordsLeft = false
-
     const {
         leftWords: tourLeftWords,
         timerRunning,
         roundWords,
         roundAnsweredWords,
-        currentWord
+        currentWord,
+        showLeftWords
     } = useSelector(state => state.game);
     const dispatch = useDispatch();
 
@@ -58,7 +57,7 @@ const GameTab = ({showed, setShowed}) => {
                             <Typography variant="h2" sx={{fontWeight: '600', fontSize: '30px'}}>
                                 Начать игру
                             </Typography>
-                            {!hideWordsLeft &&
+                            {showLeftWords &&
                                 <Typography sx={{fontSize: '14px', display: 'block', opacity: '60%'}}>
                                     Осталось слов: {tourLeftWords.length}
                                 </Typography>}
