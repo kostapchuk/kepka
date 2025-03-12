@@ -54,7 +54,6 @@ const TeamInputBlock = ({
         }
     };
 
-    // Add an effect to handle clicks outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -73,7 +72,6 @@ const TeamInputBlock = ({
     return (
         <Box sx={{ display: 'flex' }}>
             <TextField
-                // Use a stable key that doesn't change on re-renders
                 inputRef={inputRef}
                 sx={{
                     backgroundColor: '#F6F5F8',

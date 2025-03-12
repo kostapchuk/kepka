@@ -64,7 +64,6 @@ const PlayerInputBlock = ({
         }
     };
 
-    // Add an effect to handle clicks outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -104,7 +103,6 @@ const PlayerInputBlock = ({
                     flex: 1,
                     minWidth: '50px'
                 }}
-                // Remove the dynamic key that can cause focus issues
                 placeholder={newPlayer ? "Введите имя игрока" : ""}
                 value={newPlayer ? newPlayerName : player}
                 onChange={(e) =>
