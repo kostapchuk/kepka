@@ -49,6 +49,7 @@ const PlayerInputBlock = ({
             };
             dispatch(setTeams(updatedTeams));
             handlePlayerNameChange(teamIndex, '');
+            inputRef.current.blur();
         }
     }
 
@@ -60,7 +61,6 @@ const PlayerInputBlock = ({
             if (newPlayer) {
                 handleNewPlayerBlur(teamIndex);
             }
-            inputRef.current.blur();
         }
     };
 
@@ -94,13 +94,6 @@ const PlayerInputBlock = ({
                 onChange={(e) =>
                     newPlayer ? handlePlayerNameChange(teamIndex, e.target.value) : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
-                slotProps={{
-                    input: {
-                        sx: {
-                            fontWeight: '500'
-                        }
-                    }
-                }}
                 variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
                 onKeyDown={handleKeyDown}
