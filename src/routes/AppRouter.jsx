@@ -34,10 +34,10 @@ const AppRouter = () => {
             {currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}
             <RestartGameModal
                 open={restartGameModalOpen}
-                title={`Exit`}
-                content={`Are you sure you want to exit? Game version is v${process.env.REACT_APP_VERSION}`}
-                secondaryButtonText={`No`}
-                primaryButtonText={`Yes`}
+                title={`Выход из игры`}
+                content={`Вы действительно хотите выйти из игры? Версия приложения v${process.env.REACT_APP_VERSION}`}
+                secondaryButtonText={`Нет`}
+                primaryButtonText={`Да`}
                 onPrimaryAction={resetFullGame}
                 onSecondaryAction={() => dispatch(setRestartGameModalOpen(false))}
             />
