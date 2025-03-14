@@ -97,6 +97,17 @@ const WordsSetupPage = () => {
                 value={wordsCount}
                 onChange={handleWordsCountChange}
                 onFocus={handleFocus2}
+                slotProps={{
+                    input: {
+                        onClick: (e) => {
+                            const input = e.target;
+                            const length = input.value.length;
+                            setTimeout(() => {
+                                input.setSelectionRange(length, length);
+                            }, 0);
+                        }
+                    }
+                }}
             />
 
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>Сложность слов</Typography>
