@@ -3,7 +3,7 @@ import {Box, Typography} from "@mui/material";
 
 const ScoresTab = () => {
 
-    const {score} = useSelector(state => state.game);
+    const {score, showScoreDuringGame} = useSelector(state => state.game);
 
     const hideScore = false
 
@@ -14,7 +14,7 @@ const ScoresTab = () => {
                     <img src="/cap.svg" alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
                     <Box>
                         <Typography sx={{fontSize: '16px'}}>{key}</Typography>
-                        <Typography sx={{fontSize: '14px', color: '#6B6B6B'}}>{value}</Typography>
+                        {showScoreDuringGame && <Typography sx={{fontSize: '14px', color: '#6B6B6B'}}>{value}</Typography>}
                     </Box>
                 </Box>
             ))}

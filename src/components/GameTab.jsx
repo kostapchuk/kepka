@@ -1,12 +1,18 @@
 import {Box, Container, Typography} from "@mui/material";
 import OpenWordButton from "./OpenWordButton";
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentWord, setRoundAnsweredWords, setRoundWords, setTimerRunning} from "../redux/gameSlice";
+import {
+    setCurrentWord,
+    setRoundAnsweredWords,
+    setRoundInProgress,
+    setRoundWords,
+    setTimerRunning
+} from "../redux/gameSlice";
 import {random} from "../util/arrayUtils";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 
-const GameTab = ({showed, setShowed}) => {
+const GameTab = () => {
 
     const {
         leftWords: tourLeftWords,
@@ -14,7 +20,8 @@ const GameTab = ({showed, setShowed}) => {
         roundWords,
         roundAnsweredWords,
         currentWord,
-        showLeftWords
+        showLeftWords,
+        roundInProgress
     } = useSelector(state => state.game);
     const dispatch = useDispatch();
 
@@ -25,8 +32,8 @@ const GameTab = ({showed, setShowed}) => {
     };
 
     const openWord = () => {
-        if (!showed) {
-            setShowed(true);
+        if (!roundInProgress) {
+            dispatch(setRoundInProgress(true));
         }
         if (currentWord) {
             dispatch(setRoundAnsweredWords([...roundAnsweredWords, currentWord]));
@@ -40,7 +47,7 @@ const GameTab = ({showed, setShowed}) => {
         } else {
             dispatch(setTimerRunning(false));
             dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
-            setShowed(false);
+            dispatch(setRoundInProgress(false));
         }
     }
 
@@ -48,7 +55,7 @@ const GameTab = ({showed, setShowed}) => {
         <Container sx={{display: 'flex', justifyContent: 'center', padding: 0}}>
             <OpenWordButton onClick={openWord}>
                 <Box>
-                    {showed
+                    {roundInProgress
                         ? <Typography variant="h2" sx={{fontWeight: '600', fontSize: '30px'}}>
                             {currentWord}
                         </Typography>

@@ -1,4 +1,3 @@
-// Styled components
 import {Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
 import {styled} from "@mui/system";
 import Button from "@mui/material/Button";
@@ -62,14 +61,11 @@ const RestartGameModal = ({
                                onPrimaryAction,
                                onSecondaryAction
                            }) => {
-    const handleClose = () => {
-    };
 
     return (
         <StyledDialog
+            onClose={onSecondaryAction}
             open={open}
-            onClose={handleClose}
-            disableEscapeKeyDown
             aria-labelledby="confirmation-dialog-title"
             aria-describedby="confirmation-dialog-description"
         >

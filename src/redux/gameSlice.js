@@ -24,6 +24,7 @@ const initialState = {
   actualLeftTimeInTour: 0,
   wordsDifficulty: 'EASY', // EASY, MEDIUM, HARD
   restartGameModalOpen: false,
+  roundInProgress: false
 }
 
 export const gameSlice = createSlice({
@@ -93,6 +94,9 @@ export const gameSlice = createSlice({
     setRestartGameModalOpen: (state, action) => {
       state.restartGameModalOpen = action.payload
     },
+    setRoundInProgress: (state, action) => {
+      state.roundInProgress = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -119,7 +123,8 @@ export const {
   setTourChangeModalOpen,
   setActualLeftTimeInTour,
   setWordsDifficulty,
-  setRestartGameModalOpen
+  setRestartGameModalOpen,
+  setRoundInProgress
 } = gameSlice.actions
 
 export default gameSlice.reducer

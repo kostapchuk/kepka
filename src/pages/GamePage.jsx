@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import {ButtonGroup} from "@mui/material";
-import {setTimerRunning, setTourChangeModalOpen} from "../redux/gameSlice";
+import {setRoundInProgress, setTimerRunning, setTourChangeModalOpen} from "../redux/gameSlice";
 import GameHeader from "../components/GameHeader";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
@@ -14,9 +14,8 @@ import {Pages} from "../routes";
 import ConfirmationTourChangeModal from "../components/TourChangeModal";
 
 const GamePage = () => {
-    const {leftSeconds, tourChangeModalOpen, score} = useSelector(state => state.game);
+    const {leftSeconds, tourChangeModalOpen, score, roundInProgress, showScoreDuringGame} = useSelector(state => state.game);
     const dispatch = useDispatch();
-    const [showed, setShowed] = useState(false)
     const [currentBlock, setCurrentBlock] = useState('game')
 
     useEffect(() => {
@@ -25,7 +24,7 @@ const GamePage = () => {
     const onRoundFinished = () => {
         dispatch(setTimerRunning(false));
         dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
-        setShowed(false);
+        dispatch(setRoundInProgress(false));
     }
 
     const activeTabStyles = {
@@ -53,19 +52,20 @@ const GamePage = () => {
     return (
         <Stack spacing={2}>
             <GameHeader/>
-            <ButtonGroup sx={{height: '58px', opacity: showed ? '40%' : '100%'}} fullWidth>
+            <ButtonGroup sx={{height: '58px', opacity: roundInProgress ? '40%' : '100%'}} fullWidth>
                 <Button sx={currentBlock === 'game' ? activeTabStyles : inactiveTabStyles}
-                        onClick={() => !showed && setCurrentBlock('team')}>Команда</Button>
+                        onClick={() => !roundInProgress && setCurrentBlock('team')}>Команда</Button>
                 <Button sx={currentBlock === 'team' ? activeTabStyles : inactiveTabStyles}
-                        onClick={() => !showed && setCurrentBlock('game')}>Игра</Button>
+                        onClick={() => !roundInProgress && setCurrentBlock('game')}>Игра</Button>
             </ButtonGroup>
-            {currentBlock === 'game' && <GameTab showed={showed} setShowed={setShowed}/>}
+            {currentBlock === 'game' && <GameTab/>}
             {currentBlock === 'team' && <ScoresTab/>}
             <RoundTimer/>
             <ConfirmationTourChangeModal
                 open={tourChangeModalOpen}
                 title={`Тур завершен`}
                 content={
+                    showScoreDuringGame &&
                     Object.entries(score).map(([team, score]) => (
                         <p key={Math.random()}>{team}: {score}</p>
                     ))

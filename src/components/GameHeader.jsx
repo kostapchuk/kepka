@@ -7,7 +7,8 @@ const GameHeader = () => {
     const {
         tour,
         currentTeam,
-        currentGameId
+        currentGameId,
+        roundInProgress
     } = useSelector(state => state.game);
     const players = useSelector(state => state.players);
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const GameHeader = () => {
     return (
         <Box sx={{display: "flex", justifyContent: 'space-between'}}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h3" sx={{fontSize: "42px"}} onClick={() => dispatch(setRestartGameModalOpen(true))}>
+            <Typography variant="h3" sx={{fontSize: "42px"}} onClick={() => !roundInProgress && dispatch(setRestartGameModalOpen(true))}>
               🚪
             </Typography>
             <Typography variant="h3" sx={{fontSize: "24px"}}>
