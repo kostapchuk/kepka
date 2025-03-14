@@ -157,6 +157,7 @@ const TeamSetupPage = () => {
                     alignItems: 'center',
                     backgroundColor: '#FFFFFF',
                     padding: '16px',
+                    paddingBottom: '32px',
                     borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
                 }}
             >

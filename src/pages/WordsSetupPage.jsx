@@ -1,20 +1,42 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
-import {setShowLeftWords, setWordsCount} from "../redux/gameSlice";
+import {
+  setLeftWords,
+  setShowLeftWords, setWords,
+  setWordsCount,
+  setWordsDifficulty
+} from "../redux/gameSlice";
 import Stack from "@mui/material/Stack";
 import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "../components/Switcher";
+import {shuffle} from "../util/arrayUtils";
+import {wordsByDifficultyLevel} from "../util/words";
 
 const WordsSetupPage = () => {
 
-    const {wordsCount, showLeftWords} = useSelector(state => state.game);
+    const {wordsCount, showLeftWords, wordsDifficulty} = useSelector(state => state.game);
     const dispatch = useDispatch();
+    const [error, setError] = useState('');
 
     const goToTourSetupPage = () => {
-        dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));
+      const intDigits = /^[0-9]+$/;
+      if (!intDigits.test(wordsCount)){
+        setError('Только положительные цифры разрешены');
+        return;
+      }
+      const wordsCountNum = Number(wordsCount);
+      if (wordsCountNum === 0 || wordsCountNum >= 100) {
+        setError('Количество слов должно быть от 1 до 100');
+        return;
+      }
+      setError('');
+      const words = shuffle(wordsByDifficultyLevel[wordsDifficulty]).slice(0, wordsCount);
+      dispatch(setWords(words))
+      dispatch(setLeftWords(words))
+      dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));
     }
 
     const inputRef2 = useRef(null);
@@ -23,10 +45,8 @@ const WordsSetupPage = () => {
         inputRef2.current.focus();
     };
 
-    const [selectedValue, setSelectedValue] = useState(10);
-
     const handleChange = (event) => {
-        setSelectedValue(event.target.value);
+        dispatch(setWordsDifficulty(event.target.value))
     };
 
     const onBackClick = () => {
@@ -38,7 +58,11 @@ const WordsSetupPage = () => {
         dispatch(setShowLeftWords(!showLeftWords));
     };
 
-    return (
+  const handleWordsCountChange = (e) =>  {
+    dispatch(setWordsCount(e.target.value));
+  }
+
+  return (
         <Stack spacing={0}>
             <Box sx={{display: "flex", marginBottom: "8px"}}>
                 <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
@@ -68,15 +92,17 @@ const WordsSetupPage = () => {
                     minWidth: '50px',
                     marginBottom: '16px'
                 }}
+                error={error !== ''}
+                helperText={error}
                 value={wordsCount}
-                onChange={(e) => dispatch(setWordsCount(e.target.value))}
+                onChange={handleWordsCountChange}
                 onFocus={handleFocus2}
             />
 
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>Сложность слов</Typography>
             <FormControl fullWidth>
                 <Select
-                    value={selectedValue}
+                    value={wordsDifficulty}
                     onChange={handleChange}
                     IconComponent={() => <img src="/down.svg" alt="Drop down icon" style={{
                         width: 24,
@@ -109,9 +135,9 @@ const WordsSetupPage = () => {
                         }
                     }}
                 >
-                    <MenuItem sx={{height: 48, margin: '0 8px'}} value={10}>Низкая</MenuItem>
-                    <MenuItem sx={{height: 48, margin: '0 8px'}} value={20}>Средняя</MenuItem>
-                    <MenuItem sx={{height: 48, margin: '0 8px'}} value={30}>Сложная</MenuItem>
+                    <MenuItem sx={{height: 48, margin: '0 8px'}} value='EASY'>Низкая</MenuItem>
+                    <MenuItem sx={{height: 48, margin: '0 8px'}} value='MEDIUM'>Средняя</MenuItem>
+                    <MenuItem sx={{height: 48, margin: '0 8px'}} value='HARD'>Сложная</MenuItem>
                 </Select>
             </FormControl>
             <Box>
@@ -130,7 +156,8 @@ const WordsSetupPage = () => {
                     left: 0,
                     right: 0,
                     backgroundColor: '#FFFFFF',
-                    padding: '16px'
+                    padding: '16px',
+                    paddingBottom: '32px',
                 }}
             >
                 <PrimaryButton onClick={goToTourSetupPage} content="Продолжить"/>

@@ -4,33 +4,39 @@ import {Pages} from "../routes";
 import {
     setCurrentTeam,
     setLeftSeconds,
-    setLeftWords, setScore, setShowLeftWords, setShowScoreDuringGame,
+    setScore,
+    setShowScoreDuringGame,
     setTimer,
     setTour,
-    setWords,
-    setWordsCount
 } from "../redux/gameSlice";
-import {availableWords} from "../util/words";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Box, TextField, Typography} from "@mui/material";
 import {useRef, useState} from "react";
-import Footer from "../components/Footer";
-import {random, shuffle} from "../util/arrayUtils";
+import {random} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const TourSetupPage = () => {
 
-    const {timer, wordsCount, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
+    const {timer, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const players = useSelector(state => state.players);
+    const [error, setError] = useState('');
 
     const goToGamePage = () => {
+        const intDigits = /^[0-9]+$/;
+        if (!intDigits.test(timer)){
+          setError('Только положительные цифры разрешены');
+          return;
+        }
+        const timerNum = Number(timer);
+        if (timerNum === 0 || timerNum >= 600) {
+          setError('Длительность раунда должна быть до 10 минут');
+          return;
+        }
+        setError('');
+
         dispatch(setCurrentPage(Pages.GAME_PAGE));
-        const words = shuffle(availableWords).slice(0, wordsCount);
-        dispatch(setWords(words))
-        dispatch(setLeftWords(words))
         dispatch(setTour('Алиас'))
         const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
         dispatch(setCurrentTeam(random(currentPlayersInGame).teamId))
@@ -88,6 +94,8 @@ const TourSetupPage = () => {
                     minWidth: '50px',
                     marginBottom: '16px'
                 }}
+                error={error !== ''}
+                helperText={error}
                 value={timer}
                 onChange={(e) => dispatch(setTimer(e.target.value))}
                 onFocus={handleFocus}
@@ -108,7 +116,8 @@ const TourSetupPage = () => {
                     left: 0,
                     right: 0,
                     backgroundColor: '#FFFFFF',
-                    padding: '16px'
+                    padding: '16px',
+                    paddingBottom: '32px',
                 }}
             >
                 <PrimaryButton onClick={goToGamePage} content="Перейти к игре"/>
