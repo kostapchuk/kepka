@@ -70,6 +70,12 @@ const WordsSetupPage = () => {
             </Box>
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '24px'}}>Слов в игре</Typography>
             <TextField
+                slotProps={{
+                    input: {
+                        inputMode: "numeric",
+                        pattern: "[0-9]*"
+                    }
+                }}
                 inputRef={inputRef2}
                 sx={{
                     borderRadius: '12px',
@@ -97,17 +103,6 @@ const WordsSetupPage = () => {
                 value={wordsCount}
                 onChange={handleWordsCountChange}
                 onFocus={handleFocus2}
-                slotProps={{
-                    input: {
-                        onClick: (e) => {
-                            const input = e.target;
-                            const length = input.value.length;
-                            setTimeout(() => {
-                                input.setSelectionRange(length, length);
-                            }, 0);
-                        }
-                    }
-                }}
             />
 
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>Сложность слов</Typography>
