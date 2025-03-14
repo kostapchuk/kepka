@@ -11,7 +11,7 @@ import {
 } from "../redux/gameSlice";
 import Stack from "@mui/material/Stack";
 import {Box, TextField, Typography} from "@mui/material";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {random} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "../components/Switcher";
@@ -21,8 +21,21 @@ const TourSetupPage = () => {
     const {timer, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const players = useSelector(state => state.players);
+    const [error, setError] = useState('');
 
     const goToGamePage = () => {
+        const intDigits = /^[0-9]+$/;
+        if (!intDigits.test(timer)){
+          setError('Только положительные цифры разрешены');
+          return;
+        }
+        const timerNum = Number(timer);
+        if (timerNum === 0 || timerNum >= 600) {
+          setError('Длительность раунда должна быть до 10 минут');
+          return;
+        }
+        setError('');
+
         dispatch(setCurrentPage(Pages.GAME_PAGE));
         dispatch(setTour('Алиас'))
         const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
@@ -81,6 +94,8 @@ const TourSetupPage = () => {
                     minWidth: '50px',
                     marginBottom: '16px'
                 }}
+                error={error !== ''}
+                helperText={error}
                 value={timer}
                 onChange={(e) => dispatch(setTimer(e.target.value))}
                 onFocus={handleFocus}
