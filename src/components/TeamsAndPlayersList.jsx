@@ -1,6 +1,7 @@
 import TeamInputBlock from "./TeamInputBlock";
 import PlayerInputBlock from "./PlayerInputBlock";
 import {useSelector} from "react-redux";
+import {Typography, useTheme} from "@mui/material";
 
 const TeamsAndPlayersList = ({
                                  teamError,
@@ -8,6 +9,7 @@ const TeamsAndPlayersList = ({
                                  commonErrors
                              }) => {
     const {teams} = useSelector(state => state.game);
+    const theme = useTheme();
 
     return (
         <>
@@ -34,7 +36,7 @@ const TeamsAndPlayersList = ({
                 </>
             ))}
             <TeamInputBlock newTeam teamIndex={-1}/>
-            {commonErrors.map(error => <p>{error}</p>)}
+            {commonErrors.map(error => <Typography color={theme.palette.error.main}>{error}</Typography>)}
         </>
     )
 }
