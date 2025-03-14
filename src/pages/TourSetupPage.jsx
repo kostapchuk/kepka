@@ -72,6 +72,7 @@ const TourSetupPage = () => {
             </Box>
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '24px'}}>Длительность раунда</Typography>
             <TextField
+                type="tel"
                 inputRef={inputRef}
                 sx={{
                     borderRadius: '12px',
