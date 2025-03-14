@@ -1,5 +1,4 @@
 import {useSelector} from "react-redux";
-import Footer from "../components/Footer";
 
 const ResultsPage = () => {
 
@@ -10,7 +9,6 @@ const ResultsPage = () => {
         {Object.entries(score).map(([team, score]) => (
             <p key={Math.random()}>{team}: {score}</p>
         ))}
-        <Footer/>
       </div>
   )
 }

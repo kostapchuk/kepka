@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Pages} from "./index";
 import TeamSetupPage from "../pages/TeamSetupPage";
 import WordsSetupPage from "../pages/WordsSetupPage";
@@ -6,14 +6,23 @@ import GamePage from "../pages/GamePage";
 import ResultsPage from "../pages/ResultsPage";
 import {Container} from "@mui/material";
 import TourSetupPage from "../pages/TourSetupPage";
-import {useState} from "react";
-import Footer from "../components/Footer";
 import GuessedWordsPage from "../pages/GuessedWordsPage";
+import RestartGameModal from "../components/RestartGameModal";
+import {reset as resetGame, setRestartGameModalOpen} from "../redux/gameSlice";
+import {reset as resetPage} from "../redux/pageSlice";
+import {reset as resetPlayers} from "../redux/playersSlice";
 
 const AppRouter = () => {
 
     const currentPage = useSelector(state => state.page.currentPage);
-    const [pathname, setPathname] = useState(window.location.pathname)
+    const {restartGameModalOpen} = useSelector(state => state.game);
+    const dispatch = useDispatch();
+
+  const resetFullGame = () => {
+    dispatch(resetGame());
+    dispatch(resetPage());
+    dispatch(resetPlayers());
+  };
 
     return (
         <Container sx={{mt: 2}} maxWidth>
@@ -23,7 +32,15 @@ const AppRouter = () => {
             {currentPage === Pages.GAME_PAGE && <GamePage/>}
             {currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}
             {currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}
-            {pathname.endsWith('info') && <Footer/>}
+            <RestartGameModal
+                open={restartGameModalOpen}
+                title={`Exit`}
+                content={`Are you sure you want to exit? Game version is v${process.env.REACT_APP_VERSION}`}
+                secondaryButtonText={`No`}
+                primaryButtonText={`Yes`}
+                onPrimaryAction={resetFullGame}
+                onSecondaryAction={() => dispatch(setRestartGameModalOpen(false))}
+            />
         </Container>
     );
 };

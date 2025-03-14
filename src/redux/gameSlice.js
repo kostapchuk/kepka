@@ -21,7 +21,9 @@ const initialState = {
   showScoreDuringGame: true,
   timeLeftInRoundModalOpen: false,
   tourChangeModalOpen: false,
-  actualLeftTimeInTour: 0
+  actualLeftTimeInTour: 0,
+  wordsDifficulty: 'EASY', // EASY, MEDIUM, HARD
+  restartGameModalOpen: false,
 }
 
 export const gameSlice = createSlice({
@@ -85,6 +87,12 @@ export const gameSlice = createSlice({
     setActualLeftTimeInTour: (state, action) => {
       state.actualLeftTimeInTour = action.payload
     },
+    setWordsDifficulty: (state, action) => {
+      state.wordsDifficulty = action.payload
+    },
+    setRestartGameModalOpen: (state, action) => {
+      state.restartGameModalOpen = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -109,7 +117,9 @@ export const {
   setShowLeftWords,
   setShowScoreDuringGame,
   setTourChangeModalOpen,
-  setActualLeftTimeInTour
+  setActualLeftTimeInTour,
+  setWordsDifficulty,
+  setRestartGameModalOpen
 } = gameSlice.actions
 
 export default gameSlice.reducer

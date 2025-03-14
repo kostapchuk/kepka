@@ -4,33 +4,26 @@ import {Pages} from "../routes";
 import {
     setCurrentTeam,
     setLeftSeconds,
-    setLeftWords, setScore, setShowLeftWords, setShowScoreDuringGame,
+    setScore,
+    setShowScoreDuringGame,
     setTimer,
     setTour,
-    setWords,
-    setWordsCount
 } from "../redux/gameSlice";
-import {availableWords} from "../util/words";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
-import {useRef, useState} from "react";
-import Footer from "../components/Footer";
-import {random, shuffle} from "../util/arrayUtils";
+import {Box, TextField, Typography} from "@mui/material";
+import {useRef} from "react";
+import {random} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "../components/Switcher";
 
 const TourSetupPage = () => {
 
-    const {timer, wordsCount, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
+    const {timer, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const players = useSelector(state => state.players);
 
     const goToGamePage = () => {
         dispatch(setCurrentPage(Pages.GAME_PAGE));
-        const words = shuffle(availableWords).slice(0, wordsCount);
-        dispatch(setWords(words))
-        dispatch(setLeftWords(words))
         dispatch(setTour('Алиас'))
         const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
         dispatch(setCurrentTeam(random(currentPlayersInGame).teamId))
@@ -108,7 +101,8 @@ const TourSetupPage = () => {
                     left: 0,
                     right: 0,
                     backgroundColor: '#FFFFFF',
-                    padding: '16px'
+                    padding: '16px',
+                    paddingBottom: '32px',
                 }}
             >
                 <PrimaryButton onClick={goToGamePage} content="Перейти к игре"/>
