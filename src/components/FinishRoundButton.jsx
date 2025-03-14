@@ -59,7 +59,7 @@ const FinishRoundButton = () => {
         const leftTime = leftSeconds[currentTeam] - elapsedTime
         const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
         const continueLaterTime = continueNowTime + Number(roundDuration)
-        if (tourLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+        if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
             const newLeftSeconds = {
                 ...leftSeconds,
                 [currentTeam]: continueNow ? continueNowTime : continueLaterTime
