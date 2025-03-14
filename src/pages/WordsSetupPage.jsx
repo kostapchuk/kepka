@@ -70,6 +70,7 @@ const WordsSetupPage = () => {
             </Box>
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '24px'}}>Слов в игре</Typography>
             <TextField
+                type="tel"
                 slotProps={{
                     input: {
                         inputMode: "numeric",
