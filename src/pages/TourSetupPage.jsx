@@ -1,23 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
-import {
-    setCurrentTeam,
-    setLeftSeconds,
-    setScore,
-    setShowScoreDuringGame,
-    setTimer,
-    setTour,
-} from "@/redux/gameSlice";
-import Stack from "@mui/material/Stack";
+import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "@/redux/gameSlice";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {random} from "@/util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "@/components/Switcher";
-import React from 'react';
+import ScrollablePageWithStickyFooter from "@/components/ScrollablePageWithStickyFooter";
 
 const TourSetupPage = () => {
 
@@ -28,14 +20,14 @@ const TourSetupPage = () => {
 
     const goToGamePage = () => {
         const intDigits = /^[0-9]+$/;
-        if (!intDigits.test(timer)){
-          setError('Только положительные цифры разрешены');
-          return;
+        if (!intDigits.test(timer)) {
+            setError('Только положительные цифры разрешены');
+            return;
         }
         const timerNum = Number(timer);
         if (timerNum === 0 || timerNum >= 600) {
-          setError('Длительность раунда должна быть до 10 минут');
-          return;
+            setError('Длительность раунда должна быть до 10 минут');
+            return;
         }
         setError('');
 
@@ -67,66 +59,60 @@ const TourSetupPage = () => {
         dispatch(setShowScoreDuringGame(!showScoreDuringGame));
     };
 
-    return (
-        <Stack>
-            <Box sx={{display: "flex", marginBottom: "8px"}}>
-                <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
-                <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
-            </Box>
-            <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '24px'}}>Длительность раунда</Typography>
-            <TextField
-                type="tel"
-                inputRef={inputRef}
-                sx={{
+    const children = <>
+        <Box sx={{display: "flex", mb: 1}}>
+            <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
+            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
+        </Box>
+        <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", mt: 3, mb: 0.5}}>
+            Длительность раунда
+        </Typography>
+        <TextField
+            type="tel"
+            inputRef={inputRef}
+            sx={{
+                borderRadius: '12px',
+                '& .MuiOutlinedInput-root': {
                     borderRadius: '12px',
-                    '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        '& fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#7A51EC'
-                        }
+                    '& fieldset': {
+                        borderColor: '#D1D1D1'
                     },
-                    '&:focus': {
-                        backgroundColor: 'transparent'
+                    '&:hover fieldset': {
+                        borderColor: '#D1D1D1'
                     },
-                    flex: 1,
-                    minWidth: '50px',
-                    marginBottom: '16px'
-                }}
-                error={error !== ''}
-                helperText={error}
-                value={timer}
-                onChange={(e) => dispatch(setTimer(e.target.value))}
-                onFocus={handleFocus}
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#7A51EC'
+                    }
+                },
+                '&:focus': {
+                    backgroundColor: 'transparent'
+                },
+                width: '100%',
+            }}
+            error={error !== ''}
+            helperText={error}
+            value={timer}
+            onChange={(e) => dispatch(setTimer(e.target.value))}
+            onFocus={handleFocus}
+        />
+        <Box>
+            <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", mt: 2.5, mb: 0.5}}>
+                Показывать очки команд во время игры
+            </Typography>
+            <PurpleSwitcherNoLabel
+                checked={showScoreDuringGame}
+                onChange={handleChangeSwitcher}
             />
-            <Box>
-                <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", marginTop: '20px'}}>
-                    Показывать очки команд во время игры
-                </Typography>
-                <PurpleSwitcherNoLabel
-                    checked={showScoreDuringGame}
-                    onChange={handleChangeSwitcher}
-                />
-            </Box>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: '#FFFFFF',
-                    padding: '16px',
-                    paddingBottom: '32px',
-                }}
-            >
-                <PrimaryButton onClick={goToGamePage} content="Перейти к игре"/>
-            </Box>
-        </Stack>
+        </Box>
+    </>
+
+    const footer = <PrimaryButton onClick={goToGamePage} content="Перейти к игре"/>
+
+    return (
+        <ScrollablePageWithStickyFooter
+            children={children}
+            footer={footer}
+        />
     );
 };
 
