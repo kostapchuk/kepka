@@ -111,7 +111,7 @@ const TeamInputBlock = ({
                         },
                         startAdornment: (
                             <InputAdornment position="start">
-                                <img src="/cap.svg" alt="Cap"/>
+                                <img src="/cap.png" alt="Cap"/>
                             </InputAdornment>
                         )
                     }

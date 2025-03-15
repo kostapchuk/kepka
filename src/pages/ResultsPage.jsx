@@ -85,7 +85,7 @@ const ResultsPage = () => {
                             justifyContent: 'center'
                         }}>
                             <Typography variant="h3" sx={{fontSize: "20px", fontWeight: "600"}}>Поздравляем победителей!</Typography>
-                            <img src='/cap.svg' alt='Cap' style={{width: '100px', paddingTop: '32px'}}/>
+                            <img src='/cap.png' alt='Cap' style={{width: '100px', paddingTop: '32px'}}/>
                             <Typography sx={{fontSize: '16px', paddingTop: '20px'}}>{topTeam[0]}</Typography>
                             <Typography sx={{fontSize: '16px', color: '#6B6B6B', paddingTop: '8px'}}>{topTeam[1]}</Typography>
 

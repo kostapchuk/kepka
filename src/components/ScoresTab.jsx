@@ -11,7 +11,7 @@ const ScoresTab = () => {
         <>
             {!hideScore && Object.entries(score).map(([key, value]) => (
                 <Box sx={{display: 'flex', marginBottom: '20px'}}>
-                    <img src="/cap.svg" alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
+                    <img src="/cap.png" alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
                     <Box>
                         <Typography sx={{fontSize: '16px'}}>{key}</Typography>
                         {showScoreDuringGame && <Typography sx={{fontSize: '14px', color: '#6B6B6B'}}>{value}</Typography>}
