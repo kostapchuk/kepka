@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import React from 'react';
+import Container from "@mui/material/Container";
 
 const GuessedWordsPage = () => {
     const {roundAnsweredWords} = useSelector(state => state.game);
@@ -27,7 +28,7 @@ const GuessedWordsPage = () => {
     }, []);
 
     return (
-        <>
+        <Container sx={{mt: 2}} maxWidth="xs">
             <Stack sx={{
                 marginBottom: '85px'
             }} ref={contentRef}>
@@ -36,8 +37,9 @@ const GuessedWordsPage = () => {
                     fontSize: '20px',
                     fontWeight: '600'
                 }}>Счет: {roundAnsweredWords.length}</Typography>
-                <Typography variant="p" sx={{fontSize: "12px", paddingLeft: '8px'}}>Выберите угаданные
-                    слова</Typography>
+                <Typography variant="p" sx={{fontSize: "12px", paddingLeft: '8px'}}>
+                    Выберите угаданные слова
+                </Typography>
                 <GuessedWordsOptions/>
             </Stack>
             <Box
@@ -53,7 +55,7 @@ const GuessedWordsPage = () => {
             >
                 <FinishRoundButton/>
             </Box>
-        </>
+        </Container>
     );
 }
 export default GuessedWordsPage;

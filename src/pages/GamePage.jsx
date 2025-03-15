@@ -13,6 +13,7 @@ import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
 import ConfirmationTourChangeModal from "../components/TourChangeModal";
 import React from 'react';
+import Container from "@mui/material/Container";
 
 const GamePage = () => {
     const {leftSeconds, tourChangeModalOpen, roundInProgress} = useSelector(state => state.game);
@@ -47,7 +48,7 @@ const GamePage = () => {
     };
 
     return (
-        <Stack spacing={2}>
+        <Container sx={{mt: 2}} maxWidth="xs">
             <GameHeader/>
             <ButtonGroup sx={{height: '58px', opacity: roundInProgress ? '40%' : '100%'}} fullWidth>
                 <Button sx={currentBlock === 'game' ? activeTabStyles : inactiveTabStyles}
@@ -60,7 +61,7 @@ const GamePage = () => {
             <RoundTimer/>
             <ConfirmationTourChangeModal/>
             <AlarmTimer onTimerEnd={onRoundFinished}/>
-        </Stack>
+        </Container>
     )
 }
 
