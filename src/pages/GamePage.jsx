@@ -46,10 +46,6 @@ const GamePage = () => {
         borderRadius: '100px'
     };
 
-    const handleSecondaryActionV2 = () => {
-        dispatch(setTourChangeModalOpen(false));
-    };
-
     return (
         <Stack spacing={2}>
             <GameHeader/>
@@ -62,18 +58,7 @@ const GamePage = () => {
             {currentBlock === 'game' && <GameTab/>}
             {currentBlock === 'team' && <ScoresTab/>}
             <RoundTimer/>
-            <ConfirmationTourChangeModal
-                open={tourChangeModalOpen}
-                title={`Тур завершен`}
-                content={
-                    showScoreDuringGame &&
-                    Object.entries(score).map(([team, score]) => (
-                        <p key={Math.random()}>{team}: {score}</p>
-                    ))
-                }
-                secondaryButtonText={`Следующий тур`}
-                onSecondaryAction={handleSecondaryActionV2}
-            />
+            <ConfirmationTourChangeModal/>
             <AlarmTimer onTimerEnd={onRoundFinished}/>
         </Stack>
     )
