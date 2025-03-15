@@ -15,7 +15,7 @@ import ConfirmationTourChangeModal from "../components/TourChangeModal";
 import React from 'react';
 
 const GamePage = () => {
-    const {leftSeconds, tourChangeModalOpen, score, roundInProgress, showScoreDuringGame} = useSelector(state => state.game);
+    const {leftSeconds, tourChangeModalOpen, roundInProgress} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const [currentBlock, setCurrentBlock] = useState('game')
 
