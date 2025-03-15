@@ -1,9 +1,11 @@
 import GuessedWordsOptions from "../components/GuessedWordsOptions";
 import FinishRoundButton from "../components/FinishRoundButton";
-import {Box, Typography} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
-import Stack from "@mui/material/Stack";
+import React from 'react';
 
 const GuessedWordsPage = () => {
     const {roundAnsweredWords} = useSelector(state => state.game);

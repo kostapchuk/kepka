@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setElapsedTime, setTimerRunning} from "../redux/gameSlice";
-import {Box, Typography} from "@mui/material";
+import {setElapsedTime, setTimerRunning} from "@/redux/gameSlice";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import React from 'react';
 
 const RoundTimer = () => {
 

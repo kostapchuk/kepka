@@ -1,19 +1,25 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
+import {setCurrentPage} from "@/redux/pageSlice";
+import {Pages} from "@/routes";
 import {
   setLeftWords,
   setShowLeftWords, setWords,
   setWordsCount,
   setWordsDifficulty
-} from "../redux/gameSlice";
+} from "@/redux/gameSlice";
 import Stack from "@mui/material/Stack";
-import {Box, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import {useRef, useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
-import {PurpleSwitcherNoLabel} from "../components/Switcher";
-import {shuffle} from "../util/arrayUtils";
-import {wordsByDifficultyLevel} from "../util/words";
+import {PurpleSwitcherNoLabel} from "@/components/Switcher";
+import {shuffle} from "@/util/arrayUtils";
+import {wordsByDifficultyLevel} from "@/util/words";
+import React from 'react';
 
 const WordsSetupPage = () => {
 

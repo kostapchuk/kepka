@@ -1,4 +1,6 @@
-import {Box, Container, Typography} from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import OpenWordButton from "./OpenWordButton";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -7,10 +9,11 @@ import {
     setRoundInProgress,
     setRoundWords,
     setTimerRunning
-} from "../redux/gameSlice";
-import {random} from "../util/arrayUtils";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
+} from "@/redux/gameSlice";
+import {random} from "@/util/arrayUtils";
+import {setCurrentPage} from "@/redux/pageSlice";
+import {Pages} from "@/routes";
+import React from 'react';
 
 const GameTab = () => {
 

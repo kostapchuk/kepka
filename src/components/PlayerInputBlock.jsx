@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Box, TextField } from "@mui/material";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import { setTeams } from "../redux/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
 

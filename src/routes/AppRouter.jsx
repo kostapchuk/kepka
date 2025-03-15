@@ -11,6 +11,7 @@ import RestartGameModal from "../components/RestartGameModal";
 import {reset as resetGame, setRestartGameModalOpen} from "../redux/gameSlice";
 import {reset as resetPage} from "../redux/pageSlice";
 import {reset as resetPlayers} from "../redux/playersSlice";
+import React from 'react';
 
 const AppRouter = () => {
 
@@ -18,12 +19,11 @@ const AppRouter = () => {
     const {restartGameModalOpen} = useSelector(state => state.game);
     const dispatch = useDispatch();
 
-  const resetFullGame = () => {
-    dispatch(resetGame());
-    dispatch(resetPage());
-    dispatch(resetPlayers());
-  };
-
+    const resetFullGame = () => {
+        dispatch(resetGame());
+        dispatch(resetPage());
+        dispatch(resetPlayers());
+    };
     return (
         <Container sx={{mt: 2}} maxWidth>
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
@@ -35,7 +35,7 @@ const AppRouter = () => {
             <RestartGameModal
                 open={restartGameModalOpen}
                 title={`Выход из игры`}
-                content={`Вы действительно хотите выйти из игры? Версия приложения v${process.env.REACT_APP_VERSION}`}
+                content={`Вы действительно хотите выйти из игры? Версия приложения v${APPLICATION_VERSION}`}
                 secondaryButtonText={`Нет`}
                 primaryButtonText={`Да`}
                 onPrimaryAction={resetFullGame}

@@ -1,15 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
+import {setCurrentPage} from "@/redux/pageSlice";
+import {Pages} from "@/routes";
 import Stack from '@mui/material/Stack';
-import {addPlayers} from "../redux/playersSlice";
-import {randomIndex} from "../util/arrayUtils";
+import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
+import {addPlayers} from "@/redux/playersSlice";
+import {randomIndex} from "@/util/arrayUtils";
 import TeamSetupHeader from "../components/TeamSetupHeader";
 import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
 import {useEffect, useRef, useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
-import {Box} from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import React from 'react';
 
 const TeamSetupPage = () => {
     const dispatch = useDispatch();

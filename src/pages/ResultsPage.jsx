@@ -1,23 +1,20 @@
 import {useDispatch, useSelector} from "react-redux";
 import Stack from "@mui/material/Stack";
-import {Box, ButtonGroup, Divider, Typography} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Box from "@mui/material/Box";
 import PrimaryButton from "../components/PrimaryButton";
 import {useEffect, useRef, useState} from "react";
-import {setRestartGameModalOpen, setShowScoreDuringGame} from "../redux/gameSlice";
-import GameTab from "../components/GameTab";
+import {setRestartGameModalOpen, setShowScoreDuringGame} from "@/redux/gameSlice";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
+import React from 'react';
 
 const ResultsPage = () => {
 
     const {score} = useSelector(state => state.game);
     const dispatch = useDispatch()
-
-    // <div className="App">
-    //     {Object.entries(score).map(([team, score]) => (
-    //         <p key={Math.random()}>{team}: {score}</p>
-    //     ))}
-    // </div>
 
     const contentRef = useRef(null);
     const [isContentOverflowing, setIsContentOverflowing] = useState(false);

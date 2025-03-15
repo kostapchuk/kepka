@@ -1,6 +1,11 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
-import {styled} from "@mui/system";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
+import styled from "@mui/system/styled";
 import Button from "@mui/material/Button";
+import React from 'react';
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {

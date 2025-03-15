@@ -1,5 +1,6 @@
 import AppRouter from "./routes/AppRouter";
 import './App.css';
+import React from 'react';
 import {persistor, store} from './redux/store'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/integration/react';

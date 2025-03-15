@@ -1,7 +1,9 @@
 import TeamInputBlock from "./TeamInputBlock";
 import PlayerInputBlock from "./PlayerInputBlock";
 import {useSelector} from "react-redux";
-import {Typography, useTheme} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import {useTheme} from "@mui/material";
+import React from 'react';
 
 const TeamsAndPlayersList = ({
                                  teamError,

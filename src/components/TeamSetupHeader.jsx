@@ -1,6 +1,7 @@
-import {Box, Typography} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import {useState} from "react";
+import React, {useState} from "react";
 
 const TeamSetupHeader = () => {
     const [tooltipOpen, setTooltipOpen] = useState(false);

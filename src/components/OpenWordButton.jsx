@@ -1,5 +1,6 @@
-import {Button} from '@mui/material';
-import {styled} from '@mui/system';
+import Button from '@mui/material/Button';
+import styled from '@mui/system/styled';
+import React from 'react';
 
 const OpenWordButton = styled(Button)({
     minHeight: '39vh',

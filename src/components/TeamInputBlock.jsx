@@ -1,7 +1,9 @@
-import {Box, InputAdornment, TextField} from "@mui/material";
-import {setTeams} from "../redux/gameSlice";
+import Box from "@mui/material/Box";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import {setTeams} from "@/redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 const TeamInputBlock = ({
                             teamName,

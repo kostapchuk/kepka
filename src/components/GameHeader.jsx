@@ -1,6 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Typography} from "@mui/material";
-import {setRestartGameModalOpen} from "../redux/gameSlice";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {setRestartGameModalOpen} from "@/redux/gameSlice";
+import React from 'react';
 
 const GameHeader = () => {
 

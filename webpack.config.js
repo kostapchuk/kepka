@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -6,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { version } = require('./package.json');
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
@@ -69,12 +71,10 @@ module.exports = (env, argv) => {
                     vendor: {
                         test: /[\\/]node_modules[\\/]/,
                         name(module) {
-                            // Get the name
                             const packageName = module.context && module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)
                                 ? module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
                                 : 'root';
 
-                            // Special case for Material UI to bundle it separately
                             if (packageName.includes('@mui') || packageName.includes('@emotion')) {
                                 return 'mui';
                             }
@@ -92,11 +92,15 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 template: './public/index.html',
             }),
+            // Define process.env in the client code
+            new webpack.DefinePlugin({
+                'APPLICATION_VERSION': JSON.stringify(version),
+            }),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'static/css/[name].[contenthash:8].css',
             }),
             isProduction && new CompressionPlugin(),
-            isAnalyze && new BundleAnalyzerPlugin()
+            isAnalyze && new BundleAnalyzerPlugin(),
         ].filter(Boolean),
         resolve: {
             extensions: ['.js', '.jsx'],
