@@ -71,6 +71,7 @@ const BaseModal = ({
 
     return (
         <StyledDialog
+            sx={{visibility: open ? "visible" : "hidden"}}
             open={open}
             onClose={onClose}
             disableEscapeKeyDown={disableEscapeKeyDown}

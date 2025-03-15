@@ -1,16 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
-import Stack from '@mui/material/Stack';
-import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import {addPlayers} from "@/redux/playersSlice";
 import {randomIndex} from "@/util/arrayUtils";
 import TeamSetupHeader from "../components/TeamSetupHeader";
 import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
-import {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
-import React from 'react';
+import Box from "@mui/material/Box";
+import ScrollablePageWithStickyFooter from "@/components/ScrollablePageWithStickyFooter";
 
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
@@ -18,6 +17,7 @@ const TeamSetupPage = () => {
     const [teamError, setTeamError] = useState([]);
     const [playerError, setPlayerError] = useState([]);
     const [commonErrors, setCommonErrors] = useState([]);
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     function validateTeamsCount() {
         if (teams.length < 2) {
@@ -118,66 +118,50 @@ const TeamSetupPage = () => {
         dispatch(setCurrentPage(Pages.WORDS_SETUP_PAGE));
     }
 
-    const contentRef = useRef(null);
-    const [isContentOverflowing, setIsContentOverflowing] = useState(false);
-
-    const checkContentOverflow = () => {
-        if (contentRef.current) {
-            const isOverflowing = contentRef.current.scrollHeight > contentRef.current.clientHeight;
-            setIsContentOverflowing(isOverflowing);
-        }
-    };
-
-    useEffect(() => {
-        checkContentOverflow();
-        window.addEventListener('resize', checkContentOverflow);
-        return () => window.removeEventListener('resize', checkContentOverflow);
-    }, [teams]);
-
-    const [tooltipOpen, setTooltipOpen] = useState(false);
-    return (
+    const pageContent = (
         <>
-            <Stack sx={{
-                marginBottom: '85px',
-            }} ref={contentRef}>
-                <TeamSetupHeader/>
-                <TeamsAndPlayersList
-                    teamError={teamError}
-                    playerError={playerError}
-                    commonErrors={commonErrors}
-                />
-            </Stack>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    backgroundColor: '#FFFFFF',
-                    padding: '16px',
-                    paddingBottom: '32px',
-                    borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
-                }}
+            <TeamSetupHeader/>
+            <TeamsAndPlayersList
+                teamError={teamError}
+                playerError={playerError}
+                commonErrors={commonErrors}
+            />
+        </>
+    );
+
+    const pageFooter = (
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center'
+        }}>
+            <Tooltip
+                title="Скоро"
+                arrow
+                open={tooltipOpen}
+                onClose={() => setTooltipOpen(false)}
             >
-                <Tooltip
-                    title="Скоро"
-                    arrow
-                    open={tooltipOpen}
-                    onClose={() => setTooltipOpen(false)}
-                >
-                    <img src="/random-arrows.svg" onClick={() => setTooltipOpen(true)} alt="Generate teams" style={{
+                <img
+                    src="/random-arrows.svg"
+                    onClick={() => setTooltipOpen(true)}
+                    alt="Generate teams"
+                    style={{
                         backgroundColor: '#f0f0f0',
                         padding: '12px',
                         borderRadius: '12px',
                         marginRight: '12px'
-                    }}/>
-                </Tooltip>
-                <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
-            </Box>
-        </>
-    )
+                    }}
+                />
+            </Tooltip>
+            <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
+        </Box>
+    );
+
+    return (
+        <ScrollablePageWithStickyFooter
+            children={pageContent}
+            footer={pageFooter}
+        />
+    );
 };
 export default TeamSetupPage;

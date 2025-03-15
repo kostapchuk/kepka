@@ -18,8 +18,8 @@ const AppRouter = () => {
 
     return (
         <>
+            {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
             <Container sx={{mt: 2}} maxWidth="xs">
-                {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
                 {currentPage === Pages.WORDS_SETUP_PAGE && <WordsSetupPage/>}
                 {currentPage === Pages.TOUR_SETUP_PAGE && <TourSetupPage/>}
                 {currentPage === Pages.GAME_PAGE && <GamePage/>}
