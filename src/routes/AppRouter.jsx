@@ -4,7 +4,7 @@ import TeamSetupPage from "../pages/TeamSetupPage";
 import WordsSetupPage from "../pages/WordsSetupPage";
 import GamePage from "../pages/GamePage";
 import ResultsPage from "../pages/ResultsPage";
-import {Container} from "@mui/material";
+import Container from "@mui/material/Container";
 import TourSetupPage from "../pages/TourSetupPage";
 import GuessedWordsPage from "../pages/GuessedWordsPage";
 import RestartGameModal from "../components/RestartGameModal";
