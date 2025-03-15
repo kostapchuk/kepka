@@ -64,16 +64,16 @@ const BaseModal = ({
                        secondaryButtonText,
                        onPrimaryAction,
                        onSecondaryAction,
-                       onlyPrimary
+                       onlyPrimary,
+                       onClose,
+                       disableEscapeKeyDown
                    }) => {
-    const handleClose = () => {
-    };
 
     return (
         <StyledDialog
             open={open}
-            onClose={handleClose}
-            disableEscapeKeyDown
+            onClose={onClose}
+            disableEscapeKeyDown={disableEscapeKeyDown}
             aria-labelledby="confirmation-dialog-title"
             aria-describedby="confirmation-dialog-description"
         >
@@ -89,7 +89,8 @@ const BaseModal = ({
                         {secondaryButtonText}
                     </ActionButton>
                 }
-                <ActionButton onlyPrimary={onlyPrimary} onClick={onPrimaryAction} variant={onlyPrimary ? "": "outlined"}>
+                <ActionButton onlyPrimary={onlyPrimary} onClick={onPrimaryAction}
+                              variant={onlyPrimary ? "" : "outlined"}>
                     {primaryButtonText}
                 </ActionButton>
             </StyledDialogActions>

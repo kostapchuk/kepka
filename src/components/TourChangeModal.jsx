@@ -26,6 +26,8 @@ const ConfirmationTourChangeModal = () => {
         onlyPrimary
         primaryButtonText={`Следующий тур`}
         onPrimaryAction={closeModal}
+        onClose={() => {}}
+        disableEscapeKeyDown
     />
 };
 
