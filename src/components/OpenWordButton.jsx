@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import styled from '@mui/system/styled';
-import React from 'react';
 
 const OpenWordButton = styled(Button)({
     minHeight: '39vh',
@@ -9,6 +8,7 @@ const OpenWordButton = styled(Button)({
     color: '#FFFFFF',
     fontSize: '30px',
     borderRadius: '10px 16px 16px 10px',
+    touchAction: 'manipulation',
     ":disabled": { color: '#FFFFFF'}
 });
 

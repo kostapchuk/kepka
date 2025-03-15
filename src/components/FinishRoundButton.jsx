@@ -16,7 +16,7 @@ import {Pages} from "@/routes";
 import {updatePlayer} from "@/redux/playersSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PrimaryButton from "./PrimaryButton";
-import ConfirmationModal from "./TimeLeftInRoundModal";
+import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
 import React from 'react';
 
 const FinishRoundButton = () => {
@@ -31,9 +31,7 @@ const FinishRoundButton = () => {
         score,
         elapsedTime,
         timer: roundDuration,
-        roundAnsweredWords,
-        tourChangeModalOpen,
-        actualLeftTimeInTour
+        roundAnsweredWords
     } = useSelector(state => state.game);
 
     const dispatch = useDispatch()
@@ -132,27 +130,9 @@ const FinishRoundButton = () => {
         }
     }
 
-    const handlePrimaryAction = () => {
-        dispatch(setTourChangeModalOpen(false))
-        doFinishRound(true)
-    };
-
-    const handleSecondaryAction = () => {
-        dispatch(setTourChangeModalOpen(false))
-        doFinishRound(false)
-    };
-
     return (
         <>
-            <ConfirmationModal
-                open={tourChangeModalOpen}
-                title={`Осталось ${actualLeftTimeInTour} секунд`}
-                content={`Ваша команда закончила тур. У вас осталось ${actualLeftTimeInTour} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?`}
-                primaryButtonText="Играть сразу"
-                secondaryButtonText="Перенести"
-                onPrimaryAction={handlePrimaryAction}
-                onSecondaryAction={handleSecondaryAction}
-            />
+            <TimeLeftInRoundModal doFinishRound={doFinishRound}/>
             <PrimaryButton onClick={finishRound} content="Продолжить"/>
         </>
 
