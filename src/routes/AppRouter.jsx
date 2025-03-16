@@ -17,12 +17,12 @@ const AppRouter = () => {
     return (
         <>
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
-            {/*{currentPage === Pages.TOUR_SETUP_PAGE && <TourSetupPage/>}*/}
-            {/*{currentPage === Pages.WORDS_SETUP_PAGE && <WordsSetupPage/>}*/}
-            {/*{currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}*/}
-            {/*{currentPage === Pages.GAME_PAGE && <GamePage/>}*/}
-            {/*{currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}*/}
-            {/*<RestartGameModal/>*/}
+            {currentPage === Pages.TOUR_SETUP_PAGE && <TourSetupPage/>}
+            {currentPage === Pages.WORDS_SETUP_PAGE && <WordsSetupPage/>}
+            {currentPage === Pages.RESULTS_PAGE && <ResultsPage/>}
+            {currentPage === Pages.GAME_PAGE && <GamePage/>}
+            {currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}
+            <RestartGameModal/>
         </>
     );
 };
