@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
     return {
         entry: './src/index.js',
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, 'build'),
             filename: isProduction ? 'static/js/[name].[contenthash:8].js' : 'static/js/[name].js',
             chunkFilename: isProduction ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
             publicPath: '/',
