@@ -50,7 +50,7 @@ const GamePage = () => {
     return (
         <Container sx={{mt: 2}} maxWidth="xs">
             <GameHeader/>
-            <ButtonGroup sx={{height: '58px', opacity: roundInProgress ? '40%' : '100%'}} fullWidth>
+            <ButtonGroup sx={{height: '58px', opacity: roundInProgress ? '40%' : '100%', mt: 2, mb: 3}} fullWidth>
                 <Button sx={currentBlock === 'game' ? activeTabStyles : inactiveTabStyles}
                         onClick={() => !roundInProgress && setCurrentBlock('team')}>Команда</Button>
                 <Button sx={currentBlock === 'team' ? activeTabStyles : inactiveTabStyles}
