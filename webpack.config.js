@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // Add this
 const { version } = require('./package.json');
 
 module.exports = (env, argv) => {
@@ -19,6 +20,7 @@ module.exports = (env, argv) => {
             path: path.resolve(__dirname, 'build'),
             filename: isProduction ? 'static/js/[name].[contenthash:8].js' : 'static/js/[name].js',
             chunkFilename: isProduction ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
+            assetModuleFilename: 'static/media/[name].[hash:8][ext]', // Add this line
             publicPath: '/',
         },
         devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
@@ -26,6 +28,9 @@ module.exports = (env, argv) => {
             historyApiFallback: true,
             hot: true,
             port: 3000,
+            static: {
+                directory: path.join(__dirname, 'public'), // Ensure public folder is served
+            },
         },
         module: {
             rules: [
@@ -49,7 +54,7 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                    test: /\.(png|svg|jpg|jpeg|gif|webp|ico)$/i, // Added webp and ico
                     type: 'asset/resource',
                 },
                 {
@@ -91,6 +96,19 @@ module.exports = (env, argv) => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
+                favicon: './public/favicon.ico', // Add this if you have a favicon
+            }),
+            // Copy public folder assets (except index.html)
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: 'public',
+                        to: '',
+                        globOptions: {
+                            ignore: ['**/index.html'],
+                        },
+                    },
+                ],
             }),
             // Define process.env in the client code
             new webpack.DefinePlugin({
