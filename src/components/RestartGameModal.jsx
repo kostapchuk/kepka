@@ -1,13 +1,15 @@
 import React from 'react';
-import BaseModal from "@/components/ui/modal/BaseModal";
-import {reset as resetGame, setRestartGameModalOpen} from "@/redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {reset as resetPage} from "@/redux/pageSlice";
-import {reset as resetPlayers} from "@/redux/playersSlice";
+
+import BaseModal from "../components/ui/modal/BaseModal";
+import {reset as resetGame, setRestartGameModalOpen} from "../redux/gameSlice";
+import {reset as resetPage} from "../redux/pageSlice";
+import {reset as resetPlayers} from "../redux/playersSlice";
 
 const RestartGameModal = () => {
 
     const {restartGameModalOpen} = useSelector(state => state.game);
+
     const dispatch = useDispatch();
 
     const resetFullGame = () => {

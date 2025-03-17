@@ -1,6 +1,6 @@
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import React from 'react';
+
 import {setRoundInProgress, setTimerRunning} from "../redux/gameSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";

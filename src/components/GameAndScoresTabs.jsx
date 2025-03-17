@@ -3,6 +3,7 @@ import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
+
 import GameTab from "../components/GameTab";
 import {setCurrentGameTab} from "../redux/gameSlice";
 
@@ -11,6 +12,7 @@ const GameAndScoresTabs = ({
                            }) => {
 
     const {roundInProgress, currentGameTab} = useSelector(state => state.game);
+
     const dispatch = useDispatch();
 
     const tabStyles = {

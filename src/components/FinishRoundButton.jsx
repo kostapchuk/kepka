@@ -1,3 +1,6 @@
+import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+
 import {
     setActualLeftTimeInTour,
     setCurrentTeam,
@@ -9,15 +12,13 @@ import {
     setRoundWords,
     setScore,
     setTour, setTourChangeModalOpen
-} from "@/redux/gameSlice";
-import {distinct, shuffle} from "@/util/arrayUtils";
-import {setCurrentPage} from "@/redux/pageSlice";
-import {Pages} from "@/routes";
-import {updatePlayer} from "@/redux/playersSlice";
-import {useDispatch, useSelector} from "react-redux";
+} from "../redux/gameSlice";
+import {distinct, shuffle} from "../util/arrayUtils";
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
+import {updatePlayer} from "../redux/playersSlice";
 import PrimaryButton from "./PrimaryButton";
 import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
-import React from 'react';
 
 const FinishRoundButton = () => {
 

@@ -1,8 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {setRestartGameModalOpen} from "@/redux/gameSlice";
 import React from 'react';
+
+import {setRestartGameModalOpen} from "../redux/gameSlice";
 
 const GameHeader = () => {
 
@@ -12,7 +13,9 @@ const GameHeader = () => {
         currentGameId,
         roundInProgress
     } = useSelector(state => state.game);
+
     const players = useSelector(state => state.players);
+
     const dispatch = useDispatch();
 
     return (

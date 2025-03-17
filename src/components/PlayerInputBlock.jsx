@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { setTeams } from "../redux/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
+
+import { setTeams } from "../redux/gameSlice";
 
 const PlayerInputBlock = ({
                               teamIndex,

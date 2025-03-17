@@ -1,9 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-
-import BaseModal from "@/components/ui/modal/BaseModal";
-import {setTourChangeModalOpen} from "@/redux/gameSlice";
 import Typography from "@mui/material/Typography";
+
+import BaseModal from "../components/ui/modal/BaseModal";
+import {setTourChangeModalOpen} from "../redux/gameSlice";
 
 const ConfirmationTourChangeModal = () => {
 
@@ -17,7 +17,7 @@ const ConfirmationTourChangeModal = () => {
 
     return <BaseModal
         open={tourChangeModalOpen}
-        title={`Тур завершен`}
+        title='Тур завершен'
         content={
             showScoreDuringGame &&
             Object.entries(score)
@@ -27,7 +27,7 @@ const ConfirmationTourChangeModal = () => {
                 ))
         }
         onlyPrimary
-        primaryButtonText={`Следующий тур`}
+        primaryButtonText='Следующий тур'
         onPrimaryAction={closeModal}
         onClose={() => {}}
         disableEscapeKeyDown

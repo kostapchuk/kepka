@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@mui/material/styles/styled';
 import Switch from '@mui/material/Switch';
 
-// Custom styled switch component
 const CustomSwitch = styled(Switch)(({theme}) => ({
     width: 48,
     height: 28,
@@ -12,7 +11,7 @@ const CustomSwitch = styled(Switch)(({theme}) => ({
         margin: 2,
         transitionDuration: '300ms',
         '&.Mui-checked': {
-            transform: 'translateX(20px)', // Adjusted for new width (48-28+2)
+            transform: 'translateX(20px)',
             color: '#fff',
             '& + .MuiSwitch-track': {
                 backgroundColor: '#7A51EC',
@@ -36,8 +35,8 @@ const CustomSwitch = styled(Switch)(({theme}) => ({
     },
     '& .MuiSwitch-thumb': {
         boxSizing: 'border-box',
-        width: 24,  // Adjusted to 24px
-        height: 24, // Adjusted to 24px
+        width: 24,
+        height: 24,
         color: '#fff'
     },
     '& .MuiSwitch-track': {
