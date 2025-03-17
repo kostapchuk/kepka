@@ -6,7 +6,9 @@ import Button from "@mui/material/Button";
 import GameTab from "../components/GameTab";
 import {setCurrentGameTab} from "../redux/gameSlice";
 
-const GameAndScoresTabs = () => {
+const GameAndScoresTabs = ({
+                            gameTab = <GameTab/>
+                           }) => {
 
     const {roundInProgress, currentGameTab} = useSelector(state => state.game);
     const dispatch = useDispatch();
