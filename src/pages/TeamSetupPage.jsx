@@ -120,7 +120,7 @@ const TeamSetupPage = () => {
 
     const pageContent = (
         <>
-            {window.matchMedia('(display-mode: standalone)').matches ? "Home screen" : "Web"}
+            {/*{window.matchMedia('(display-mode: standalone)').matches ? "Home screen" : "Web"}*/}
             <TeamSetupHeader/>
             <TeamsAndPlayersList
                 teamError={teamError}
