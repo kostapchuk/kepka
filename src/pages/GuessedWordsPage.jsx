@@ -37,7 +37,7 @@ const GuessedWordsPage = () => {
                     fontSize: '20px',
                     fontWeight: '600'
                 }}>Счет: {roundAnsweredWords.length}</Typography>
-                <Typography variant="p" sx={{fontSize: "12px", paddingLeft: '8px'}}>
+                <Typography variant="p" sx={{fontSize: "14px", paddingLeft: '8px'}}>
                     Выберите угаданные слова
                 </Typography>
                 <GuessedWordsOptions/>
@@ -50,6 +50,7 @@ const GuessedWordsPage = () => {
                     right: 0,
                     backgroundColor: '#FFFFFF',
                     padding: '16px',
+                    paddingBottom: '32px',
                     borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
                 }}
             >

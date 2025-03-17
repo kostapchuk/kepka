@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import BaseModal from "@/components/ui/modal/BaseModal";
 import {setTourChangeModalOpen} from "@/redux/gameSlice";
+import Typography from "@mui/material/Typography";
 
 const ConfirmationTourChangeModal = () => {
 
@@ -19,9 +20,11 @@ const ConfirmationTourChangeModal = () => {
         title={`Тур завершен`}
         content={
             showScoreDuringGame &&
-            Object.entries(score).map(([team, score]) => (
-                <p key={Math.random()}>{team}: {score}</p>
-            ))
+            Object.entries(score)
+                .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+                .map(([team, score], index) => (
+                    <Typography sx={{textAlign: 'left', pl: 1, pb: 1.5}}>{index + 1}) {team} - {score}</Typography>
+                ))
         }
         onlyPrimary
         primaryButtonText={`Следующий тур`}
