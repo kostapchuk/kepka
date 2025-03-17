@@ -1,9 +1,12 @@
 import GuessedWordsOptions from "../components/GuessedWordsOptions";
 import FinishRoundButton from "../components/FinishRoundButton";
-import {Box, Typography} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
-import Stack from "@mui/material/Stack";
+import React from 'react';
+import Container from "@mui/material/Container";
 
 const GuessedWordsPage = () => {
     const {roundAnsweredWords} = useSelector(state => state.game);
@@ -25,7 +28,7 @@ const GuessedWordsPage = () => {
     }, []);
 
     return (
-        <>
+        <Container sx={{mt: 2}} maxWidth="xs">
             <Stack sx={{
                 marginBottom: '85px'
             }} ref={contentRef}>
@@ -34,8 +37,9 @@ const GuessedWordsPage = () => {
                     fontSize: '20px',
                     fontWeight: '600'
                 }}>Счет: {roundAnsweredWords.length}</Typography>
-                <Typography variant="p" sx={{fontSize: "12px", paddingLeft: '8px'}}>Выберите угаданные
-                    слова</Typography>
+                <Typography variant="p" sx={{fontSize: "14px", paddingLeft: '8px'}}>
+                    Выберите угаданные слова
+                </Typography>
                 <GuessedWordsOptions/>
             </Stack>
             <Box
@@ -46,12 +50,13 @@ const GuessedWordsPage = () => {
                     right: 0,
                     backgroundColor: '#FFFFFF',
                     padding: '16px',
+                    paddingBottom: '32px',
                     borderTop: isContentOverflowing ? '1px solid #D1D1D1' : 'none'
                 }}
             >
                 <FinishRoundButton/>
             </Box>
-        </>
+        </Container>
     );
 }
 export default GuessedWordsPage;

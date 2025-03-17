@@ -1,95 +1,37 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
-import {styled} from "@mui/system";
-import Button from "@mui/material/Button";
+import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialog-paper': {
-        padding: 0,
-        paddingTop: 20,
-        borderRadius: 20,
-        minWidth: 320,
-        maxWidth: 480
-    }
-}));
+import BaseModal from "@/components/ui/modal/BaseModal";
+import {setTourChangeModalOpen} from "@/redux/gameSlice";
+import Typography from "@mui/material/Typography";
 
-const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
-    padding: 0,
-    paddingLeft: 16,
-    fontWeight: 600,
-    fontSize: '1.25rem',
-    paddingBottom: 16,
-    textAlign: 'left'
-}));
+const ConfirmationTourChangeModal = () => {
 
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-    padding: 0,
-    paddingRight: 8,
-    paddingLeft: 8,
-    paddingBottom: 16,
-    textAlign: 'center',
-    fontSize: '16px'
-}));
+    const {tourChangeModalOpen, score, showScoreDuringGame} = useSelector(state => state.game);
 
-const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
-    padding: 0,
-    paddingBottom: 20,
-    paddingRight: 16,
-    paddingLeft: 16,
-    display: 'flex',
-    justifyContent: 'space-around',
-}));
+    const dispatch = useDispatch();
 
-const ActionButton = styled(Button)(({ theme }) => ({
-    borderRadius: 12,
-    fontWeight: 600,
-    height: 48,
-    flex: 1,
-    padding: 0,
-    fontSize: '16px',
-    textTransform: 'none',
-    backgroundColor: '#000000',
-    color: '#FFFFFF',
-}));
-
-const ConfirmationTourChangeModal = ({
-                               open,
-                               title,
-                               content,
-                               secondaryButtonText = "Cancel",
-                               onSecondaryAction
-                           }) => {
-    const handleClose = () => {
+    const closeModal = () => {
+        dispatch(setTourChangeModalOpen(false));
     };
 
-    return (
-        <StyledDialog
-            open={open}
-            onClose={handleClose}
-            disableEscapeKeyDown
-            aria-labelledby="confirmation-dialog-title"
-            aria-describedby="confirmation-dialog-description"
-        >
-            <StyledDialogTitle id="confirmation-dialog-title">
-                {title}
-            </StyledDialogTitle>
-
-            <StyledDialogContent>
-                {typeof content === 'string' ? (
-                    <Typography id="confirmation-dialog-description">
-                        {content}
-                    </Typography>
-                ) : (
-                    content
-                )}
-            </StyledDialogContent>
-
-            <StyledDialogActions>
-                <ActionButton onClick={onSecondaryAction}>
-                    {secondaryButtonText}
-                </ActionButton>
-            </StyledDialogActions>
-        </StyledDialog>
-    );
+    return <BaseModal
+        open={tourChangeModalOpen}
+        title={`Тур завершен`}
+        content={
+            showScoreDuringGame &&
+            Object.entries(score)
+                .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+                .map(([team, score], index) => (
+                    <Typography sx={{textAlign: 'left', pl: 1, pb: 1.5}}>{index + 1}) {team} - {score}</Typography>
+                ))
+        }
+        onlyPrimary
+        primaryButtonText={`Следующий тур`}
+        onPrimaryAction={closeModal}
+        onClose={() => {}}
+        disableEscapeKeyDown
+    />
 };
 
 export default ConfirmationTourChangeModal;

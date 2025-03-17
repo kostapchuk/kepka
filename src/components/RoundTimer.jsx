@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setElapsedTime, setTimerRunning} from "../redux/gameSlice";
-import {Box, Typography} from "@mui/material";
+import {setElapsedTime, setTimerRunning} from "@/redux/gameSlice";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import React from 'react';
 
 const RoundTimer = () => {
 
@@ -11,7 +13,8 @@ const RoundTimer = () => {
         currentTeam,
         timerRunning,
         timer: roundDuration,
-        elapsedTime
+        elapsedTime,
+        roundInProgress
     } = useSelector(state => state.game);
     const dispatch = useDispatch();
     const [fillPercentage, setFillPercentage] = useState(0);
@@ -21,9 +24,10 @@ const RoundTimer = () => {
         if (timerRunning) {
             timer = setInterval(() => {
                 if (elapsedTime <= leftSeconds[currentTeam] - 1) {
-                    const percentage = Math.min((elapsedTime / roundDuration) * 100, 100);
+                    const newElapsedTime = elapsedTime + 1
+                    const percentage = Math.min((newElapsedTime / roundDuration) * 100, 100);
                     setFillPercentage(percentage);
-                    dispatch(setElapsedTime(elapsedTime + 1));
+                    dispatch(setElapsedTime(newElapsedTime));
                 } else {
                     clearInterval(timer);
                 }
@@ -41,29 +45,44 @@ const RoundTimer = () => {
         return `${formattedMinutes}:${formattedSeconds}`;
     }
 
-    const disabled = true
+    const progressStyle = {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: '150px',
+        width: `${fillPercentage}%`,
+        backgroundColor: '#7A51EC66',
+        transition: 'width 1s linear',
+        zIndex: 1
+    };
 
     return (
-        <Box
-            sx={{
-                position: 'fixed',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: "center",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                backgroundColor: '#F0F0F0',
-                padding: '16px'
-            }}
-        >
-            <Typography variant="h1" sx={{fontWeight: '600', fontSize: '36px', opacity: disabled ? '40%' : '100%'}}>
-                {secondsToString(leftSeconds[currentTeam] - elapsedTime)}
-            </Typography>
-            <Button disabled={disabled} onClick={() => dispatch(setTimerRunning(!timerRunning))}>
-                <img style={{opacity: disabled ? '40%' : '100%'}} src="/icon-button-timer.svg" alt="Pause"/>
-            </Button>
-        </Box>
+        <>
+            <Box sx={progressStyle}>
+            </Box>
+            <Box
+                sx={{
+                    height: '150px',
+                    position: 'fixed',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: "center",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: '#F0F0F0',
+                    paddingRight: '16px',
+                    paddingLeft: '16px',
+                }}
+            >
+                <Typography variant="h1" sx={{fontWeight: '600', fontSize: '36px', opacity: !roundInProgress ? '40%' : '100%', zIndex: 2}}>
+                    {secondsToString(leftSeconds[currentTeam] - elapsedTime)}
+                </Typography>
+                <Button disabled={true} onClick={() => dispatch(setTimerRunning(!timerRunning))} sx={{ zIndex: 2}}>
+                    <img style={{opacity: true ? '40%' : '100%'}} src="/icon-button-timer.svg" alt="Pause"/>
+                </Button>
+            </Box>
+        </>
     )
 }
 

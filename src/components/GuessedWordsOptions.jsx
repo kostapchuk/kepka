@@ -1,6 +1,10 @@
-import {Box, Checkbox, FormControlLabel, Typography} from "@mui/material";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
-import {setRoundAnsweredWords} from "../redux/gameSlice";
+import {setRoundAnsweredWords} from "@/redux/gameSlice";
+import React from 'react';
 
 const GuessedWordsOptions = () => {
     const {roundWords, roundAnsweredWords} = useSelector(state => state.game);
