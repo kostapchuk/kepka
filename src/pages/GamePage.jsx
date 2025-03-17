@@ -1,10 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import Stack from "@mui/material/Stack";
+import React, {useEffect, useState} from "react";
 import AlarmTimer from "../components/AlarmTimer";
 import RoundTimer from "../components/RoundTimer";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import {setRoundInProgress, setTimerRunning, setTourChangeModalOpen} from "@/redux/gameSlice";
+import {setRoundInProgress, setTimerRunning} from "@/redux/gameSlice";
 import GameHeader from "../components/GameHeader";
 import ScoresTab from "../components/ScoresTab";
 import Button from "@mui/material/Button";
@@ -12,7 +11,6 @@ import GameTab from "../components/GameTab";
 import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
 import ConfirmationTourChangeModal from "../components/TourChangeModal";
-import React from 'react';
 import Container from "@mui/material/Container";
 
 const GamePage = () => {

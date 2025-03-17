@@ -65,7 +65,6 @@ const ResultsPage = () => {
                     <Typography sx={{fontSize: '16px', paddingTop: '20px'}}>{topTeam[0]}</Typography>
                     <Typography
                         sx={{fontSize: '16px', color: '#6B6B6B', paddingTop: '8px'}}>{topTeam[1]}</Typography>
-
                     <Divider sx={{width: '95%', my: 2, border: '1px solid #D1D1D1', marginTop: '32px'}}/>
                     <Typography>🔜 Скоро здесь будет статистика игры</Typography>
                 </Box>

@@ -64,7 +64,7 @@ const TourSetupPage = () => {
             <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
             <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
         </Box>
-        <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", mt: 3, mb: 0.5}}>
+        <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5}}>
             Длительность раунда
         </Typography>
         <TextField
@@ -96,7 +96,7 @@ const TourSetupPage = () => {
             onFocus={handleFocus}
         />
         <Box>
-            <Typography sx={{fontSize: "14px", color: "#6B6B6B", fontWeight: "500", mt: 2.5, mb: 0.5}}>
+            <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
                 Показывать очки команд во время игры
             </Typography>
             <PurpleSwitcherNoLabel
