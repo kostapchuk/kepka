@@ -52,7 +52,7 @@ const GameAndScoresTabs = ({
                 <Button
                     sx={{
                         ...tabStyles.base,
-                        ...(currentGameTab === 'team' ? tabStyles.active : tabStyles.inactive)
+                        ...(currentGameTab === 'game' ? tabStyles.active : tabStyles.inactive)
                     }}
                     onClick={() => handleTabChange('team')}
                 >
@@ -61,7 +61,7 @@ const GameAndScoresTabs = ({
                 <Button
                     sx={{
                         ...tabStyles.base,
-                        ...(currentGameTab === 'game' ? tabStyles.active : tabStyles.inactive)
+                        ...(currentGameTab === 'team' ? tabStyles.active : tabStyles.inactive)
                     }}
                     onClick={() => handleTabChange('game')}
                 >
