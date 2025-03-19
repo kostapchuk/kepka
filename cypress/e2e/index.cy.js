@@ -37,7 +37,7 @@ describe('Team setup page tests', () => {
         cy.get('input[placeholder="Название команды"]').click().type('{enter}');
         cy.get('input[placeholder="Введите имя игрока"]').click().type('Your text here').type('{enter}');
         cy.get('input[placeholder="Название команды"]').click().type('{enter}');
-        cy.get('input[placeholder="Введите имя игрока"]').last().click().type('Your text here').type('{enter}');
+cy.get('input[placeholder="Введите имя игрока"]').last().click().type('Another Test Player').type('{enter}');
 
         cy.get('button').contains('Продолжить').click();
 
