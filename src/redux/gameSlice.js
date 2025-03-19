@@ -24,7 +24,8 @@ const initialState = {
   actualLeftTimeInTour: 0,
   wordsDifficulty: 'EASY', // EASY, MEDIUM, HARD
   restartGameModalOpen: false,
-  roundInProgress: false
+  roundInProgress: false,
+  currentGameTab: 'game' // game, team
 }
 
 export const gameSlice = createSlice({
@@ -97,6 +98,9 @@ export const gameSlice = createSlice({
     setRoundInProgress: (state, action) => {
       state.roundInProgress = action.payload
     },
+    setCurrentGameTab: (state, action) => {
+      state.currentGameTab = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -124,7 +128,8 @@ export const {
   setActualLeftTimeInTour,
   setWordsDifficulty,
   setRestartGameModalOpen,
-  setRoundInProgress
+  setRoundInProgress,
+  setCurrentGameTab
 } = gameSlice.actions
 
 export default gameSlice.reducer

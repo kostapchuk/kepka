@@ -1,8 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {setRestartGameModalOpen} from "@/redux/gameSlice";
 import React from 'react';
+
+import {setRestartGameModalOpen} from "../redux/gameSlice";4
+
+const TOURS_MAPPING = {
+    ALIAS: 'Алиас',
+    CROCODILE: 'Крокодил',
+    ONE_WORD: 'Одно слово',
+    // DRAWING: 'Рисование',
+}
 
 const GameHeader = () => {
 
@@ -12,7 +20,9 @@ const GameHeader = () => {
         currentGameId,
         roundInProgress
     } = useSelector(state => state.game);
+
     const players = useSelector(state => state.players);
+
     const dispatch = useDispatch();
 
     return (
@@ -22,7 +32,7 @@ const GameHeader = () => {
               🚪
             </Typography>
             <Typography variant="h3" sx={{fontSize: "24px"}}>
-              Тур {<Typography variant="" sx={{fontSize: "24px", fontWeight: 600}}>{tour}</Typography>}
+              Тур {<Typography variant="" sx={{fontSize: "24px", fontWeight: '600'}}>{TOURS_MAPPING[tour]}</Typography>}
             </Typography>
           </Box>
             <Box>

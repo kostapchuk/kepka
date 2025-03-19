@@ -7,8 +7,8 @@ const TeamSetupHeader = () => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
     return (
-        <Box sx={{display: "flex", justifyContent: "space-between", marginBottom: "8px"}}>
-            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: 600}}>Настройка игры 1 / 3</Typography>
+        <Box sx={{display: "flex", justifyContent: "space-between", mb: 1}}>
+            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: '600'}}>Настройка игры 1 / 3</Typography>
             <Tooltip
                 title="Скоро"
                 arrow

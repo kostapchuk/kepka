@@ -26,6 +26,7 @@ const GameTab = () => {
         showLeftWords,
         roundInProgress
     } = useSelector(state => state.game);
+
     const dispatch = useDispatch();
 
     const startTimer = () => {

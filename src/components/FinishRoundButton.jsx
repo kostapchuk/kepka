@@ -1,3 +1,6 @@
+import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+
 import {
     setActualLeftTimeInTour,
     setCurrentTeam,
@@ -9,15 +12,20 @@ import {
     setRoundWords,
     setScore,
     setTour, setTourChangeModalOpen
-} from "@/redux/gameSlice";
-import {distinct, shuffle} from "@/util/arrayUtils";
-import {setCurrentPage} from "@/redux/pageSlice";
-import {Pages} from "@/routes";
-import {updatePlayer} from "@/redux/playersSlice";
-import {useDispatch, useSelector} from "react-redux";
+} from "../redux/gameSlice";
+import {distinct, shuffle} from "../util/arrayUtils";
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
+import {updatePlayer} from "../redux/playersSlice";
 import PrimaryButton from "./PrimaryButton";
 import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
-import React from 'react';
+
+const TOURS = {
+    ALIAS: 'ALIAS',
+    CROCODILE: 'CROCODILE',
+    ONE_WORD: 'ONE_WORD',
+    // DRAWING: 'DRAWING',
+}
 
 const FinishRoundButton = () => {
 
@@ -42,9 +50,9 @@ const FinishRoundButton = () => {
     const finishRound = () => {
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
-        const actualLeftTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
+        const actualLeftTime = Number((tour === TOURS.CROCODILE ? Math.round(leftTime / 2) : leftTime))
         dispatch(setActualLeftTimeInTour(actualLeftTime))
-        if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+        if (actualLeftWords.length === 0 && tour !== TOURS.ONE_WORD && leftTime >= 1) {
             dispatch(setTourChangeModalOpen(true))
         } else {
             doFinishRound(false);
@@ -56,9 +64,9 @@ const FinishRoundButton = () => {
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
         dispatch(setLeftWords(shuffle(actualLeftWords)))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
-        const continueNowTime = Number((tour === 'Крокодил' ? Math.round(leftTime / 2) : leftTime))
+        const continueNowTime = Number((tour === TOURS.CROCODILE ? Math.round(leftTime / 2) : leftTime))
         const continueLaterTime = continueNowTime + Number(roundDuration)
-        if (actualLeftWords.length === 0 && tour !== 'Одно слово' && leftTime >= 1) {
+        if (actualLeftWords.length === 0 && tour !== TOURS.ONE_WORD && leftTime >= 1) {
             const newLeftSeconds = {
                 ...leftSeconds,
                 [currentTeam]: continueNow ? continueNowTime : continueLaterTime
@@ -86,13 +94,13 @@ const FinishRoundButton = () => {
         }
         if (actualLeftWords.length === 0) {
             dispatch(setLeftWords(shuffle(words)))
-            if (tour === 'Алиас') {
-                dispatch(setTour('Крокодил'));
+            if (tour === TOURS.ALIAS) {
+                dispatch(setTour(TOURS.CROCODILE));
                 dispatch(setTourChangeModalOpen(true));
-            } else if (tour === 'Крокодил') {
-                dispatch(setTour('Одно слово'));
+            } else if (tour === TOURS.CROCODILE) {
+                dispatch(setTour(TOURS.ONE_WORD));
                 dispatch(setTourChangeModalOpen(true));
-            } else if (tour === 'Одно слово') {
+            } else if (tour === TOURS.ONE_WORD) {
                 dispatch(setCurrentPage(Pages.RESULTS_PAGE));
             }
         }
@@ -135,9 +143,7 @@ const FinishRoundButton = () => {
             <TimeLeftInRoundModal doFinishRound={doFinishRound}/>
             <PrimaryButton onClick={finishRound} content="Продолжить"/>
         </>
-
     )
-
 }
 
 export default FinishRoundButton

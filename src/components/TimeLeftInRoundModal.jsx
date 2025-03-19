@@ -1,7 +1,8 @@
 import React from 'react';
-import BaseModal from "@/components/ui/modal/BaseModal";
-import {setTourChangeModalOpen} from "@/redux/gameSlice";
 import {useDispatch, useSelector} from "react-redux";
+
+import BaseModal from "../components/ui/modal/BaseModal";
+import {setTourChangeModalOpen} from "../redux/gameSlice";
 
 const TimeLeftInRoundModal = ({doFinishRound}) => {
 

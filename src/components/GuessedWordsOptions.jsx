@@ -3,18 +3,21 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
-import {setRoundAnsweredWords} from "@/redux/gameSlice";
 import React from 'react';
+
+import {setRoundAnsweredWords} from "../redux/gameSlice";
 
 const GuessedWordsOptions = () => {
     const {roundWords, roundAnsweredWords} = useSelector(state => state.game);
+
     const dispatch = useDispatch();
+
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, marginTop: '24px'}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, mt: 3}}>
             {
-                [...roundWords].reverse().map(option => (
-                    <FormControlLabel key={Math.random()} sx={{m: 0, p: 0, marginBottom: '16px'}} control={<Checkbox
-                        key={Math.random()}
+                [...roundWords].reverse().map((option, index) => (
+                    <FormControlLabel key={index} sx={{m: 0, p: 0, mb: 2}} control={<Checkbox
+                        key={index}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
                             if (roundAnsweredWords.includes(option)) {
@@ -31,14 +34,7 @@ const GuessedWordsOptions = () => {
                                 color: '#7A51EC'
                             },
                         }}
-                    />} label={
-                        <Typography variant="body1" sx={{
-                            fontSize: '20px',
-                            fontWeight: '500'
-                        }}>
-                            {option}
-                        </Typography>
-                    }
+                    />} label={<Typography variant="body1" sx={{fontSize: '20px'}}>{option}</Typography>}
                     />
                 ))
             }
