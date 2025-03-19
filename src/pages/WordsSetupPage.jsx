@@ -7,14 +7,14 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 
-import { setCurrentPage } from "@/redux/pageSlice";
-import { setLeftWords, setShowLeftWords, setWords, setWordsCount, setWordsDifficulty } from "@/redux/gameSlice";
-import { Pages } from "@/routes";
-import { shuffle } from "@/util/arrayUtils";
-import { wordsByDifficultyLevel } from "@/util/words";
+import { setCurrentPage } from "../redux/pageSlice";
+import { setLeftWords, setShowLeftWords, setWords, setWordsCount, setWordsDifficulty } from "../redux/gameSlice";
+import { Pages } from "../routes";
+import { shuffle } from "../util/arrayUtils";
+import { wordsByDifficultyLevel } from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
-import { PurpleSwitcherNoLabel } from "@/components/Switcher";
-import ScrollablePageWithStickyFooter from "@/components/ScrollablePageWithStickyFooter";
+import { PurpleSwitcherNoLabel } from "../components/Switcher";
+import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 
 const DIFFICULTY_OPTIONS = [
     { value: "EASY", label: "Низкая" },

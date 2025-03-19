@@ -25,7 +25,10 @@ const initialState = {
   wordsDifficulty: 'EASY', // EASY, MEDIUM, HARD
   restartGameModalOpen: false,
   roundInProgress: false,
-  currentGameTab: 'game' // game, team
+  currentGameTab: 'game', // game, team
+  randomizerModalOpen: false,
+  languageModalOpen: false,
+  teamCount: 3 // for randomizing
 }
 
 export const gameSlice = createSlice({
@@ -101,6 +104,15 @@ export const gameSlice = createSlice({
     setCurrentGameTab: (state, action) => {
       state.currentGameTab = action.payload
     },
+    setRandomizerModalOpen: (state, action) => {
+      state.randomizerModalOpen = action.payload
+    },
+    setLanguageModalOpen: (state, action) => {
+      state.languageModalOpen = action.payload
+    },
+    setTeamCount: (state, action) => {
+      state.teamCount = action.payload
+    },
     reset: () => initialState
   }
 })
@@ -129,7 +141,10 @@ export const {
   setWordsDifficulty,
   setRestartGameModalOpen,
   setRoundInProgress,
-  setCurrentGameTab
+  setCurrentGameTab,
+  setRandomizerModalOpen,
+  setLanguageModalOpen,
+  setTeamCount
 } = gameSlice.actions
 
 export default gameSlice.reducer
