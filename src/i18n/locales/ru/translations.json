@@ -44,7 +44,7 @@
   "congratulations": "Поздравляем победителей!",
   "soon-statistics": "Скоро здесь будет статистика игры",
   "team-name": "Название команды",
-  "left-seconds": "`Осталось ${actualLeftTimeInTour} секунд`",
+  "left-seconds": "Осталось {{actualLeftTimeInTour}} секунд",
   "left-seconds-content": "Ваша команда закончила тур. У вас осталось {{actualLeftTimeInTour}} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?",
   "play-now": "Играть сразу",
   "postpone": "Перенести",
