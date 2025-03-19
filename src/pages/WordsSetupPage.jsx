@@ -22,6 +22,12 @@ const DIFFICULTY_OPTIONS = [
     { value: "HARD", label: "Сложная" }
 ];
 
+const DIFFICULTY_OPTIONS = [
+    { value: "EASY", label: "Низкая" },
+    { value: "MEDIUM", label: "Средняя" },
+    { value: "HARD", label: "Сложная" }
+];
+
 const WordsSetupPage = () => {
     const { wordsCount, showLeftWords, wordsDifficulty } = useSelector(state => state.game);
     const dispatch = useDispatch();
