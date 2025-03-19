@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
@@ -7,12 +7,13 @@ import BaseModal from "../components/ui/modal/BaseModal";
 import {setRandomizerModalOpen, setTeamCount, setTeams} from "../redux/gameSlice";
 import {randomIndex, shuffle} from "../util/arrayUtils";
 import {addPlayers, reset} from "../redux/playersSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const RandomizerModal = () => {
 
     const {randomizerModalOpen, currentGameId, teams: existingTeams, teamCount} = useSelector(state => state.game);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const generateTeams = () => {
         const playerNames = existingTeams.flatMap(t => t.players);
@@ -20,7 +21,7 @@ const RandomizerModal = () => {
         const shuffledPlayers = shuffle(playerNames);
 
         const teams = Array.from({length: teamCount}, (_, index) => ({
-            name: `Команда ${index + 1}`,
+            name: `${t('team')} ${index + 1}`,
             players: []
         }));
 
@@ -53,12 +54,11 @@ const RandomizerModal = () => {
 
     return <BaseModal
         open={randomizerModalOpen}
-        title="Сгенерировать команды"
+        title={t('generate-teams')}
         content={
             <>
-                <Typography>1) Заполните имена игроков на главном экране</Typography>
-
-                <Typography>2) Введите количество команд</Typography>
+                <Typography>{t('fill-players')}</Typography>
+                <Typography>{t('enter-teams-count')}</Typography>
                 <TextField
                     type="tel"
                     sx={{
@@ -81,7 +81,7 @@ const RandomizerModal = () => {
                         flex: 1,
                         minWidth: '50px'
                     }}
-                    placeholder="Введите количество команд"
+                    placeholder={t('enter-teams-count')}
                     value={teamCount}
                     onChange={(e) => dispatch(setTeamCount(e.target.value))}
                     variant="outlined"
@@ -90,7 +90,7 @@ const RandomizerModal = () => {
             </>
         }
         onlyPrimary
-        primaryButtonText="Сгенерировать"
+        primaryButtonText={t('generate')}
         onPrimaryAction={generateTeams}
         onClose={closeModal}
     />

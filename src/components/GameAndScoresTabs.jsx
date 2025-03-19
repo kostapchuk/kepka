@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ScoresTab from "../components/ScoresTab";
@@ -6,14 +6,15 @@ import Button from "@mui/material/Button";
 
 import GameTab from "../components/GameTab";
 import {setCurrentGameTab} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const GameAndScoresTabs = ({
-                            gameTab = <GameTab/>
+                               gameTab = <GameTab/>
                            }) => {
 
     const {roundInProgress, currentGameTab} = useSelector(state => state.game);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const tabStyles = {
         base: {
@@ -22,11 +23,12 @@ const GameAndScoresTabs = ({
             borderRadius: '100px'
         },
         active: {
+            borderColor: '#D1D1D1',
             backgroundColor: "#F0F0F0",
             color: "#6B6B6B"
         },
         inactive: {
-            borderColor: '#D1D1D1',
+            borderColor: '#000000',
             backgroundColor: "#000000",
             color: "#FFFFFF"
         }
@@ -56,7 +58,7 @@ const GameAndScoresTabs = ({
                     }}
                     onClick={() => handleTabChange('team')}
                 >
-                    Команда
+                    {t('team')}
                 </Button>
                 <Button
                     sx={{
@@ -65,10 +67,10 @@ const GameAndScoresTabs = ({
                     }}
                     onClick={() => handleTabChange('game')}
                 >
-                    Игра
+                    {t('game')}
                 </Button>
             </ButtonGroup>
-            {currentGameTab === 'game' && <GameTab/>}
+            {currentGameTab === 'game' && gameTab}
             {currentGameTab === 'team' && <ScoresTab/>}
         </>
     );

@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import Box from "@mui/material/Box";
 import React, {useState} from "react";
 
@@ -11,17 +11,18 @@ import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
 import PrimaryButton from "../components/PrimaryButton";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 import {setRandomizerModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const TeamSetupPage = () => {
-    const dispatch = useDispatch();
     const {currentGameId, teams} = useSelector(state => state.game);
     const [teamError, setTeamError] = useState([]);
     const [playerError, setPlayerError] = useState([]);
     const [commonErrors, setCommonErrors] = useState([]);
+    const {dispatch, t} = useTranslationAndDispatch();
 
     function validateTeamsCount() {
         if (teams.length < 2) {
-            setCommonErrors(prevState => [...prevState, 'Нужны минимум 2 команды, чтобы начать игру'])
+            setCommonErrors(prevState => [...prevState, 'not-enough-teams-error'])
             return 1;
         }
         return 0;
@@ -30,7 +31,7 @@ const TeamSetupPage = () => {
     function validateEachTeamHasPlayer() {
         const eachTeamHasAtLeastOnePlayer = teams.filter(t => t.players.length < 1)
         if (eachTeamHasAtLeastOnePlayer.length > 0) {
-            setCommonErrors(prevState => [...prevState, 'Нужен минимум 1 игрок в каждой команде'])
+            setCommonErrors(prevState => [...prevState, 'not-enough-players-error'])
             return 1;
         }
         return 0;
@@ -44,14 +45,14 @@ const TeamSetupPage = () => {
                 errorCount++;
                 setTeamError(prevState => [
                     ...prevState,
-                    {error: teamIndex, helperText: "Пустое название команды не разрешено"}
+                    {error: teamIndex, helperText: "empty-team-name-error"}
                 ]);
             } else {
                 if (uniqueTeamNames.has(team.name)) {
                     errorCount++;
                     setTeamError(prevState => [
                         ...prevState,
-                        {error: teamIndex, helperText: "Команда с таким именем уже существует"}
+                        {error: teamIndex, helperText: "existing-team-name-error"}
                     ]);
                 } else {
                     uniqueTeamNames.add(team.name);
@@ -70,14 +71,14 @@ const TeamSetupPage = () => {
                     errorCount++;
                     setPlayerError(prevState => [
                         ...prevState,
-                        {teamIndex, playerIndex, helperText: "Пустое имя игрока не разрешено"}
+                        {teamIndex, playerIndex, helperText: "empty-player-name-error"}
                     ]);
                 } else {
                     if (uniquePlayerNamesInTeam.has(player)) {
                         errorCount++;
                         setPlayerError(prevState => [
                             ...prevState,
-                            {teamIndex, playerIndex, helperText: "Игрок с таким именем уже существует"}
+                            {teamIndex, playerIndex, helperText: "existing-player-name-error"}
                         ]);
                     } else {
                         uniquePlayerNamesInTeam.add(player);
@@ -147,7 +148,7 @@ const TeamSetupPage = () => {
                     marginRight: '12px'
                 }}
             />
-            <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
+            <PrimaryButton onClick={goToNextPage} content={t('continue')}/>
         </Box>
     );
 

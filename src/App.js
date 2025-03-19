@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/integration/react';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {Analytics} from "@vercel/analytics/react";
+import './i18n/config';
 
 function App() {
     const theme = createTheme({

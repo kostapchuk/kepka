@@ -1,12 +1,13 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 import BaseModal from "../components/ui/modal/BaseModal";
 import {setTourChangeModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const TimeLeftInRoundModal = ({doFinishRound}) => {
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const {
         tourChangeModalOpen,
@@ -27,10 +28,10 @@ const TimeLeftInRoundModal = ({doFinishRound}) => {
     return (
         <BaseModal
             open={tourChangeModalOpen}
-            title={`Осталось ${actualLeftTimeInTour} секунд`}
-            content={`Ваша команда закончила тур. У вас осталось ${actualLeftTimeInTour} секунд. Хотите перенести остаток на следующий раз или первыми начать новый раунд с этим временем?`}
-            primaryButtonText="Играть сразу"
-            secondaryButtonText="Перенести"
+            title={t('left-seconds', {actualLeftTimeInTour: actualLeftTimeInTour})}
+            content={t('left-seconds-content', {actualLeftTimeInTour: actualLeftTimeInTour} )}
+            primaryButtonText={t('play-now')}
+            secondaryButtonText={t('postpone')}
             onPrimaryAction={handlePrimaryAction}
             onSecondaryAction={handleSecondaryAction}
         />

@@ -1,16 +1,17 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 import BaseModal from "../components/ui/modal/BaseModal";
 import {reset as resetGame, setRestartGameModalOpen} from "../redux/gameSlice";
 import {reset as resetPage} from "../redux/pageSlice";
 import {reset as resetPlayers} from "../redux/playersSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const RestartGameModal = () => {
 
     const {restartGameModalOpen} = useSelector(state => state.game);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const resetFullGame = () => {
         dispatch(resetGame());
@@ -23,10 +24,10 @@ const RestartGameModal = () => {
     return (
         <BaseModal
             open={restartGameModalOpen}
-            title={`Выход из игры`}
-            content={`Вы действительно хотите выйти из игры? Версия приложения v${APPLICATION_VERSION}`}
-            secondaryButtonText={`Нет`}
-            primaryButtonText={`Да`}
+            title={t('leave-game')}
+            content={t('do-you-want-to-exit-game', {version: APPLICATION_VERSION})}
+            secondaryButtonText={t('no')}
+            primaryButtonText={t('yes')}
             onPrimaryAction={resetFullGame}
             onSecondaryAction={handleClose}
             onClose={handleClose}

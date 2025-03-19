@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import React from 'react';
 
 import {
@@ -11,7 +11,8 @@ import {
     setRoundAnsweredWords,
     setRoundWords,
     setScore,
-    setTour, setTourChangeModalOpen
+    setTour,
+    setTourChangeModalOpen
 } from "../redux/gameSlice";
 import {distinct, shuffle} from "../util/arrayUtils";
 import {setCurrentPage} from "../redux/pageSlice";
@@ -19,11 +20,12 @@ import {Pages} from "../routes";
 import {updatePlayer} from "../redux/playersSlice";
 import PrimaryButton from "./PrimaryButton";
 import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
-const TOURS = {
+export const TOURS = {
     ALIAS: 'ALIAS',
     CROCODILE: 'CROCODILE',
-    ONE_WORD: 'ONE_WORD',
+    ONE_WORD: 'ONE_WORD'
     // DRAWING: 'DRAWING',
 }
 
@@ -42,7 +44,7 @@ const FinishRoundButton = () => {
         roundAnsweredWords
     } = useSelector(state => state.game);
 
-    const dispatch = useDispatch()
+    const {dispatch, t} = useTranslationAndDispatch()
 
     const players = useSelector(state => state.players);
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
@@ -141,7 +143,7 @@ const FinishRoundButton = () => {
     return (
         <>
             <TimeLeftInRoundModal doFinishRound={doFinishRound}/>
-            <PrimaryButton onClick={finishRound} content="Продолжить"/>
+            <PrimaryButton onClick={finishRound} content={t('continue')}/>
         </>
     )
 }

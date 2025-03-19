@@ -1,15 +1,16 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import Typography from "@mui/material/Typography";
 
 import BaseModal from "../components/ui/modal/BaseModal";
 import {setTourChangeModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const ConfirmationTourChangeModal = () => {
 
     const {tourChangeModalOpen, score, showScoreDuringGame} = useSelector(state => state.game);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const closeModal = () => {
         dispatch(setTourChangeModalOpen(false));
@@ -17,7 +18,7 @@ const ConfirmationTourChangeModal = () => {
 
     return <BaseModal
         open={tourChangeModalOpen}
-        title='Тур завершен'
+        title={t('tour-ended')}
         content={
             showScoreDuringGame &&
             Object.entries(score)
@@ -27,9 +28,10 @@ const ConfirmationTourChangeModal = () => {
                 ))
         }
         onlyPrimary
-        primaryButtonText='Следующий тур'
+        primaryButtonText={t('next-tour')}
         onPrimaryAction={closeModal}
-        onClose={() => {}}
+        onClose={() => {
+        }}
         disableEscapeKeyDown
     />
 };

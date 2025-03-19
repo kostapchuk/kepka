@@ -4,9 +4,11 @@ import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import React from "react";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import {useTranslation} from "react-i18next";
 
 const GuessedWordsPage = () => {
     const {roundAnsweredWords} = useSelector(state => state.game);
+    const {t} = useTranslation();
 
     const children = <>
         <Typography sx={{
@@ -15,7 +17,7 @@ const GuessedWordsPage = () => {
             fontWeight: '600'
         }}>Счет: {roundAnsweredWords.length}</Typography>
         <Typography variant="p" sx={{fontSize: "14px", paddingLeft: '8px'}}>
-            Выберите угаданные слова
+            {t('choose-guessed-words')}
         </Typography>
         <GuessedWordsOptions/>
     </>;

@@ -3,13 +3,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from 'react';
 
-import {setRestartGameModalOpen} from "../redux/gameSlice";4
+import {setRestartGameModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+
+4
 
 const TOURS_MAPPING = {
-    ALIAS: 'Алиас',
-    CROCODILE: 'Крокодил',
-    ONE_WORD: 'Одно слово',
-    // DRAWING: 'Рисование',
+    ALIAS: 'alias',
+    CROCODILE: 'crocodile',
+    ONE_WORD: 'one-word'
+    // DRAWING: 'drawing',
 }
 
 const GameHeader = () => {
@@ -23,20 +26,24 @@ const GameHeader = () => {
 
     const players = useSelector(state => state.players);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     return (
         <Box sx={{display: "flex", justifyContent: 'space-between'}}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h3" sx={{fontSize: "42px"}} onClick={() => !roundInProgress && dispatch(setRestartGameModalOpen(true))}>
-              🚪
-            </Typography>
-            <Typography variant="h3" sx={{fontSize: "24px"}}>
-              Тур {<Typography variant="" sx={{fontSize: "24px", fontWeight: '600'}}>{TOURS_MAPPING[tour]}</Typography>}
-            </Typography>
-          </Box>
+            <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                <Typography variant="h3" sx={{fontSize: "42px"}}
+                            onClick={() => !roundInProgress && dispatch(setRestartGameModalOpen(true))}>
+                    🚪
+                </Typography>
+                <Typography variant="h3" sx={{fontSize: "24px"}}>
+                    {t('tour')}{" "}<Typography variant="" sx={{
+                    fontSize: "24px",
+                    fontWeight: '600'
+                }}>{t(TOURS_MAPPING[tour])}</Typography>
+                </Typography>
+            </Box>
             <Box>
-                <Typography>Загадывает</Typography>
+                <Typography>{t('asker')}</Typography>
                 <Typography>{players.filter(
                     p => p.gameId === currentGameId && p.teamId === currentTeam
                         && p.asker)[0].name} ({currentTeam})</Typography>

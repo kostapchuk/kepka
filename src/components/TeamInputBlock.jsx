@@ -2,8 +2,9 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import {setTeams} from "@/redux/gameSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import React, {useEffect, useRef, useState} from "react";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const TeamInputBlock = ({
                             teamName,
@@ -11,21 +12,21 @@ const TeamInputBlock = ({
                             error,
                             teamIndex
                         }) => {
-    const dispatch = useDispatch();
-    const { teams } = useSelector(state => state.game);
+    const {dispatch, t} = useTranslationAndDispatch();
+    const {teams} = useSelector(state => state.game);
     const [newTeamName, setNewTeamName] = useState('');
     const inputRef = useRef(null);
 
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
-        updatedTeams[index] = { ...updatedTeams[index], name: name };
+        updatedTeams[index] = {...updatedTeams[index], name: name};
         dispatch(setTeams(updatedTeams));
     };
 
     const handleNewTeamBlur = () => {
         const trimmedName = newTeamName.trim();
         if (trimmedName !== '') {
-            dispatch(setTeams([...teams, { name: trimmedName, players: [] }]));
+            dispatch(setTeams([...teams, {name: trimmedName, players: []}]));
             setNewTeamName('');
         }
     };
@@ -40,7 +41,7 @@ const TeamInputBlock = ({
 
     const handleClick = () => {
         if (newTeamName.trim() === '') {
-            setNewTeamName('Команда ' + (teams.length + 1));
+            setNewTeamName(`${t('team')} ` + (teams.length + 1));
         }
     };
 
@@ -72,7 +73,7 @@ const TeamInputBlock = ({
     }, [newTeam, newTeamName]);
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{display: 'flex'}}>
             <TextField
                 inputRef={inputRef}
                 sx={{
@@ -99,7 +100,7 @@ const TeamInputBlock = ({
                     marginTop: '16px',
                     fontWeight: '600'
                 }}
-                placeholder={newTeam ? "Название команды" : ""}
+                placeholder={newTeam ? t('team-name') : ""}
                 value={newTeam ? newTeamName : teamName}
                 onChange={(e) =>
                     newTeam ? handleTeamNameChange(e.target.value) : handleTeamNameChangeByIndex(teamIndex, e.target.value)
@@ -120,7 +121,7 @@ const TeamInputBlock = ({
                 }}
                 onKeyDown={handleKeyDown}
                 error={error?.error}
-                helperText={error?.helperText}
+                helperText={t(error?.helperText)}
             />
             <img
                 src="/close.svg"
