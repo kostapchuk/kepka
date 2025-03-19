@@ -41,6 +41,3 @@ jobs:
         with:
           start: npm start
           browser: chrome
-        env:
-          REACT_APP_SUPABASE_DOMAIN: ${{secrets.REACT_APP_SUPABASE_DOMAIN}}
-          REACT_APP_SUPABASE_API_KEY: ${{secrets.REACT_APP_SUPABASE_API_KEY}}
