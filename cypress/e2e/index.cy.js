@@ -35,7 +35,7 @@ describe('Team setup page tests', () => {
     it('verify valid input', () => {
         cy.contains('Настройка игры 1 / 3').should('be.visible');
         cy.get('input[placeholder="Название команды"]').click().type('{enter}');
-        cy.get('input[placeholder="Введите имя игрока"]').click().type('Your text here').type('{enter}');
+cy.get('input[placeholder="Введите имя игрока"]').click().type('Test Player Name').type('{enter}');
         cy.get('input[placeholder="Название команды"]').click().type('{enter}');
 cy.get('input[placeholder="Введите имя игрока"]').last().click().type('Another Test Player').type('{enter}');
 
