@@ -11,7 +11,7 @@ import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 const TOURS_MAPPING = {
     ALIAS: 'alias',
     CROCODILE: 'crocodile',
-    ONE_WORD: 'one-word'
+    ONE_WORD: 'one_word'
     // DRAWING: 'drawing',
 }
 

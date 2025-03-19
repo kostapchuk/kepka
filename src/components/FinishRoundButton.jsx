@@ -21,6 +21,7 @@ import {updatePlayer} from "../redux/playersSlice";
 import PrimaryButton from "./PrimaryButton";
 import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {addStats, clearRoundWordStats} from "../redux/statisticsSlice";
 
 export const TOURS = {
     ALIAS: 'ALIAS',
@@ -43,6 +44,7 @@ const FinishRoundButton = () => {
         timer: roundDuration,
         roundAnsweredWords
     } = useSelector(state => state.game);
+    const {roundWordStats} = useSelector(state => state.statistics)
 
     const {dispatch, t} = useTranslationAndDispatch()
 
@@ -62,8 +64,10 @@ const FinishRoundButton = () => {
     }
 
     const doFinishRound = (continueNow) => {
-        dispatch(setCurrentPage(Pages.GAME_PAGE))
+        dispatch(setCurrentPage(Pages.GAME_PAGE));
         const actualLeftWords = tourLeftWords.filter(item => !roundAnsweredWords.includes(item))
+        roundWordStats.filter(s => roundAnsweredWords.includes(s.word)).forEach(s => dispatch(addStats(s)))
+        dispatch(clearRoundWordStats());
         dispatch(setLeftWords(shuffle(actualLeftWords)))
         const leftTime = leftSeconds[currentTeam] - elapsedTime
         const continueNowTime = Number((tour === TOURS.CROCODILE ? Math.round(leftTime / 2) : leftTime))
