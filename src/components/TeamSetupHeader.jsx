@@ -1,22 +1,18 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Tooltip from "@mui/material/Tooltip";
-import React, {useState} from "react";
+import React from "react";
+import {setLanguageModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const TeamSetupHeader = () => {
-    const [tooltipOpen, setTooltipOpen] = useState(false);
+
+    const {dispatch, t} = useTranslationAndDispatch();
 
     return (
         <Box sx={{display: "flex", justifyContent: "space-between", mb: 1}}>
             <Typography variant="h3" sx={{fontSize: "24px", fontWeight: '600'}}>Настройка игры 1 / 3</Typography>
-            <Tooltip
-                title="Скоро"
-                arrow
-                open={tooltipOpen}
-                onClose={() => setTooltipOpen(false)}
-            >
-                <img src="/language.svg" alt="Change language" width="28" onClick={() => setTooltipOpen(true)}/>
-            </Tooltip>
+            <img src="/language.svg" alt="Change language" width="28"
+                 onClick={() => dispatch(setLanguageModalOpen(true))}/>
         </Box>
     );
 }

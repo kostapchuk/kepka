@@ -10,6 +10,7 @@ import RestartGameModal from "../components/RestartGameModal";
 import GamePage from "../pages/GamePage";
 import GuessedWordsPage from "../pages/GuessedWordsPage";
 import RandomizerModal from "../components/RandomizerModal";
+import LanguageChangeModal from "../components/LanguageChangeModal";
 
 const AppRouter = () => {
 
@@ -25,6 +26,7 @@ const AppRouter = () => {
             {currentPage === Pages.ROUND_SCORE_PAGE && <GuessedWordsPage/>}
             <RestartGameModal/>
             <RandomizerModal/>
+            <LanguageChangeModal/>
         </>
     );
 };

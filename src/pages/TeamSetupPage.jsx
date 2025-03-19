@@ -11,13 +11,14 @@ import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
 import PrimaryButton from "../components/PrimaryButton";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 import {setRandomizerModalOpen} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const TeamSetupPage = () => {
-    const dispatch = useDispatch();
     const {currentGameId, teams} = useSelector(state => state.game);
     const [teamError, setTeamError] = useState([]);
     const [playerError, setPlayerError] = useState([]);
     const [commonErrors, setCommonErrors] = useState([]);
+    const {dispatch, t} = useTranslationAndDispatch();
 
     function validateTeamsCount() {
         if (teams.length < 2) {
@@ -147,7 +148,7 @@ const TeamSetupPage = () => {
                     marginRight: '12px'
                 }}
             />
-            <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
+            <PrimaryButton onClick={goToNextPage} content={t('continue')}/>
         </Box>
     );
 
