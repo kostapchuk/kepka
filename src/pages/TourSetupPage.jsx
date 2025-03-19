@@ -1,15 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentPage} from "@/redux/pageSlice";
-import {Pages} from "@/routes";
-import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "@/redux/gameSlice";
+import React, {useRef, useState} from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import React, {useRef, useState} from "react";
-import {random} from "@/util/arrayUtils";
+
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
+import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "../redux/gameSlice";
+import {random} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
-import {PurpleSwitcherNoLabel} from "@/components/Switcher";
-import ScrollablePageWithStickyFooter from "@/components/ScrollablePageWithStickyFooter";
+import {PurpleSwitcherNoLabel} from "../components/Switcher";
+import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 
 const TourSetupPage = () => {
 

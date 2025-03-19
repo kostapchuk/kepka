@@ -1,15 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentPage} from "@/redux/pageSlice";
-import {Pages} from "@/routes";
-import Tooltip from "@mui/material/Tooltip";
-import {addPlayers} from "@/redux/playersSlice";
-import {randomIndex} from "@/util/arrayUtils";
+import Box from "@mui/material/Box";
+import React, {useState} from "react";
+
+import {setCurrentPage} from "../redux/pageSlice";
+import {Pages} from "../routes";
+import {addPlayers} from "../redux/playersSlice";
+import {randomIndex} from "../util/arrayUtils";
 import TeamSetupHeader from "../components/TeamSetupHeader";
 import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
-import React, {useState} from "react";
 import PrimaryButton from "../components/PrimaryButton";
-import Box from "@mui/material/Box";
-import ScrollablePageWithStickyFooter from "@/components/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import {setRandomizerModalOpen} from "../redux/gameSlice";
 
 const TeamSetupPage = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,6 @@ const TeamSetupPage = () => {
     const [teamError, setTeamError] = useState([]);
     const [playerError, setPlayerError] = useState([]);
     const [commonErrors, setCommonErrors] = useState([]);
-    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     function validateTeamsCount() {
         if (teams.length < 2) {
@@ -136,24 +136,17 @@ const TeamSetupPage = () => {
             justifyContent: 'space-around',
             alignItems: 'center'
         }}>
-            <Tooltip
-                title="Скоро"
-                arrow
-                open={tooltipOpen}
-                onClose={() => setTooltipOpen(false)}
-            >
-                <img
-                    src="/random-arrows.svg"
-                    onClick={() => setTooltipOpen(true)}
-                    alt="Generate teams"
-                    style={{
-                        backgroundColor: '#f0f0f0',
-                        padding: '12px',
-                        borderRadius: '12px',
-                        marginRight: '12px'
-                    }}
-                />
-            </Tooltip>
+            <img
+                src="/random-arrows.svg"
+                onClick={() => dispatch(setRandomizerModalOpen(true))}
+                alt="Generate teams"
+                style={{
+                    backgroundColor: '#f0f0f0',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    marginRight: '12px'
+                }}
+            />
             <PrimaryButton onClick={goToNextPage} content="Продолжить"/>
         </Box>
     );

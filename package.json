@@ -1,6 +1,6 @@
 {
   "name": "kepka",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "private": true,
   "dependencies": {
     "@fontsource/montserrat": "^5.1.1",
