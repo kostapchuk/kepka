@@ -10,7 +10,7 @@ const TeamSetupHeader = () => {
 
     return (
         <Box sx={{display: "flex", justifyContent: "space-between", mb: 1}}>
-            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: '600'}}>Настройка игры 1 / 3</Typography>
+            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: '600'}}>{t('game-settings')} 1 / 3</Typography>
             <img src="/language.svg" alt="Change language" width="28"
                  onClick={() => dispatch(setLanguageModalOpen(true))}/>
         </Box>

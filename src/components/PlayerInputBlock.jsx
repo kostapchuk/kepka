@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 
-import { setTeams } from "../redux/gameSlice";
+import {setTeams} from "../redux/gameSlice";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const PlayerInputBlock = ({
                               teamIndex,
@@ -14,8 +15,8 @@ const PlayerInputBlock = ({
                           }) => {
     const [newPlayerName, setNewPlayerName] = useState('');
     const inputRef = useRef(null);
-    const dispatch = useDispatch();
-    const { teams } = useSelector(state => state.game);
+    const {dispatch, t} = useTranslationAndDispatch();
+    const {teams} = useSelector(state => state.game);
 
     const handlePlayerNameChange = (teamIndex, name) => {
         setNewPlayerName(name);
@@ -82,7 +83,7 @@ const PlayerInputBlock = ({
     }, [newPlayer, newPlayerName, teamIndex, teams]);
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+        <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '16px'}}>
             <TextField
                 inputRef={inputRef}
                 sx={{
@@ -105,7 +106,7 @@ const PlayerInputBlock = ({
                     flex: 1,
                     minWidth: '50px'
                 }}
-                placeholder={newPlayer ? "Введите имя игрока" : ""}
+                placeholder={newPlayer ? t('enter-player-name') : ""}
                 value={newPlayer ? newPlayerName : player}
                 onChange={(e) =>
                     newPlayer
@@ -117,7 +118,7 @@ const PlayerInputBlock = ({
                 onKeyDown={handleKeyDown}
                 fullWidth
                 error={!!error}
-                helperText={error?.helperText}
+                helperText={t(error?.helperText)}
             />
             <img
                 src="/close.svg"

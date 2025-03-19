@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import OpenWordButton from "./OpenWordButton";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
     setCurrentWord,
     setRoundAnsweredWords,
@@ -14,6 +14,7 @@ import {random} from "@/util/arrayUtils";
 import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
 import React from 'react';
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const GameTab = () => {
 
@@ -27,7 +28,7 @@ const GameTab = () => {
         roundInProgress
     } = useSelector(state => state.game);
 
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
 
     const startTimer = () => {
         if (!timerRunning) {
@@ -65,11 +66,11 @@ const GameTab = () => {
                         </Typography>
                         : <>
                             <Typography variant="h2" sx={{fontWeight: '600', fontSize: '30px'}}>
-                                Начать игру
+                                {t('start-game')}
                             </Typography>
                             {showLeftWords &&
                                 <Typography sx={{fontSize: '14px', display: 'block', opacity: '60%'}}>
-                                    Осталось слов: {tourLeftWords.length}
+                                    {t('left-words')}: {tourLeftWords.length}
                                 </Typography>}
                         </>}
                 </Box>

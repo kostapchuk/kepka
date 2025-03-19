@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -7,20 +7,20 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 
-import { setCurrentPage } from "../redux/pageSlice";
-import { setLeftWords, setShowLeftWords, setWords, setWordsCount, setWordsDifficulty } from "../redux/gameSlice";
-import { Pages } from "../routes";
-import { shuffle } from "../util/arrayUtils";
-import { wordsByDifficultyLevel } from "../util/words";
+import {setCurrentPage} from "../redux/pageSlice";
+import {setLeftWords, setShowLeftWords, setWords, setWordsCount, setWordsDifficulty} from "../redux/gameSlice";
+import {Pages} from "../routes";
+import {shuffle} from "../util/arrayUtils";
+import {wordsByDifficultyLevel} from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
-import { PurpleSwitcherNoLabel } from "../components/Switcher";
+import {PurpleSwitcherNoLabel} from "../components/Switcher";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 import {useTranslation} from "react-i18next";
 
 const DIFFICULTY_OPTIONS = [
-    { value: "EASY", label: "Низкая" },
-    { value: "MEDIUM", label: "Средняя" },
-    { value: "HARD", label: "Сложная" }
+    {value: "EASY", label: "easy"},
+    {value: "MEDIUM", label: "medium"},
+    {value: "HARD", label: "hard"}
 ];
 
 const DIFFICULTY_OPTIONS = [
@@ -30,23 +30,23 @@ const DIFFICULTY_OPTIONS = [
 ];
 
 const WordsSetupPage = () => {
-    const { wordsCount, showLeftWords, wordsDifficulty } = useSelector(state => state.game);
+    const {wordsCount, showLeftWords, wordsDifficulty} = useSelector(state => state.game);
     const dispatch = useDispatch();
     const [error, setError] = useState('');
     const [selectOpen, setSelectOpen] = useState(false);
     const inputRef = useRef(null);
-    const { i18n } = useTranslation();
+    const {i18n, t} = useTranslation();
 
     const validateWordsCount = () => {
         const intDigits = /^[0-9]+$/;
         if (!intDigits.test(wordsCount)) {
-            setError('Только положительные цифры разрешены');
+            setError(t('only-positive-allowed'));
             return false;
         }
 
         const wordsCountNum = Number(wordsCount);
         if (wordsCountNum === 0 || wordsCountNum >= 100) {
-            setError('Количество слов должно быть от 1 до 100');
+            setError(t('words-count-per-round'));
             return false;
         }
 
@@ -85,19 +85,19 @@ const WordsSetupPage = () => {
 
     const renderContent = () => (
         <>
-            <Box sx={{ display: "flex", mb: 1 }}>
+            <Box sx={{display: "flex", mb: 1}}>
                 <img
                     src="/back.svg"
                     alt="Back"
                     onClick={handleNavigateBack}
-                    style={{ marginRight: '12px' }}
+                    style={{marginRight: '12px'}}
                 />
-                <Typography variant="h3" sx={{ fontSize: "24px", fontWeight: "600" }}>
-                    Настройка игры 2 / 3
+                <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>
+                    {t('game-settings')} 2 / 3
                 </Typography>
             </Box>
-            <Typography sx={{ fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5 }}>
-                Слов в игре
+            <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5}}>
+                {t('words-in-game')}
             </Typography>
             <TextField
                 type="tel"
@@ -106,12 +106,12 @@ const WordsSetupPage = () => {
                     borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
-                        '& fieldset': { borderColor: '#D1D1D1' },
-                        '&:hover fieldset': { borderColor: '#D1D1D1' },
-                        '&.Mui-focused fieldset': { borderColor: '#7A51EC' }
+                        '& fieldset': {borderColor: '#D1D1D1'},
+                        '&:hover fieldset': {borderColor: '#D1D1D1'},
+                        '&.Mui-focused fieldset': {borderColor: '#7A51EC'}
                     },
-                    '&:focus': { backgroundColor: 'transparent' },
-                    width: '100%',
+                    '&:focus': {backgroundColor: 'transparent'},
+                    width: '100%'
                 }}
                 error={error !== ''}
                 helperText={error}
@@ -119,8 +119,8 @@ const WordsSetupPage = () => {
                 onChange={handleWordsCountChange}
                 onFocus={handleFocus}
             />
-            <Typography sx={{ fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5 }}>
-                Сложность слов
+            <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
+                {t('words-difficulty')}
             </Typography>
             <FormControl fullWidth>
                 <Select
@@ -144,8 +144,8 @@ const WordsSetupPage = () => {
                     variant="outlined"
                     sx={{
                         borderRadius: '12px',
-                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#D1D1D1' },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#7A51EC' }
+                        '&:hover .MuiOutlinedInput-notchedOutline': {borderColor: '#D1D1D1'},
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {borderColor: '#7A51EC'}
                     }}
                     MenuProps={{
                         PaperProps: {
@@ -164,17 +164,17 @@ const WordsSetupPage = () => {
                         <MenuItem
                             key={option.value}
                             value={option.value}
-                            sx={{ height: 48, margin: '0 8px' }}
+                            sx={{height: 48, margin: '0 8px'}}
                         >
-                            {option.label}
+                            {t(option.label)}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
 
             <Box>
-                <Typography sx={{ fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5 }}>
-                    Показывать количество оставшихся слов
+                <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
+                    {t('show-left-words')}
                 </Typography>
                 <PurpleSwitcherNoLabel
                     checked={showLeftWords}
@@ -187,7 +187,7 @@ const WordsSetupPage = () => {
     return (
         <ScrollablePageWithStickyFooter
             children={renderContent()}
-            footer={<PrimaryButton onClick={goToTourSetupPage} content="Продолжить" />}
+            footer={<PrimaryButton onClick={goToTourSetupPage} content={t('continue')}/>}
         />
     );
 };

@@ -7,7 +7,6 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'ru',
-        lng: 'ru',
         resources: {
             ru: {
                 translations: require('./locales/ru/translations.json')

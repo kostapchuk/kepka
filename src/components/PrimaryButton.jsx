@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from "@mui/material/Button";
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 
 const StyledButton = styled(Button)({
     width: '100%',
@@ -13,7 +13,7 @@ const StyledButton = styled(Button)({
     textTransform: 'none'
 });
 
-const PrimaryButton = ({ onClick, content }) => {
+const PrimaryButton = ({onClick, content}) => {
     return (
         <StyledButton onClick={onClick}>
             {content}

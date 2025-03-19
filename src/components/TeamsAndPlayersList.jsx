@@ -38,7 +38,7 @@ const TeamsAndPlayersList = ({
                 </>
             ))}
             <TeamInputBlock newTeam teamIndex={-1}/>
-            {commonErrors.map(error => <Typography color={theme.palette.error.main}>{error}</Typography>)}
+            {commonErrors.map(error => <Typography color={theme.palette.error.main}>{t(error)}</Typography>)}
         </>
     )
 }

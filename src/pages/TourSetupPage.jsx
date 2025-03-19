@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import React, {useRef, useState} from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -11,29 +11,31 @@ import {random} from "../util/arrayUtils";
 import PrimaryButton from "../components/PrimaryButton";
 import {PurpleSwitcherNoLabel} from "../components/Switcher";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {TOURS} from "../components/FinishRoundButton";
 
 const TourSetupPage = () => {
 
     const {timer, currentGameId, showScoreDuringGame} = useSelector(state => state.game);
-    const dispatch = useDispatch();
+    const {dispatch, t} = useTranslationAndDispatch();
     const players = useSelector(state => state.players);
     const [error, setError] = useState('');
 
     const goToGamePage = () => {
         const intDigits = /^[0-9]+$/;
         if (!intDigits.test(timer)) {
-            setError('Только положительные цифры разрешены');
+            setError(t('only-positive-allowed'));
             return;
         }
         const timerNum = Number(timer);
         if (timerNum === 0 || timerNum >= 600) {
-            setError('Длительность раунда должна быть до 10 минут');
+            setError(t('round-duration-err'));
             return;
         }
         setError('');
 
         dispatch(setCurrentPage(Pages.GAME_PAGE));
-        dispatch(setTour('Алиас'))
+        dispatch(setTour(TOURS.ALIAS))
         const currentPlayersInGame = players.filter(p => p.gameId === currentGameId)
         dispatch(setCurrentTeam(random(currentPlayersInGame).teamId))
         const leftSeconds = {}
@@ -63,10 +65,10 @@ const TourSetupPage = () => {
     const children = <>
         <Box sx={{display: "flex", mb: 1}}>
             <img src="/back.svg" alt="Back" onClick={onBackClick} style={{marginRight: '12px'}}/>
-            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>Настройка игры 3 / 3</Typography>
+            <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>{t('game-settings')} 3 / 3</Typography>
         </Box>
         <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5}}>
-            Длительность раунда
+            {t('round-duration')}
         </Typography>
         <TextField
             type="tel"
@@ -88,7 +90,7 @@ const TourSetupPage = () => {
                 '&:focus': {
                     backgroundColor: 'transparent'
                 },
-                width: '100%',
+                width: '100%'
             }}
             error={error !== ''}
             helperText={error}
@@ -98,7 +100,7 @@ const TourSetupPage = () => {
         />
         <Box>
             <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
-                Показывать очки команд во время игры
+                {t('show-score-during-game')}
             </Typography>
             <PurpleSwitcherNoLabel
                 checked={showScoreDuringGame}
@@ -107,7 +109,7 @@ const TourSetupPage = () => {
         </Box>
     </>
 
-    const footer = <PrimaryButton onClick={goToGamePage} content="Перейти к игре"/>
+    const footer = <PrimaryButton onClick={goToGamePage} content={t('go-to-game')}/>
 
     return (
         <ScrollablePageWithStickyFooter

@@ -1,12 +1,14 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import React from "react";
+import React, {useTransition} from "react";
 import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
 
 const ResultsTab = () => {
 
     const {score} = useSelector(state => state.game);
+    const {t} = useTranslation();
 
     const topTeam = Object.entries(score).reduce((highest, [team, currentScore]) => {
         return currentScore > highest[1] ? [team, currentScore] : highest;
@@ -21,7 +23,7 @@ const ResultsTab = () => {
                 justifyContent: 'center'
             }}>
                 <Typography variant="h3" sx={{fontSize: "20px", fontWeight: "600"}}>
-                    Поздравляем победителей!
+                    {t('congratulations')}
                 </Typography>
                 <img src="/cap.png" alt="Cap" style={{width: '100px', paddingTop: '32px'}}/>
                 <Typography sx={{fontSize: '16px', pt: 2.5}}>
@@ -31,7 +33,7 @@ const ResultsTab = () => {
                     {topTeam[1]}
                 </Typography>
                 <Divider sx={{width: '95%', border: '1px solid #D1D1D1', mt: 4, mb: 2}}/>
-                <Typography>🔜 Скоро здесь будет статистика игры</Typography>
+                <Typography>🔜 {t('soon-statistics')}</Typography>
             </Box>
             {/*word, player, team, tour, round, time*/}
             {/*<Typography>Статистика игры:</Typography>*/}
