@@ -23,11 +23,12 @@ const GameAndScoresTabs = ({
             borderRadius: '100px'
         },
         active: {
+            borderColor: '#D1D1D1',
             backgroundColor: "#F0F0F0",
             color: "#6B6B6B"
         },
         inactive: {
-            borderColor: '#D1D1D1',
+            borderColor: '#000000',
             backgroundColor: "#000000",
             color: "#FFFFFF"
         }
