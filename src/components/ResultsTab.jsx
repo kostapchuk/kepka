@@ -258,7 +258,7 @@ const ResultsTab = () => {
                                 отгадывание
                             </Typography>
                             <Typography>
-                                📌Самое сложное слово в туре {t(tour.toLowerCase())} - {wordByTourStats[tour]?.word}.
+                                📌Самое сложное слово в туре {t(tour.toLowerCase())} - {wordByTourStats[tour]?.hardest?.word}.
                                 Команды потратили аж {wordByTourStats[tour]?.hardest?.duration} секунд на
                                 отгадывание
                             </Typography>
