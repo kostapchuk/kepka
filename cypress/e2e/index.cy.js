@@ -3,6 +3,8 @@ const deploymentUrl = 'http://localhost:3000';
 describe('Team setup page tests', () => {
     beforeEach(() => {
         cy.visit(deploymentUrl)
+        cy.get('img[alt="Change language"]').click();
+        cy.get('img[src="/ru.svg"]').click();
     })
 
     it('verify 2 errors when no teams and no players present', () => {
