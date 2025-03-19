@@ -15,6 +15,7 @@ import { wordsByDifficultyLevel } from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
 import { PurpleSwitcherNoLabel } from "../components/Switcher";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import {useTranslation} from "react-i18next";
 
 const DIFFICULTY_OPTIONS = [
     { value: "EASY", label: "Низкая" },
@@ -34,6 +35,7 @@ const WordsSetupPage = () => {
     const [error, setError] = useState('');
     const [selectOpen, setSelectOpen] = useState(false);
     const inputRef = useRef(null);
+    const { i18n } = useTranslation();
 
     const validateWordsCount = () => {
         const intDigits = /^[0-9]+$/;
@@ -55,7 +57,7 @@ const WordsSetupPage = () => {
     const goToTourSetupPage = () => {
         if (!validateWordsCount()) return;
 
-        const words = shuffle(wordsByDifficultyLevel[wordsDifficulty]).slice(0, wordsCount);
+        const words = shuffle(wordsByDifficultyLevel[i18n.language][wordsDifficulty]).slice(0, wordsCount);
         dispatch(setWords(words));
         dispatch(setLeftWords(words));
         dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));
