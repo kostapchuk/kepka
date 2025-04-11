@@ -61,5 +61,6 @@
   "statistics-tour-best-player": "Лучший игрок {{player}} из команды {{team}} успел загадать {{wordCount}}",
   "statistics-by-tour": "Статистика по туру {{tour}}",
   "statistics-tour-easiest-word": "Самое простое слово - {{word}}. Команда {{team}} потратила всего {{duration}} секунд на отгадывание",
-  "statistics-tour-hardest-word": "Самое сложное слово - {{word}}. Команда {{team}} потратила аж {{duration}} секунд на отгадывание"
+  "statistics-tour-hardest-word": "Самое сложное слово - {{word}}. Команда {{team}} потратила аж {{duration}} секунд на отгадывание",
+  "score": "Счет"
 }
