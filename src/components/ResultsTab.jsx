@@ -53,7 +53,7 @@ const ResultsTab = () => {
             {t("congratulations")}
           </Typography>
 
-          <img src="/cap.png" alt="Cap"
+          <img src="/cap-0-v1.svg" alt="Cap"
                style={{width: "100px", paddingTop: "32px"}}/>
 
           <Typography sx={{fontSize: "16px", pt: 2.5}}>
