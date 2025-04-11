@@ -35,11 +35,8 @@ const GameHeader = () => {
                             onClick={() => !roundInProgress && dispatch(setRestartGameModalOpen(true))}>
                     🚪
                 </Typography>
-                <Typography variant="h3" sx={{fontSize: "24px"}}>
-                    {t('tour')}{" "}<Typography variant="" sx={{
-                    fontSize: "24px",
-                    fontWeight: '600'
-                }}>{t(TOURS_MAPPING[tour])}</Typography>
+                <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>
+                    {t(TOURS_MAPPING[tour])}
                 </Typography>
             </Box>
             <Box>
