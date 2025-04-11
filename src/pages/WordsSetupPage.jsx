@@ -18,9 +18,9 @@ import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStic
 import {useTranslation} from "react-i18next";
 
 const DIFFICULTY_OPTIONS = [
-    { value: "EASY", label: "Низкая" },
-    { value: "MEDIUM", label: "Средняя" },
-    { value: "HARD", label: "Сложная" }
+    { value: "EASY", label: "easy" },
+    { value: "MEDIUM", label: "medium" },
+    { value: "HARD", label: "hard" }
 ];
 
 const WordsSetupPage = () => {
