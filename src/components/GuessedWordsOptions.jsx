@@ -13,10 +13,10 @@ const GuessedWordsOptions = () => {
     const dispatch = useDispatch();
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, mt: 3}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, mt: 2}}>
             {
                 [...roundWords].reverse().map((option, index) => (
-                    <FormControlLabel key={index} sx={{m: 0, p: 0, mb: 2}} control={<Checkbox
+                    <FormControlLabel key={index} sx={{m: 0, p: 0, mb: 2.5}} control={<Checkbox
                         key={index}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
@@ -26,15 +26,15 @@ const GuessedWordsOptions = () => {
                                 dispatch(setRoundAnsweredWords([...roundAnsweredWords, option]));
                             }
                         }}
-                        checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '28px', height: '28px' }} />}
-                        icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '28px', height: '28px' }} />}
+                        checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '34px', height: '34px' }} />}
+                        icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '34px', height: '34px' }} />}
                         sx={{
-                            height: '28px',
+                            height: '36px',
                             '&.Mui-checked': {
                                 color: '#7A51EC'
                             },
                         }}
-                    />} label={<Typography variant="body1" sx={{fontSize: '20px'}}>{option}</Typography>}
+                    />} label={<Typography variant="body1" sx={{fontSize: '28px'}}>{option}</Typography>}
                     />
                 ))
             }

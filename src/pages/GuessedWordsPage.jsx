@@ -16,7 +16,7 @@ const GuessedWordsPage = () => {
             fontSize: '20px',
             fontWeight: '600'
         }}>{t('score')}: {roundAnsweredWords.length}</Typography>
-        <Typography variant="p" sx={{paddingLeft: '8px'}}>
+        <Typography variant="p" sx={{fontSize: '18px',paddingLeft: '8px'}}>
             {t('choose-guessed-words')}
         </Typography>
         <GuessedWordsOptions/>
