@@ -26,8 +26,8 @@ const ResultsTab = () => {
 
   const topTeam = useMemo(() => {
     return Object.entries(score).reduce(
-        (highest, [team, currentScore]) =>
-            currentScore > highest[1] ? [team, currentScore] : highest,
+        (highest, [team, currentScore], currentIndex) =>
+            currentScore > highest[1] ? [team, currentScore, currentIndex] : highest,
         ["", -Infinity]
     );
   }, [score]);
@@ -53,7 +53,7 @@ const ResultsTab = () => {
             {t("congratulations")}
           </Typography>
 
-          <img src="/cap-0-v1.svg" alt="Cap"
+          <img src={`/cap-${topTeam[2] % 3}-v1.svg`} alt="Cap"
                style={{width: "100px", paddingTop: "32px"}}/>
 
           <Typography sx={{fontSize: "16px", pt: 2.5}}>
