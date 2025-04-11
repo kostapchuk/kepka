@@ -52,5 +52,14 @@
   "easy": "Низкая",
   "medium": "Средняя",
   "hard": "Сложная",
-  "end-game": "Конец игры"
+  "end-game": "Конец игры",
+  "statistics-general-easiest-word": "Самое простое слово - {{word}}. Команды потратили всего {{duration}} секунд на отгадывание",
+  "statistics-general-hardest-word": "Самое сложное слово - {{word}}. Команды потратили аж {{duration}} секунд на отгадывание",
+  "show-detailed-statistics": "Показать детальную статистику",
+  "hide-detailed-statistics": "Скрыть детальную статистику",
+  "statistics-tour-best-team": "Лучшая команда {{team}}, игроки которой угадали {{wordCount}} слов",
+  "statistics-tour-best-player": "Лучший игрок {{player}} из команды {{team}} успел загадать {{wordCount}}",
+  "statistics-by-tour": "Статистика по туру {{tour}}",
+  "statistics-tour-easiest-word": "Самое простое слово - {{word}}. Команда {{team}} потратила всего {{duration}} секунд на отгадывание",
+  "statistics-tour-hardest-word": "Самое сложное слово - {{word}}. Команда {{team}} потратила аж {{duration}} секунд на отгадывание"
 }

@@ -33,6 +33,6 @@ export const statisticsSlice = createSlice({
     }
 })
 
-export const {addStats, setLastClick, addRoundWordStats, clearRoundWordStats, updateRoundWordStatsDuration} = statisticsSlice.actions
+export const {reset, addStats, setLastClick, addRoundWordStats, clearRoundWordStats, updateRoundWordStatsDuration} = statisticsSlice.actions
 
 export default statisticsSlice.reducer
