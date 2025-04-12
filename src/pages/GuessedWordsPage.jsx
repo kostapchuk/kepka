@@ -12,11 +12,11 @@ const GuessedWordsPage = () => {
 
     const children = <>
         <Typography sx={{
-            padding: '16px 16px 8px 16px',
+            padding: '16px 16px 8px 8px',
             fontSize: '20px',
             fontWeight: '600'
-        }}>Счет: {roundAnsweredWords.length}</Typography>
-        <Typography variant="p" sx={{fontSize: "14px", paddingLeft: '8px'}}>
+        }}>{t('score')}: {roundAnsweredWords.length}</Typography>
+        <Typography variant="p" sx={{fontSize: '18px',paddingLeft: '8px'}}>
             {t('choose-guessed-words')}
         </Typography>
         <GuessedWordsOptions/>

@@ -13,9 +13,9 @@ const ScoresTab = () => {
 
     return (
         <>
-            {Object.entries(score).map(([key, value]) => (
+            {Object.entries(score).map(([key, value], index) => (
                 <Box sx={{display: 'flex', mb: 2.5}}>
-                    <img src="/cap.png" alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
+                    <img src={`/cap-${index % 3}-v1.svg`} alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
                     <Box>
                         <Typography sx={{fontSize: '16px'}}>{key}</Typography>
                         {(showScoreDuringGame || currentPage === Pages.RESULTS_PAGE) &&

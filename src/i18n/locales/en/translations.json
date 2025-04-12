@@ -61,5 +61,6 @@
   "statistics-tour-best-player": "Best player is {{player}} from team {{team}} managed to successfully ask {{wordCount}}",
   "statistics-by-tour": "Statistics by tour {{tour}}",
   "statistics-tour-easiest-word": "The easiest word is {{word}}. Team {{team}} spent only {{duration}} seconds to guess it",
-  "statistics-tour-hardest-word": "The hardest word is {{word}}. Team {{team}} spent significant {{duration}} seconds to guess it"
+  "statistics-tour-hardest-word": "The hardest word is {{word}}. Team {{team}} spent significant {{duration}} seconds to guess it",
+  "score": "Score"
 }

@@ -2,12 +2,12 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
 const OpenWordButton = styled(Button)({
-    minHeight: '39vh',
+    minHeight: '36vh',
     width: '100%',
     backgroundColor: '#7A51EC',
     color: '#FFFFFF',
     fontSize: '30px',
-    borderRadius: '10px 16px 16px 10px',
+    borderRadius: '20px',
     touchAction: 'manipulation',
     ":disabled": { color: '#FFFFFF'}
 });
