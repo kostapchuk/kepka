@@ -59,24 +59,21 @@ const TourSetupPage = () => {
 
     return (
         <ScrollablePageWithStickyFooter
-            children={
-                <>
-                    <TourSetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
-                    <RoundDurationInput
-                        timer={timer}
-                        error={error}
-                        onChange={(e) => dispatch(setTimer(e.target.value))}
-                        label={t('round-duration')}
-                    />
-                    <ScoreToggleSwitch
-                        checked={showScoreDuringGame}
-                        onToggle={toggleScoreDisplay}
-                        label={t('show-score-during-game')}
-                    />
-                </>
-            }
             footer={<PrimaryButton onClick={handleContinue} content={t('go-to-game')} />}
-        />
+        >
+            <TourSetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
+            <RoundDurationInput
+                timer={timer}
+                error={error}
+                onChange={(e) => dispatch(setTimer(e.target.value))}
+                label={t('round-duration')}
+            />
+            <ScoreToggleSwitch
+                checked={showScoreDuringGame}
+                onToggle={toggleScoreDisplay}
+                label={t('show-score-during-game')}
+            />
+        </ScrollablePageWithStickyFooter>
     );
 };
 

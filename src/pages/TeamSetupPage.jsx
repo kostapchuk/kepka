@@ -35,13 +35,14 @@ const TeamSetupPage = () => {
 
     return (
         <ScrollablePageWithStickyFooter
-            children={<TeamSetupContent
+            footer={<TeamSetupFooter onContinue={goToNextPage} />}
+        >
+            <TeamSetupContent
                 teamError={teamError}
                 playerError={playerError}
                 commonErrors={commonErrors}
-            />}
-            footer={<TeamSetupFooter onContinue={goToNextPage} />}
-        />
+            />
+        </ScrollablePageWithStickyFooter>
     );
 };
 
