@@ -81,7 +81,7 @@ const RoundTimer = () => {
                 <Typography variant="h1" sx={{fontWeight: '600', fontSize: '36px', opacity: !roundInProgress ? '40%' : '100%', zIndex: 2}}>
                     {secondsToString(leftSeconds[currentTeam] - elapsedTime)}
                 </Typography>
-                <Button disabled={true} onClick={() => dispatch(setTimerRunning(!timerRunning))} sx={{ zIndex: 2}}>
+                <Button style={{visibility: "hidden"}} disabled={true} onClick={() => dispatch(setTimerRunning(!timerRunning))} sx={{ zIndex: 2}}>
                     <img style={{opacity: true ? '40%' : '100%'}} src="/icon-button-timer.svg" alt="Pause"/>
                 </Button>
             </Box>

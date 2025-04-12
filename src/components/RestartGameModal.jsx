@@ -5,6 +5,7 @@ import BaseModal from "../components/ui/modal/BaseModal";
 import {reset as resetGame, setRestartGameModalOpen} from "../redux/gameSlice";
 import {reset as resetPage} from "../redux/pageSlice";
 import {reset as resetPlayers} from "../redux/playersSlice";
+import {reset as resetStatistics} from "../redux/statisticsSlice";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 
 const RestartGameModal = () => {
@@ -17,6 +18,7 @@ const RestartGameModal = () => {
         dispatch(resetGame());
         dispatch(resetPage());
         dispatch(resetPlayers());
+        dispatch(resetStatistics());
     };
 
     const handleClose = () => dispatch(setRestartGameModalOpen(false))

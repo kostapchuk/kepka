@@ -15,6 +15,7 @@ import {setCurrentPage} from "@/redux/pageSlice";
 import {Pages} from "@/routes";
 import React from 'react';
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {addRoundWordStats, setLastClick, updateRoundWordStatsDuration} from "../redux/statisticsSlice";
 
 const GameTab = () => {
 
@@ -25,8 +26,15 @@ const GameTab = () => {
         roundAnsweredWords,
         currentWord,
         showLeftWords,
-        roundInProgress
+        roundInProgress,
+        tour,
+        currentTeam,
+        currentGameId
     } = useSelector(state => state.game);
+
+    const {lastClick} = useSelector(state => state.statistics);
+
+    const players = useSelector(state => state.players);
 
     const {dispatch, t} = useTranslationAndDispatch();
 
@@ -37,6 +45,7 @@ const GameTab = () => {
     };
 
     const openWord = () => {
+        const currentTime = performance.now();
         if (!roundInProgress) {
             dispatch(setRoundInProgress(true));
         }
@@ -47,12 +56,48 @@ const GameTab = () => {
         }
         if (roundWords.length < tourLeftWords.length) {
             const word = random(tourLeftWords.filter(item => !roundWords.includes(item)));
+            if (lastClick) {
+                const timeDifference = currentTime - lastClick;
+                const currentWordStats = {
+                    word: currentWord,
+                    tour: tour,
+                    player: players.filter(
+                        p => p.gameId === currentGameId && p.teamId === currentTeam
+                            && p.asker)[0].name,
+                    duration: timeDifference.toFixed(1),
+                    team: currentTeam
+                }
+                dispatch(updateRoundWordStatsDuration(currentWordStats));
+            }
+            const wordStatsNew = {
+                word: word,
+                tour: tour,
+                player: players.filter(
+                    p => p.gameId === currentGameId && p.teamId === currentTeam
+                        && p.asker)[0].name,
+                duration: null,
+                team: currentTeam
+            }
+            dispatch(addRoundWordStats(wordStatsNew));
             dispatch(setCurrentWord(word));
             dispatch(setRoundWords([...roundWords, word]));
+            dispatch(setLastClick(currentTime));
         } else {
+            const timeDifference = currentTime - lastClick;
+            const currentWordStats = {
+                word: currentWord,
+                tour: tour,
+                player: players.filter(
+                    p => p.gameId === currentGameId && p.teamId === currentTeam
+                        && p.asker)[0].name,
+                duration: timeDifference.toFixed(1),
+                team: currentTeam
+            }
+            dispatch(updateRoundWordStatsDuration(currentWordStats));
             dispatch(setTimerRunning(false));
             dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
             dispatch(setRoundInProgress(false));
+            dispatch(setLastClick(null));
         }
     }
 

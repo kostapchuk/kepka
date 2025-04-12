@@ -20,7 +20,7 @@
   "team": "Team",
   "alias": "Alias",
   "crocodile": "Crocodile",
-  "one-word": "One word",
+  "one_word": "One word",
   "drawing": "Drawing",
   "tour": "Round",
   "asker": "Giving clues",
@@ -42,7 +42,6 @@
   "yes": "Yes",
   "no": "No",
   "congratulations": "Congratulations to the winners!",
-  "soon-statistics": "Game statistics will be here soon",
   "team-name": "Team name",
   "left-seconds": "{{actualLeftTimeInTour}} seconds left",
   "left-seconds-content": "Your team has finished the round. You have {{actualLeftTimeInTour}} seconds left. Do you want to carry over the remainder for next time or be the first to start a new round with this time?",
@@ -53,5 +52,15 @@
   "easy": "Easy",
   "medium": "Medium",
   "hard": "Hard",
-  "end-game": "The end"
+  "end-game": "The end",
+  "statistics-general-easiest-word": "The easiest word is {{word}}. The Teams spent only {{duration}} seconds to guess it",
+  "statistics-general-hardest-word": "The hardest word is {{word}}. The Teams spent significant {{duration}} seconds to guess it",
+  "show-detailed-statistics": "Show detailed statistics",
+  "hide-detailed-statistics": "Hide detailed statistics",
+  "statistics-tour-best-team": "Best team is {{team}}, in which players guessed {{wordCount}} words",
+  "statistics-tour-best-player": "Best player is {{player}} from team {{team}} managed to successfully ask {{wordCount}}",
+  "statistics-by-tour": "Statistics by tour {{tour}}",
+  "statistics-tour-easiest-word": "The easiest word is {{word}}. Team {{team}} spent only {{duration}} seconds to guess it",
+  "statistics-tour-hardest-word": "The hardest word is {{word}}. Team {{team}} spent significant {{duration}} seconds to guess it",
+  "score": "Score"
 }
