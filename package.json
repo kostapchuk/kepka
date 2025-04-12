@@ -1,6 +1,6 @@
 {
   "name": "kepka",
-  "version": "0.21.1",
+  "version": "0.21.2",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -59,6 +59,7 @@
     "@babel/plugin-transform-runtime": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
+    "@testomatio/reporter": "^1.6.16",
     "babel-jest": "^29.7.0",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",

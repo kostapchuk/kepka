@@ -18,14 +18,13 @@ const ResultsPage = () => {
 
     return (
         <ScrollablePageWithStickyFooter
-            children={
-                <>
-                    <Typography variant="h3" sx={{fontSize: "20px", fontWeight: "600"}}>{t('end-game')}</Typography>
-                    <GameAndScoresTabs gameTab={<ResultsTab/>}/>
-                </>
-            }
             footer={<PrimaryButton onClick={openRestartGameModal} content={t('start-again')}/>}
-        />
+        >
+          <Typography variant="h3" sx={{fontSize: "20px", fontWeight: "600"}}>
+            {t('end-game')}
+          </Typography>
+          <GameAndScoresTabs gameTab={<ResultsTab/>}/>
+        </ScrollablePageWithStickyFooter>
     )
 }
 

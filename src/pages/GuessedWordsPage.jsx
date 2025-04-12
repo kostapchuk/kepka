@@ -10,25 +10,20 @@ const GuessedWordsPage = () => {
     const {roundAnsweredWords} = useSelector(state => state.game);
     const {t} = useTranslation();
 
-    const children = <>
-        <Typography sx={{
-            padding: '16px 16px 8px 8px',
-            fontSize: '20px',
-            fontWeight: '600'
-        }}>{t('score')}: {roundAnsweredWords.length}</Typography>
-        <Typography variant="p" sx={{fontSize: '18px',paddingLeft: '8px'}}>
-            {t('choose-guessed-words')}
-        </Typography>
-        <GuessedWordsOptions/>
-    </>;
-
     const footer = <FinishRoundButton/>;
 
     return (
-        <ScrollablePageWithStickyFooter
-            children={children}
-            footer={footer}
-        />
+        <ScrollablePageWithStickyFooter footer={footer}>
+            <Typography sx={{
+                padding: '16px 16px 8px 8px',
+                fontSize: '20px',
+                fontWeight: '600'
+            }}>{t('score')}: {roundAnsweredWords.length}</Typography>
+            <Typography variant="p" sx={{fontSize: '18px',paddingLeft: '8px'}}>
+                {t('choose-guessed-words')}
+            </Typography>
+            <GuessedWordsOptions/>
+        </ScrollablePageWithStickyFooter>
     );
 }
 export default GuessedWordsPage;
