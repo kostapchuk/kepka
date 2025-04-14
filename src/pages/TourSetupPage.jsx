@@ -10,7 +10,7 @@ import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTim
 import {Pages} from "../routes";
 import {random} from "../util/arrayUtils";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
-import {TOURS} from "../components/FinishRoundButton";
+import {TOURS} from "../types/tours";
 
 const TourSetupPage = () => {
     const dispatch = useDispatch();

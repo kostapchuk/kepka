@@ -7,7 +7,7 @@ import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStic
 import {useTranslation} from "react-i18next";
 
 const GuessedWordsPage = () => {
-    const {roundAnsweredWords} = useSelector(state => state.game.length);
+    const score = useSelector(state => state.game.roundAnsweredWords.length);
     const {t} = useTranslation();
 
     return (
@@ -16,7 +16,7 @@ const GuessedWordsPage = () => {
                 padding: '16px 16px 8px 8px',
                 fontSize: '20px',
                 fontWeight: '600'
-            }}>{t('score')}: {roundAnsweredWords}</Typography>
+            }}>{t('score')}: {score}</Typography>
             <Typography variant="p" sx={{fontSize: '18px', paddingLeft: '8px'}}>
                 {t('choose-guessed-words')}
             </Typography>

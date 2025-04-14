@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import {
   setLeftWords,
   setShowLeftWords,
@@ -14,7 +13,6 @@ import { shuffle } from "../util/arrayUtils";
 import { wordsByDifficultyLevel } from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
-import SwitchWithLabel from "../components/SwitchWithLabel";
 import DifficultySelector from "../components/DifficultySelector";
 import WordCountInput from "../components/WordCountInput";
 import Header from "../components/Header";

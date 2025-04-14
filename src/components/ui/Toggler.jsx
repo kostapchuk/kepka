@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "@mui/material/styles/styled";
 import Switch from "@mui/material/Switch";
 
-const Toggler = styled(Switch)(({theme}) => ({
+const StyledSwitch = styled(Switch)(({theme}) => ({
   width: 48,
   height: 28,
   padding: 0,
@@ -51,7 +52,7 @@ const Toggler = styled(Switch)(({theme}) => ({
 
 const Toggler = ({checked, onChange}) => {
   return (
-      <Toggler
+      <StyledSwitch
           checked={checked}
           onChange={onChange}
       />
