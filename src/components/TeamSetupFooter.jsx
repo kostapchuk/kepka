@@ -7,19 +7,16 @@ import {addPlayers} from "../redux/playersSlice";
 import {setCurrentPage} from "../redux/pageSlice";
 import {Pages} from "../routes";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
-import {useDispatch, useSelector} from "react-redux";
-import useTeamValidation from "../hooks/useTeamValidation";
+import {useSelector} from "react-redux";
 
-const TeamSetupFooter = () => {
+const TeamSetupFooter = ({validateAll}) => {
   const {t, dispatch} = useTranslationAndDispatch();
   const {currentGameId, teams} = useSelector(state => state.game);
-  const {validateAll} = useTeamValidation(teams);
 
   const onContinue = () => {
     if (!validateAll()) {
       return;
     }
-
     teams.forEach(team => {
       const askerIndex = randomIndex(team.players);
       const players = team.players.map((name, index) => ({

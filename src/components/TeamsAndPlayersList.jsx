@@ -7,12 +7,10 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 import useTeamValidation from "../hooks/useTeamValidation";
 
-const TeamsAndPlayersList = () => {
+const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
   const {teams} = useSelector(state => state.game);
   const theme = useTheme();
   const {t} = useTranslation();
-
-  const {teamError, playerError, commonErrors} = useTeamValidation(teams);
 
   return (
       <>
@@ -41,9 +39,7 @@ const TeamsAndPlayersList = () => {
             </>
         ))}
         <TeamInputBlock newTeam teamIndex={-1}/>
-        {commonErrors.map(
-            error => <Typography color={theme.palette.error.main}>{t(
-                error)}</Typography>)}
+        {commonErrors.map(error => <Typography color={theme.palette.error.main}>{t(error)}</Typography>)}
       </>
   )
 }
