@@ -14,17 +14,13 @@ import { shuffle } from "../util/arrayUtils";
 import { wordsByDifficultyLevel } from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
-import ToggleSwitch from "../components/ToggleSwitch";
+import SwitchWithLabel from "../components/SwitchWithLabel";
 import DifficultySelector from "../components/DifficultySelector";
 import WordCountInput from "../components/WordCountInput";
 import Header from "../components/Header";
 import {setCurrentPage} from "../redux/pageSlice";
-
-const DIFFICULTY_OPTIONS = [
-  { value: "EASY", label: "easy" },
-  { value: "MEDIUM", label: "medium" },
-  { value: "HARD", label: "hard" }
-];
+import {DIFFICULTY_LEVELS} from "../types/difficultyLevels";
+import LabeledToggler from "../components/LabeledToggler";
 
 const WordsSetupPage = () => {
   const dispatch = useDispatch();
@@ -67,12 +63,12 @@ const WordsSetupPage = () => {
             onChange={e => dispatch(setWordsDifficulty(e.target.value))}
             open={selectOpen}
             setOpen={setSelectOpen}
-            options={DIFFICULTY_OPTIONS}
+            options={DIFFICULTY_LEVELS}
             label={t("words-difficulty")}
         />
-        <ToggleSwitch
+        <LabeledToggler
             checked={showLeftWords}
-            onChange={() => dispatch(setShowLeftWords(!showLeftWords))}
+            onToggle={() => dispatch(setShowLeftWords(!showLeftWords))}
             label={t("show-left-words")}
         />
       </ScrollablePageWithStickyFooter>

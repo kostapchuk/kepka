@@ -1,0 +1,6 @@
+export const TOURS = {
+  ALIAS: 'ALIAS',
+  CROCODILE: 'CROCODILE',
+  ONE_WORD: 'ONE_WORD'
+  // DRAWING: 'DRAWING',
+}

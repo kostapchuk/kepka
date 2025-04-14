@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-import BaseModal from "../components/ui/modal/BaseModal";
+import BaseModal from "./ui/BaseModal";
 import {setTourChangeModalOpen} from "../redux/gameSlice";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 

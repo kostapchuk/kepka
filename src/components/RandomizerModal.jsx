@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
-import BaseModal from "../components/ui/modal/BaseModal";
+import BaseModal from "./ui/BaseModal";
 import {setRandomizerModalOpen, setTeamCount, setTeams} from "../redux/gameSlice";
 import {randomIndex, shuffle} from "../util/arrayUtils";
 import {addPlayers, reset} from "../redux/playersSlice";

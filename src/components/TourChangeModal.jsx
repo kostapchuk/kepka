@@ -1,39 +1,43 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useSelector} from "react-redux";
-import Typography from "@mui/material/Typography";
-
-import BaseModal from "../components/ui/modal/BaseModal";
-import {setTourChangeModalOpen} from "../redux/gameSlice";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {setTourChangeModalOpen} from "../redux/gameSlice";
+import Typography from "@mui/material/Typography";
+import BaseModal from "./ui/BaseModal";
 
-const ConfirmationTourChangeModal = () => {
+const TourChangeModal = () => {
+    const { tourChangeModalOpen, score, showScoreDuringGame } = useSelector((state) => state.game);
+    const { dispatch, t } = useTranslationAndDispatch();
 
-    const {tourChangeModalOpen, score, showScoreDuringGame} = useSelector(state => state.game);
-
-    const {dispatch, t} = useTranslationAndDispatch();
-
-    const closeModal = () => {
+    const handleCloseModal = useCallback(() => {
         dispatch(setTourChangeModalOpen(false));
+    }, [dispatch]);
+
+    const renderScoreList = () => {
+        if (!showScoreDuringGame) return null;
+
+        return Object.entries(score)
+            .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+            .map(([team, teamScore], index) => (
+                <Typography key={team} sx={{ textAlign: 'left', pl: 1, pb: 1.5 }}>
+                    {index + 1}) {team} - {teamScore}
+                </Typography>
+            ));
     };
 
-    return <BaseModal
-        open={tourChangeModalOpen}
-        title={t('tour-ended')}
-        content={
-            showScoreDuringGame &&
-            Object.entries(score)
-                .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
-                .map(([team, score], index) => (
-                    <Typography sx={{textAlign: 'left', pl: 1, pb: 1.5}}>{index + 1}) {team} - {score}</Typography>
-                ))
-        }
-        onlyPrimary
-        primaryButtonText={t('next-tour')}
-        onPrimaryAction={closeModal}
-        onClose={() => {
-        }}
-        disableEscapeKeyDown
-    />
+    return (
+        <BaseModal
+            open={tourChangeModalOpen}
+            title={t('tour-ended')}
+            content={renderScoreList()}
+            onlyPrimary
+            primaryButtonText={t('next-tour')}
+            onPrimaryAction={handleCloseModal}
+            onClose={handleCloseModal}
+            disableEscapeKeyDown
+        />
+    );
 };
 
-export default ConfirmationTourChangeModal;
+export default TourChangeModal;
+

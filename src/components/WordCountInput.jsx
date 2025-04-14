@@ -1,28 +1,41 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import styled from "@mui/system/styled";
+
+const Label = styled(Typography)(({ theme }) => ({
+  fontSize: '14px',
+  color: '#6B6B6B',
+  marginTop: theme.spacing(3),
+  marginBottom: theme.spacing(0.5),
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  borderRadius: '12px',
+  width: '100%',
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '12px',
+    '& fieldset': {
+      borderColor: '#D1D1D1',
+    },
+    '&:hover fieldset': {
+      borderColor: '#D1D1D1',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#7A51EC',
+    },
+  },
+}));
 
 const WordCountInput = ({ value, onChange, error, label }) => (
     <>
-      <Typography sx={{ fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5 }}>
-        {label}
-      </Typography>
-      <TextField
+      <Label>{label}</Label>
+      <StyledTextField
           type="tel"
           value={value}
           onChange={onChange}
           error={!!error}
           helperText={error}
-          sx={{
-            borderRadius: "12px",
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "12px",
-              "& fieldset": { borderColor: "#D1D1D1" },
-              "&:hover fieldset": { borderColor: "#D1D1D1" },
-              "&.Mui-focused fieldset": { borderColor: "#7A51EC" }
-            },
-            width: "100%"
-          }}
       />
     </>
 );
