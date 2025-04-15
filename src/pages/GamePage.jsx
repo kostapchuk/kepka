@@ -5,9 +5,9 @@ import AlarmTimer from "../components/game/AlarmTimer";
 import RoundTimer from "../components/game/RoundTimer";
 import GameHeader from "../components/game/GameHeader";
 import TourChangeModal from "../components/tourchange/TourChangeModal";
-import GameAndScoresTabs from "../components/game/GameAndScoresTabs";
+import GameAndScoresTabs from "../components/shared/GameAndScoresTabs";
 import ScrollablePageWithStickyFooter
-      from "../components/ui/ScrollablePageWithStickyFooter";
+      from "../components/shared/ScrollablePageWithStickyFooter";
 
 const GamePage = () => (
     <ScrollablePageWithStickyFooter>

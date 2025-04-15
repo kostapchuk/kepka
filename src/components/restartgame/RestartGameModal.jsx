@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-import BaseModal from "../ui/BaseModal";
+import BaseModal from "../shared/BaseModal";
 import {reset as resetGame, setRestartGameModalOpen} from "../../redux/gameSlice";
 import {reset as resetPage} from "../../redux/pageSlice";
 import {reset as resetPlayers} from "../../redux/playersSlice";

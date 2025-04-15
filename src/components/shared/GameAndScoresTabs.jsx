@@ -1,10 +1,10 @@
 import {useSelector} from "react-redux";
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import ScoresTab from "./ScoresTab";
+import ScoresTab from "../game/ScoresTab";
 import Button from "@mui/material/Button";
 
-import GameTab from "./GameTab";
+import GameTab from "../game/GameTab";
 import {setCurrentGameTab} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 

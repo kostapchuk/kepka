@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import PrimaryButton from "../ui/PrimaryButton";
+import PrimaryButton from "../shared/PrimaryButton";
 import {setRandomizerModalOpen} from "../../redux/gameSlice";
 import {randomIndex} from "../../util/arrayUtils";
 import {addPlayers} from "../../redux/playersSlice";

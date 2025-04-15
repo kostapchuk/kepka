@@ -18,7 +18,7 @@ import {distinct, shuffle} from "../../util/arrayUtils";
 import {setCurrentPage} from "../../redux/pageSlice";
 import {Pages} from "../../routes";
 import {updatePlayer} from "../../redux/playersSlice";
-import PrimaryButton from "../ui/PrimaryButton";
+import PrimaryButton from "../shared/PrimaryButton";
 import TimeLeftInRoundModal from "../timeleftinround/TimeLeftInRoundModal";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import {addStats, clearRoundWordStats} from "../../redux/statisticsSlice";

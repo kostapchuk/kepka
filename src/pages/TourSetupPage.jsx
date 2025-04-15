@@ -1,16 +1,16 @@
 import React, {useState, useCallback} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/shared/ScrollablePageWithStickyFooter";
 import RoundDurationInput from "../components/toursetup/RoundDurationInput";
-import LabeledToggler from "../components/ui/LabeledToggler";
-import PrimaryButton from "../components/ui/PrimaryButton";
+import LabeledToggler from "../components/shared/LabeledToggler";
+import PrimaryButton from "../components/shared/PrimaryButton";
 import {setCurrentPage} from "../redux/pageSlice";
 import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "../redux/gameSlice";
 import {Pages} from "../routes";
 import {random} from "../util/arrayUtils";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 import {TOURS} from "../types/tours";
-import SetupHeader from "../components/ui/SetupHeader";
+import SetupHeader from "../components/shared/SetupHeader";
 
 const TourSetupPage = () => {
     const dispatch = useDispatch();

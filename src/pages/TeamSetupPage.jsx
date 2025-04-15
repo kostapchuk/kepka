@@ -1,6 +1,6 @@
 import React from "react";
 import ScrollablePageWithStickyFooter
-  from "../components/ui/ScrollablePageWithStickyFooter";
+  from "../components/shared/ScrollablePageWithStickyFooter";
 import TeamSetupFooter from "../components/teamsetup/TeamSetupFooter";
 import TeamSetupHeader from "../components/teamsetup/TeamSetupHeader";
 import TeamsAndPlayersList from "../components/teamsetup/TeamsAndPlayersList";

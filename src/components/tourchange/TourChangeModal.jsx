@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import {setTourChangeModalOpen} from "../../redux/gameSlice";
 import Typography from "@mui/material/Typography";
-import BaseModal from "../ui/BaseModal";
+import BaseModal from "../shared/BaseModal";
 
 const TourChangeModal = () => {
     const { tourChangeModalOpen, score, showScoreDuringGame } = useSelector((state) => state.game);

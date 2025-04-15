@@ -1,10 +1,10 @@
 import React from "react";
 
-import PrimaryButton from "../components/ui/PrimaryButton";
+import PrimaryButton from "../components/shared/PrimaryButton";
 import {setRestartGameModalOpen} from "../redux/gameSlice";
-import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/shared/ScrollablePageWithStickyFooter";
 import ResultsTab from "../components/results/ResultsTab";
-import GameAndScoresTabs from "../components/game/GameAndScoresTabs";
+import GameAndScoresTabs from "../components/shared/GameAndScoresTabs";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 import Typography from "@mui/material/Typography";
 

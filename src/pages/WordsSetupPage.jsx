@@ -11,14 +11,14 @@ import {
 import { Pages } from "../routes";
 import { shuffle } from "../util/arrayUtils";
 import { wordsByDifficultyLevel } from "../util/words";
-import PrimaryButton from "../components/ui/PrimaryButton";
-import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
+import PrimaryButton from "../components/shared/PrimaryButton";
+import ScrollablePageWithStickyFooter from "../components/shared/ScrollablePageWithStickyFooter";
 import DifficultySelector from "../components/wordssetup/DifficultySelector";
 import WordCountInput from "../components/wordssetup/WordCountInput";
-import SetupHeader from "../components/ui/SetupHeader";
+import SetupHeader from "../components/shared/SetupHeader";
 import {setCurrentPage} from "../redux/pageSlice";
 import {DIFFICULTY_LEVELS} from "../types/difficultyLevels";
-import LabeledToggler from "../components/ui/LabeledToggler";
+import LabeledToggler from "../components/shared/LabeledToggler";
 
 const WordsSetupPage = () => {
   const dispatch = useDispatch();
