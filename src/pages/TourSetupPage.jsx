@@ -3,14 +3,14 @@ import {useSelector, useDispatch} from "react-redux";
 import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
 import TourSetupHeader from "../components/TourSetupHeader";
 import RoundDurationInput from "../components/RoundDurationInput";
-import ScoreToggleSwitch from "../components/ScoreToggleSwitch";
+import LabeledToggler from "../components/LabeledToggler";
 import PrimaryButton from "../components/PrimaryButton";
 import {setCurrentPage} from "../redux/pageSlice";
 import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "../redux/gameSlice";
 import {Pages} from "../routes";
 import {random} from "../util/arrayUtils";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
-import {TOURS} from "../components/FinishRoundButton";
+import {TOURS} from "../types/tours";
 
 const TourSetupPage = () => {
     const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const TourSetupPage = () => {
                 onChange={(e) => dispatch(setTimer(e.target.value))}
                 label={t('round-duration')}
             />
-            <ScoreToggleSwitch
+            <LabeledToggler
                 checked={showScoreDuringGame}
                 onToggle={toggleScoreDisplay}
                 label={t('show-score-during-game')}

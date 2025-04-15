@@ -22,13 +22,7 @@ import PrimaryButton from "./PrimaryButton";
 import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 import {addStats, clearRoundWordStats} from "../redux/statisticsSlice";
-
-export const TOURS = {
-    ALIAS: 'ALIAS',
-    CROCODILE: 'CROCODILE',
-    ONE_WORD: 'ONE_WORD'
-    // DRAWING: 'DRAWING',
-}
+import {TOURS} from "../types/tours";
 
 const FinishRoundButton = () => {
 
@@ -45,9 +39,7 @@ const FinishRoundButton = () => {
         roundAnsweredWords
     } = useSelector(state => state.game);
     const {roundWordStats} = useSelector(state => state.statistics)
-
     const {dispatch, t} = useTranslationAndDispatch()
-
     const players = useSelector(state => state.players);
     const currentAsker = players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0]
 

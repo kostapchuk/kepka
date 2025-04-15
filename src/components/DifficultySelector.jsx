@@ -45,11 +45,11 @@ const DifficultySelector = ({ value, onChange, open, setOpen, options, label }) 
               }
             }}
         >
-          {options.map(opt => (
+          {options.map(opt =>
               <MenuItem key={opt.value} value={opt.value} sx={{ height: 48, margin: "0 8px" }}>
                 {label === "words-difficulty" ? opt.label.toUpperCase() : opt.label}
               </MenuItem>
-          ))}
+          )}
         </Select>
       </FormControl>
     </>

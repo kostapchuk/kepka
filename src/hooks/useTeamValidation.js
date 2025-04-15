@@ -1,6 +1,8 @@
 import {useState, useCallback} from "react";
+import {useSelector} from "react-redux";
 
-const useTeamValidation = (teams) => {
+const useTeamValidation = () => {
+  const {teams} = useSelector(state => state.game);
   const [teamError, setTeamError] = useState([]);
   const [playerError, setPlayerError] = useState([]);
   const [commonErrors, setCommonErrors] = useState([]);
@@ -68,7 +70,6 @@ const useTeamValidation = (teams) => {
     errors += validateUniqueAndNonEmptyNames();
     return errors === 0;
   }, [teams]);
-
   return {teamError, playerError, commonErrors, validateAll, resetErrors};
 };
 
