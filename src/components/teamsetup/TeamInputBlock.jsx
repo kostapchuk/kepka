@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import {setTeams} from "@/redux/gameSlice";
 import {useSelector} from "react-redux";
 import React, {useEffect, useRef, useState} from "react";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
 const TeamInputBlock = ({
                             teamName,

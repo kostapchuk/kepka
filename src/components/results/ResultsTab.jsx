@@ -3,12 +3,12 @@ import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {Box, Button, Collapse, Divider, Typography} from "@mui/material";
 
-import {findEasiestAndHardestWords} from "../util/findEasiestAndHardestWords";
+import {findEasiestAndHardestWords} from "../../util/findEasiestAndHardestWords";
 import {
   findEasiestAndHardestWordsPerTour
-} from "../util/findEasiestAndHardestWordsPerTour";
-import {findBestTeamPerTour} from "../util/findBestTeamPerTour";
-import {findBestPlayerPerTour} from "../util/findBestPlayerPerTour";
+} from "../../util/findEasiestAndHardestWordsPerTour";
+import {findBestTeamPerTour} from "../../util/findBestTeamPerTour";
+import {findBestPlayerPerTour} from "../../util/findBestPlayerPerTour";
 
 const ResultsTab = () => {
   const {score} = useSelector(state => state.game);

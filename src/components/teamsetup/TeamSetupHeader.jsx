@@ -1,8 +1,8 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import React from "react";
-import {setLanguageModalOpen} from "../redux/gameSlice";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {setLanguageModalOpen} from "../../redux/gameSlice";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
 const TeamSetupHeader = () => {
 

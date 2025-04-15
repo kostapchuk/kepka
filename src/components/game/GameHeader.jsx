@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from 'react';
 
-import {setRestartGameModalOpen} from "../redux/gameSlice";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {setRestartGameModalOpen} from "../../redux/gameSlice";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
 4
 

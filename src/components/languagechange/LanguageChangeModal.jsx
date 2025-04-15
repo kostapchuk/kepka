@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import BaseModal from "./ui/BaseModal";
-import {setLanguageModalOpen} from "../redux/gameSlice";
+import BaseModal from "../ui/BaseModal";
+import {setLanguageModalOpen} from "../../redux/gameSlice";
 import {useTranslation} from "react-i18next";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";

@@ -1,5 +1,5 @@
-import GuessedWordsOptions from "../components/GuessedWordsOptions";
-import FinishRoundButton from "../components/FinishRoundButton";
+import GuessedWordsOptions from "../components/guessedwords/GuessedWordsOptions";
+import FinishRoundButton from "../components/guessedwords/FinishRoundButton";
 import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import React from "react";

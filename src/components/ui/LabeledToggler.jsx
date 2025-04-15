@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import Toggler from "./ui/Toggler";
+import Toggler from "./Toggler";
 
 const LabeledToggler = ({checked, onToggle, label}) => (
     <Box>

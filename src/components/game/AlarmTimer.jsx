@@ -1,10 +1,10 @@
 import React, {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
-import {setRoundInProgress, setTimerRunning} from "../redux/gameSlice";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
-import {setLastClick, updateRoundWordStatsDuration} from "../redux/statisticsSlice";
+import {setRoundInProgress, setTimerRunning} from "../../redux/gameSlice";
+import {setCurrentPage} from "../../redux/pageSlice";
+import {Pages} from "../../routes";
+import {setLastClick, updateRoundWordStatsDuration} from "../../redux/statisticsSlice";
 
 const AlarmTimer = () => {
 

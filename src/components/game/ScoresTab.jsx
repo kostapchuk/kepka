@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from 'react';
 
-import {Pages} from "../routes";
+import {Pages} from "../../routes";
 
 const ScoresTab = () => {
 

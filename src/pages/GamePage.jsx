@@ -1,11 +1,11 @@
 import React from "react";
 import Container from "@mui/material/Container";
 
-import AlarmTimer from "../components/AlarmTimer";
-import RoundTimer from "../components/RoundTimer";
-import GameHeader from "../components/GameHeader";
-import TourChangeModal from "../components/TourChangeModal";
-import GameAndScoresTabs from "../components/GameAndScoresTabs";
+import AlarmTimer from "../components/game/AlarmTimer";
+import RoundTimer from "../components/game/RoundTimer";
+import GameHeader from "../components/game/GameHeader";
+import TourChangeModal from "../components/tourchange/TourChangeModal";
+import GameAndScoresTabs from "../components/game/GameAndScoresTabs";
 import ScrollablePageWithStickyFooter
       from "../components/ui/ScrollablePageWithStickyFooter";
 

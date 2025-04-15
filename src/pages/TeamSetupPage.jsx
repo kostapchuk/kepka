@@ -1,9 +1,9 @@
 import React from "react";
 import ScrollablePageWithStickyFooter
   from "../components/ui/ScrollablePageWithStickyFooter";
-import TeamSetupFooter from "../components/TeamSetupFooter";
-import TeamSetupHeader from "../components/TeamSetupHeader";
-import TeamsAndPlayersList from "../components/TeamsAndPlayersList";
+import TeamSetupFooter from "../components/teamsetup/TeamSetupFooter";
+import TeamSetupHeader from "../components/teamsetup/TeamSetupHeader";
+import TeamsAndPlayersList from "../components/teamsetup/TeamsAndPlayersList";
 import useTeamValidation from "../hooks/useTeamValidation";
 
 const TeamSetupPage = () => {

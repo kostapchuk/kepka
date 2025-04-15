@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-import {setElapsedTime, setTimerRunning} from "../redux/gameSlice";
+import {setElapsedTime, setTimerRunning} from "../../redux/gameSlice";
 
 const RoundTimer = () => {
 

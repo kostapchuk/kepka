@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import {useTheme} from "@mui/material";
 import React from 'react';
 import {useTranslation} from "react-i18next";
-import useTeamValidation from "../hooks/useTeamValidation";
+import useTeamValidation from "../../hooks/useTeamValidation";
 
 const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
   const {teams} = useSelector(state => state.game);
