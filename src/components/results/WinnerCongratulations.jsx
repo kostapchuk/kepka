@@ -1,10 +1,12 @@
 import {Typography} from "@mui/material";
 import React, {useMemo} from "react";
 import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
 
 const WinnerCongratulations = () => {
 
   const {score} = useSelector(state => state.game);
+  const {t} = useTranslation();
 
   const topTeam = useMemo(() => {
     return Object.entries(score).reduce(
