@@ -1,12 +1,12 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import PrimaryButton from "./PrimaryButton";
-import {setRandomizerModalOpen} from "../redux/gameSlice";
-import {randomIndex} from "../util/arrayUtils";
-import {addPlayers} from "../redux/playersSlice";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import PrimaryButton from "../shared/PrimaryButton";
+import {setRandomizerModalOpen} from "../../redux/gameSlice";
+import {randomIndex} from "../../util/arrayUtils";
+import {addPlayers} from "../../redux/playersSlice";
+import {setCurrentPage} from "../../redux/pageSlice";
+import {Pages} from "../../routes";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import {useSelector} from "react-redux";
 
 const TeamSetupFooter = ({validateAll}) => {

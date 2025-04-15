@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useSelector} from "react-redux";
 
-import {setTeams} from "../redux/gameSlice";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import {setTeams} from "../../redux/gameSlice";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
 const PlayerInputBlock = ({
                               teamIndex,

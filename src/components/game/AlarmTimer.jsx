@@ -1,17 +1,15 @@
 import React, {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
-import {setRoundInProgress, setTimerRunning} from "../redux/gameSlice";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
-import {setLastClick, updateRoundWordStatsDuration} from "../redux/statisticsSlice";
+import {setRoundInProgress, setTimerRunning} from "../../redux/gameSlice";
+import {setCurrentPage} from "../../redux/pageSlice";
+import {Pages} from "../../routes";
+import {setLastClick, updateRoundWordStatsDuration} from "../../redux/statisticsSlice";
 
 const AlarmTimer = () => {
 
     const dispatch = useDispatch();
-
     const audioRef = useRef(new Audio('/alarm-bell.mp3'));
-
     const {
         leftSeconds,
         timerRunning,
@@ -21,9 +19,7 @@ const AlarmTimer = () => {
         currentGameId,
         timer: roundDuration
     } = useSelector(state => state.game);
-
     const {lastClick} = useSelector(state => state.statistics);
-
     const players = useSelector(state => state.players);
 
     const onRoundFinished = () => {

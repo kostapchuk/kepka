@@ -1,9 +1,9 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-import BaseModal from "./ui/BaseModal";
-import {setTourChangeModalOpen} from "../redux/gameSlice";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import BaseModal from "../shared/BaseModal";
+import {setTourChangeModalOpen} from "../../redux/gameSlice";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
 const TimeLeftInRoundModal = ({doFinishRound}) => {
 
@@ -14,16 +14,15 @@ const TimeLeftInRoundModal = ({doFinishRound}) => {
         actualLeftTimeInTour
     } = useSelector(state => state.game);
 
-    const handlePrimaryAction = () => {
-        dispatch(setTourChangeModalOpen(false))
-        doFinishRound(true)
-    };
+    const startWithLeftTime = () => {
+        dispatch(setTourChangeModalOpen(false));
+        doFinishRound(true);
+    }
 
-    const handleSecondaryAction = () => {
-        dispatch(setTourChangeModalOpen(false))
-        doFinishRound(false)
-    };
-
+    const postponeWithLeftTime = () => {
+        dispatch(setTourChangeModalOpen(false));
+        doFinishRound(false);
+    }
 
     return (
         <BaseModal
@@ -32,8 +31,8 @@ const TimeLeftInRoundModal = ({doFinishRound}) => {
             content={t('left-seconds-content', {actualLeftTimeInTour: actualLeftTimeInTour} )}
             primaryButtonText={t('play-now')}
             secondaryButtonText={t('postpone')}
-            onPrimaryAction={handlePrimaryAction}
-            onSecondaryAction={handleSecondaryAction}
+            onPrimaryAction={startWithLeftTime}
+            onSecondaryAction={postponeWithLeftTime}
         />
     );
 };

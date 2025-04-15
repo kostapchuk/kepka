@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect} from 'react';
 
-import {setRoundAnsweredWords} from "../redux/gameSlice";
+import {setRoundAnsweredWords} from "../../redux/gameSlice";
 
 const GuessedWordsOptions = () => {
     const {roundWords, roundAnsweredWords} = useSelector(state => state.game);

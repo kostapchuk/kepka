@@ -13,16 +13,16 @@ import {
     setScore,
     setTour,
     setTourChangeModalOpen
-} from "../redux/gameSlice";
-import {distinct, shuffle} from "../util/arrayUtils";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
-import {updatePlayer} from "../redux/playersSlice";
-import PrimaryButton from "./PrimaryButton";
-import TimeLeftInRoundModal from "./TimeLeftInRoundModal";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
-import {addStats, clearRoundWordStats} from "../redux/statisticsSlice";
-import {TOURS} from "../types/tours";
+} from "../../redux/gameSlice";
+import {distinct, shuffle} from "../../util/arrayUtils";
+import {setCurrentPage} from "../../redux/pageSlice";
+import {Pages} from "../../routes";
+import {updatePlayer} from "../../redux/playersSlice";
+import PrimaryButton from "../shared/PrimaryButton";
+import TimeLeftInRoundModal from "../timeleftinround/TimeLeftInRoundModal";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
+import {addStats, clearRoundWordStats} from "../../redux/statisticsSlice";
+import {TOURS} from "../../types/tours";
 
 const FinishRoundButton = () => {
 

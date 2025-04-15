@@ -4,20 +4,20 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import {useSelector} from "react-redux";
-import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import {
   addRoundWordStats, setLastClick,
   updateRoundWordStatsDuration
-} from "../redux/statisticsSlice";
+} from "../../redux/statisticsSlice";
 import {
   setCurrentWord,
   setRoundAnsweredWords,
   setRoundInProgress, setRoundWords,
   setTimerRunning
-} from "../redux/gameSlice";
-import {random} from "../util/arrayUtils";
-import {setCurrentPage} from "../redux/pageSlice";
-import {Pages} from "../routes";
+} from "../../redux/gameSlice";
+import {random} from "../../util/arrayUtils";
+import {setCurrentPage} from "../../redux/pageSlice";
+import {Pages} from "../../routes";
 
 const StyledButton = styled(Button)({
   minHeight: '36vh',

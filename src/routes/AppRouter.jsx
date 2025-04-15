@@ -6,11 +6,11 @@ import TeamSetupPage from "../pages/TeamSetupPage";
 import WordsSetupPage from "../pages/WordsSetupPage";
 import ResultsPage from "../pages/ResultsPage";
 import TourSetupPage from "../pages/TourSetupPage";
-import RestartGameModal from "../components/RestartGameModal";
+import RestartGameModal from "../components/restartgame/RestartGameModal";
 import GamePage from "../pages/GamePage";
 import GuessedWordsPage from "../pages/GuessedWordsPage";
-import RandomizerModal from "../components/RandomizerModal";
-import LanguageChangeModal from "../components/LanguageChangeModal";
+import RandomizerModal from "../components/randomizer/RandomizerModal";
+import LanguageChangeModal from "../components/languagechange/LanguageChangeModal";
 
 const AppRouter = () => {
 
