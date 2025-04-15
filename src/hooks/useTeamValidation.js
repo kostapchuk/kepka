@@ -15,7 +15,6 @@ const useTeamValidation = () => {
 
   const validateTeamsCount = () => {
     if (teams.length < 2) {
-      console.log("teams.length < 2")
       setCommonErrors(prev => [...prev, 'not-enough-teams-error']);
       return 1;
     }
