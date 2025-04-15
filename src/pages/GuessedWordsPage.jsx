@@ -3,7 +3,7 @@ import FinishRoundButton from "../components/FinishRoundButton";
 import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import React from "react";
-import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
 import {useTranslation} from "react-i18next";
 
 const GuessedWordsPage = () => {

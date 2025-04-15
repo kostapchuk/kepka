@@ -9,9 +9,7 @@ import {setLastClick, updateRoundWordStatsDuration} from "../redux/statisticsSli
 const AlarmTimer = () => {
 
     const dispatch = useDispatch();
-
     const audioRef = useRef(new Audio('/alarm-bell.mp3'));
-
     const {
         leftSeconds,
         timerRunning,
@@ -21,9 +19,7 @@ const AlarmTimer = () => {
         currentGameId,
         timer: roundDuration
     } = useSelector(state => state.game);
-
     const {lastClick} = useSelector(state => state.statistics);
-
     const players = useSelector(state => state.players);
 
     const onRoundFinished = () => {

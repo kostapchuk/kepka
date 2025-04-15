@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
-import TourSetupHeader from "../components/TourSetupHeader";
+import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
 import RoundDurationInput from "../components/RoundDurationInput";
 import LabeledToggler from "../components/LabeledToggler";
 import PrimaryButton from "../components/PrimaryButton";
@@ -11,6 +10,7 @@ import {Pages} from "../routes";
 import {random} from "../util/arrayUtils";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 import {TOURS} from "../types/tours";
+import SetupHeader from "../components/SetupHeader";
 
 const TourSetupPage = () => {
     const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const TourSetupPage = () => {
         <ScrollablePageWithStickyFooter
             footer={<PrimaryButton onClick={handleContinue} content={t('go-to-game')} />}
         >
-            <TourSetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
+            <SetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
             <RoundDurationInput
                 timer={timer}
                 error={error}

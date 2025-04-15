@@ -7,7 +7,7 @@ import GameHeader from "../components/GameHeader";
 import TourChangeModal from "../components/TourChangeModal";
 import GameAndScoresTabs from "../components/GameAndScoresTabs";
 import ScrollablePageWithStickyFooter
-      from "../components/ScrollablePageWithStickyFooter";
+      from "../components/ui/ScrollablePageWithStickyFooter";
 
 const GamePage = () => (
     <ScrollablePageWithStickyFooter>

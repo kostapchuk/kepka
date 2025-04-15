@@ -2,7 +2,7 @@ import React from "react";
 
 import PrimaryButton from "../components/PrimaryButton";
 import {setRestartGameModalOpen} from "../redux/gameSlice";
-import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
 import ResultsTab from "../components/ResultsTab";
 import GameAndScoresTabs from "../components/GameAndScoresTabs";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";

@@ -12,10 +12,10 @@ import { Pages } from "../routes";
 import { shuffle } from "../util/arrayUtils";
 import { wordsByDifficultyLevel } from "../util/words";
 import PrimaryButton from "../components/PrimaryButton";
-import ScrollablePageWithStickyFooter from "../components/ScrollablePageWithStickyFooter";
+import ScrollablePageWithStickyFooter from "../components/ui/ScrollablePageWithStickyFooter";
 import DifficultySelector from "../components/DifficultySelector";
 import WordCountInput from "../components/WordCountInput";
-import Header from "../components/Header";
+import SetupHeader from "../components/SetupHeader";
 import {setCurrentPage} from "../redux/pageSlice";
 import {DIFFICULTY_LEVELS} from "../types/difficultyLevels";
 import LabeledToggler from "../components/LabeledToggler";
@@ -49,7 +49,7 @@ const WordsSetupPage = () => {
       <ScrollablePageWithStickyFooter
           footer={<PrimaryButton onClick={handleContinue} content={t("continue")} />}
       >
-        <Header onBackClick={() => dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE))} title={`${t("game-settings")} 2 / 3`} />
+        <SetupHeader onBackClick={() => dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE))} title={`${t("game-settings")} 2 / 3`} />
         <WordCountInput
             value={wordsCount}
             onChange={e => dispatch(setWordsCount(e.target.value))}
