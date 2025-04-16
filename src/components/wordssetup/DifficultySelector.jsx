@@ -13,6 +13,7 @@ const DifficultySelector = ({value, onChange, open, setOpen, options, label}) =>
         </Typography>
         <FormControl fullWidth>
           <Select
+              data-cy="difficulty-dropdown"
               value={value}
               onChange={onChange}
               onOpen={() => setOpen(true)}
@@ -51,6 +52,7 @@ const DifficultySelector = ({value, onChange, open, setOpen, options, label}) =>
           >
             {options.map(opt =>
                 <MenuItem key={opt.value} value={opt.value}
+                          data-cy={`difficulty-item-${opt.value}`}
                           sx={{height: 48, margin: "0 8px"}}>
                   {t(opt.label)}
                 </MenuItem>

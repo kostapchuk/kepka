@@ -47,7 +47,7 @@ const WordsSetupPage = () => {
 
   return (
       <ScrollablePageWithStickyFooter
-          footer={<PrimaryButton onClick={handleContinue} content={t("continue")} />}
+          footer={<PrimaryButton dataCy="words-page-continue-btn" onClick={handleContinue} content={t("continue")} />}
       >
         <SetupHeader onBackClick={() => dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE))} title={`${t("game-settings")} 2 / 3`} />
         <WordCountInput
@@ -65,6 +65,7 @@ const WordsSetupPage = () => {
             label={t("words-difficulty")}
         />
         <LabeledToggler
+            dataCy="show-remaining-words-toggler"
             checked={showLeftWords}
             onToggle={() => dispatch(setShowLeftWords(!showLeftWords))}
             label={t("show-left-words")}
