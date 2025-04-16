@@ -85,6 +85,7 @@ const PlayerInputBlock = ({
     return (
         <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '16px'}}>
             <TextField
+                data-cy="player-name-input"
                 inputRef={inputRef}
                 sx={{
                     borderRadius: '12px',
