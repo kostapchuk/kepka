@@ -1,68 +1,44 @@
+import '../support/commands';
+import en from '../../src/i18n/locales/en/translations.json';
+import ru from '../../src/i18n/locales/ru/translations.json';
 const deploymentUrl = 'http://localhost:3000';
 
-// describe('Tour setup page tests', () => {
-    // beforeEach(() => {
-    //     cy.visit(deploymentUrl)
-    //     cy.get('img[alt="Change language"]').click();
-    //     cy.get('img[src="/ru.svg"]').click();
-    //
-    //     cy.contains('Настройка игры 1 / 3').should('be.visible');
-    //     cy.get('input[placeholder="Название команды"]').click().type('{enter}');
-    //     cy.get('input[placeholder="Введите имя игрока"]').click().type('Test Player Name').type('{enter}');
-    //     cy.get('input[placeholder="Название команды"]').click().type('{enter}');
-    //     cy.get('input[placeholder="Введите имя игрока"]').last().click().type('Another Test Player').type('{enter}');
-    //
-    //     cy.get('button').contains('Продолжить').click();
-    //
-    //     cy.contains('Настройка игры 2 / 3').should('be.visible');
-    // })
-    //
-    // describe('Input tests', () => {
-    //     const invalidInputs = [0, -1, 101, 999, '  ', 'abc'];
-    //     invalidInputs.forEach((value) => {
-    //         it(`should show error for invalid input: "${value}"`, () => {
-    //             cy.get('input[type="tel"]').clear().type(`${value}`).type('{enter}');
-    //             cy.get('button').contains('Продолжить').click();
-    //
-    //             cy.contains('Количество слов должно быть от 1 до 100').should('be.visible');
-    //         });
-    //     });
-    //
-    //     it(`should show next page with default value`, () => {
-    //         cy.get('button').contains('Продолжить').click();
-    //
-    //         cy.contains('Настройка игры 3 / 3').should('be.visible');
-    //     });
-    //
-    //     it(`should show next page with type value`, () => {
-    //         cy.get('input[type="tel"]').clear().type(Math.floor(Math.random() * 100) + 1).type('{enter}');
-    //         cy.get('button').contains('Продолжить').click();
-    //
-    //         cy.contains('Настройка игры 3 / 3').should('be.visible');
-    //     });
-    // })
+describe('Tour setup page tests', () => {
+  const langs = ['en', 'ru'];
+  const translations = { en, ru };
+  const requiredKeys = [
+    'only-positive-allowed', 'round-duration-err', 'go-to-game',
+    'game-settings', 'round-duration', 'show-score-during-game'
+  ];
 
-    // describe('Words difficulty selection tests', () => {
-    //     const options = [
-    //         { value: 'easy', label: 'Низкая' },
-    //         { value: 'medium', label: 'Средняя' },
-    //         { value: 'hard', label: 'Сложная' }
-    //     ];
+  langs.forEach((lang) => {
+    const t = translations[lang];
 
-        // it('should select any option', () => {
-        //     cy.contains('Сложность слов');
-        //
-        //     options.forEach(opt => {
-        //         cy.contains(opt.label.split('.')[1], { matchCase: false }).should('be.visible');
-        //     });
-        // });
-        //
-        // it('should toggle', () => {
-        //     cy.contains('Сложность слов');
-        //
-        //     options.forEach(opt => {
-        //         cy.contains(opt.label.split('.')[1], { matchCase: false }).should('be.visible');
-        //     });
-        // });
-    // })
-// })
+    describe(`${lang} translations test`, () => {
+      requiredKeys.forEach((key) => {
+        it(`should have key '${key}' in ${lang}`, () => {
+          cy.verifyTranslationKey(translations, lang, key);
+        });
+      });
+    });
+
+    it('should find all labels', () => {
+      
+    });
+
+    it('should continue to game page with defaults', () => {
+
+    });
+
+    const invalidInputs = []
+    invalidInputs.forEach((invalidInputValue) => {
+      it(`should show round duration error when invalid input ${invalidInputValue}`, () => {
+
+      });
+    });
+
+    it('should toggle', () => {
+
+    });
+  });
+});

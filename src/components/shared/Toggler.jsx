@@ -50,9 +50,10 @@ const StyledSwitch = styled(Switch)(({theme}) => ({
   }
 }));
 
-const Toggler = ({checked, onChange}) => {
+const Toggler = ({checked, onChange, dataCy}) => {
   return (
       <StyledSwitch
+          data-cy={dataCy}
           checked={checked}
           onChange={onChange}
       />
