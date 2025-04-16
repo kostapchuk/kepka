@@ -31,7 +31,7 @@ const WordCountInput = ({ value, onChange, error, label }) => (
     <>
       <Label>{label}</Label>
       <StyledTextField
-          data-cy="round-duration-input"
+          data-cy="word-count-input"
           type="tel"
           value={value}
           onChange={onChange}

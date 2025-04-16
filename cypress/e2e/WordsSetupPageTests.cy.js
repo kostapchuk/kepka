@@ -56,7 +56,7 @@ describe('Words setup page tests', () => {
       invalidInputs.forEach((invalidInputValue) => {
         it(`should show words in game error when invalid input ${invalidInputValue}`, () => {
           // given
-          cy.getByCy('round-duration-input').type(invalidInputValue);
+          cy.getByCy('word-count-input').type(invalidInputValue);
 
           // when
           cy.getByCy("words-page-continue-btn").click();
