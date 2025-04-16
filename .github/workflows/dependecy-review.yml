@@ -1,12 +1,16 @@
 name: 'Dependency Review'
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  schedule:
+    - cron: '31 7 * * 3'
 
 permissions:
   contents: read
