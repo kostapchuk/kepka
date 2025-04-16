@@ -10,8 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Build the app
         run: npm run build
