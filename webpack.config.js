@@ -9,6 +9,8 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Add this
 const { version } = require('./package.json');
+const { StatsWriterPlugin } = require("webpack-stats-plugin");
+
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
@@ -120,6 +122,16 @@ module.exports = (env, argv) => {
             isProduction && new CompressionPlugin(),
             isAnalyze && new BundleAnalyzerPlugin({
                 generateStatsFile: true
+            }),
+            new StatsWriterPlugin({
+                filename: '../dist/stats.json',
+                stats: {
+                    all: false,
+                    assets: true,
+                    chunks: true,
+                    modules: true,
+                    entrypoints: true,
+                },
             }),
         ].filter(Boolean),
         resolve: {
