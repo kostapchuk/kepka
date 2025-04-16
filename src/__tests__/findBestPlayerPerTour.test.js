@@ -11,7 +11,7 @@ describe('findBestPlayerPerTour', () => {
       { tour: 'Tour B', player: 'Daisy', team: 'Yellow', word: 'fig' },
     ];
 
-    const result = findBestPlayerPerTour(stats);
+    // const result = findBestPlayerPerTour(stats);
 
     expect(result).toEqual({
       'Tour A': {
