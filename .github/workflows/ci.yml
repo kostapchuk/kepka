@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
@@ -55,7 +55,7 @@ jobs:
     env:
       TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
@@ -73,7 +73,7 @@ jobs:
           path: build
 
       - name: Start app and run Cypress with Testomat reporting
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           start: npm start
           browser: chrome
