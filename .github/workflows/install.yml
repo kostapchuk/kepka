@@ -1,13 +1,10 @@
-name: Run Cypress Tests
+name: Install Dependencies and Build App
 
 on: push
 
 jobs:
-  cypress-run:
+  install:
     runs-on: ubuntu-22.04
-    needs: [install, unit-tests]
-    env:
-      TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,18 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Download the build folder
-        uses: actions/download-artifact@v4
+      - name: Build the app
+        run: npm run build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
         with:
           name: build
+          if-no-files-found: error
           path: build
-
-      - name: Start app and run Cypress with Testomat reporting
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm start
-          browser: chrome
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-        env:
-          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
