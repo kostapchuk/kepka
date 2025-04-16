@@ -75,6 +75,7 @@ const TeamInputBlock = ({
     return (
         <Box sx={{display: 'flex'}}>
             <TextField
+                data-cy="team-name-input"
                 inputRef={inputRef}
                 sx={{
                     backgroundColor: '#F6F5F8',

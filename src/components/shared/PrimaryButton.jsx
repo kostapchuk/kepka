@@ -13,8 +13,8 @@ const StyledButton = styled(Button)({
   textTransform: 'none'
 });
 
-const PrimaryButton = ({onClick, content}) => (
-    <StyledButton onClick={onClick}>
+const PrimaryButton = ({onClick, content, dataCy}) => (
+    <StyledButton onClick={onClick} data-cy={dataCy}>
       {content}
     </StyledButton>
 );

@@ -48,7 +48,7 @@ const TeamSetupFooter = ({validateAll}) => {
               marginRight: '12px'
             }}
         />
-        <PrimaryButton onClick={onContinue} content={t('continue')}/>
+        <PrimaryButton dataCy="team-page-continue-btn" onClick={onContinue} content={t('continue')}/>
       </Box>
   );
 };
