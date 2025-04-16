@@ -36,7 +36,7 @@ const LanguageChangeModal = () => {
             <Box sx={{ml: 1.5}}>
                 {locales.map(l =>
                     <Box sx={{mb: 2.5, display: 'flex'}} onClick={() => changeLanguage(l.value)}>
-                        <img width="28" src={l.src} alt={l.name}/>
+                        <img width="28" src={l.src} alt={l.name} data-cy={`change-language-icon-${l.value}`}/>
                         <Typography sx={{ml: 1.5}}>{t(l.value)}</Typography>
                     </Box>
                 )}
