@@ -35,8 +35,16 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Run unit tests
         run: npm test -- --ci --coverage
@@ -47,8 +55,16 @@ jobs:
     env:
       TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Download the build folder
         uses: actions/download-artifact@v4
