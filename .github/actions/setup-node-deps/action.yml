@@ -1,11 +1,16 @@
 name: Setup Node and Install Dependencies
+description: Composite action for setting up Node.js and installing dependencies
+
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v4
       with:
         node-version: 18
         cache: 'npm'
         cache-dependency-path: './package-lock.json'
+
     - run: npm ci
+      shell: bash

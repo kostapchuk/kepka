@@ -1,6 +1,15 @@
 name: CI check -
 
-on: push
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,8 +19,16 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Build the app
         run: npm run build
@@ -27,8 +44,16 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Run unit tests
         run: npm test -- --ci --coverage
@@ -39,8 +64,16 @@ jobs:
     env:
       TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
-      - name: Setup and Install
-        uses: ./.github/actions/setup-node-deps
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      - run: npm ci
+        shell: bash
 
       - name: Download the build folder
         uses: actions/download-artifact@v4
@@ -49,7 +82,7 @@ jobs:
           path: build
 
       - name: Start app and run Cypress with Testomat reporting
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           start: npm start
           browser: chrome

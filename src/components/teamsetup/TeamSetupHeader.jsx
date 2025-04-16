@@ -14,6 +14,7 @@ const TeamSetupHeader = () => {
           {t('game-settings')} 1 / 3
         </Typography>
         <Box
+            data-cy="change-language-modal-open-button"
             component="img"
             src="/language.svg"
             alt="Change language"
