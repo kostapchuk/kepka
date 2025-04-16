@@ -118,7 +118,9 @@ module.exports = (env, argv) => {
                 filename: 'static/css/[name].[contenthash:8].css',
             }),
             isProduction && new CompressionPlugin(),
-            isAnalyze && new BundleAnalyzerPlugin(),
+            isAnalyze && new BundleAnalyzerPlugin({
+                generateStatsFile: true
+            }),
         ].filter(Boolean),
         resolve: {
             extensions: ['.js', '.jsx'],
