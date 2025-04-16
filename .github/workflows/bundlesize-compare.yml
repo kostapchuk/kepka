@@ -1,8 +1,12 @@
 on:
-  # this action will error unless run in a pr context
+  push:
+    branches:
+      - main
   pull_request:
-  pull_request_target:
-
+    types:
+      - opened
+      - synchronize
+      - reopened
 jobs:
   # Build current and upload stats.json
   # You may replace this with your own build method. All that
