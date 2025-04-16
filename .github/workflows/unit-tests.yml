@@ -1,16 +1,14 @@
-name: CI check - Cypress Tests
+name: CI check - Unit tests
 
 on:
   workflow_run:
-    workflows: ["CI check - Unit tests"]
+    workflows: ["CI check - Build"]
     types:
       - completed
 
 jobs:
-  cypress-tests:
+  unit-tests:
     runs-on: ubuntu-22.04
-    env:
-      TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,12 +35,5 @@ jobs:
           name: build
           path: build
 
-      - name: Start app and run Cypress with Testomat reporting
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm start
-          browser: chrome
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-        env:
-          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+      - name: Run unit tests
+        run: npm test -- --ci --coverage
