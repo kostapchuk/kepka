@@ -1,15 +1,16 @@
-name: CI check -
+name: Continuous Integration
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
+  schedule:
+    - cron: '31 7 * * 3'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,6 +18,7 @@ concurrency:
 
 jobs:
   build:
+    name: Install and Build
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -41,6 +43,7 @@ jobs:
           path: build
 
   unit-tests:
+    name: Run unit tests
     runs-on: ubuntu-22.04
     needs: build
     steps:
@@ -59,6 +62,7 @@ jobs:
         run: npm test -- --ci --coverage
 
   cypress-tests:
+    name: Run cypress tests
     runs-on: ubuntu-22.04
     needs: [build, unit-tests]
     env:
