@@ -75,31 +75,26 @@ const TeamInputBlock = ({
     }, [newTeam, newTeamName]);
 
     return (
-        <Box sx={{
-          display: 'flex',
-          gap: '8px'
-        }}>
+        <Box display="flex" alignItems="flex-start" gap={1}>
             <TextField
+                autoComplete="off"
                 data-cy="team-name-input"
                 inputRef={inputRef}
                 sx={{
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
-                      backgroundColor: '#F6F5F8',
+                      backgroundColor: theme.colors.gray.dark,
                       '& fieldset': {
-                        borderColor: '#F6F5F8'
+                        borderColor: theme.colors.gray.dark
                       },
                       '&:hover fieldset': {
-                        borderColor: error?.error ? theme.palette.error.main : '#F6F5F8'
+                        borderColor: error?.error ? theme.palette.error.main : theme.colors.gray.dark
                       },
                       '&.Mui-focused fieldset': {
-                        borderColor: '#7A51EC'
+                        borderColor: theme.colors.control.primary
                       }
                     },
-                    flex: 1,
-                    minWidth: '50px',
-                    marginBottom: '16px',
-                    marginTop: '16px'
+                    flex: 1
                 }}
                 placeholder={newTeam ? t('team-name') : ""}
                 value={newTeam ? newTeamName : teamName}
@@ -131,7 +126,8 @@ const TeamInputBlock = ({
                 style={{
                     cursor: 'pointer',
                     width: '24px',
-                    visibility: newTeam ? "hidden" : "visible"
+                    visibility: newTeam ? "hidden" : "visible",
+                    marginTop: '16px'
                 }}
             />
         </Box>

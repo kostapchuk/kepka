@@ -85,25 +85,25 @@ const PlayerInputBlock = ({
     }, [newPlayer, newPlayerName, teamIndex, teams]);
 
     return (
-        <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '16px'}}>
+        <Box display="flex" alignItems="flex-start" gap={1}>
             <TextField
+                autoComplete="off"
                 data-cy="player-name-input"
                 inputRef={inputRef}
                 sx={{
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
                       '& fieldset': {
-                        borderColor: '#D1D1D1'
+                        borderColor: theme.colors.stroke.default
                       },
                       '&:hover fieldset': {
-                        borderColor: error ? theme.palette.error.main : '#D1D1D1'
+                        borderColor: error ? theme.palette.error.main : theme.colors.stroke.default
                       },
                       '&.Mui-focused fieldset': {
-                        borderColor: '#7A51EC'
+                        borderColor: theme.colors.control.primary
                       }
                     },
-                    flex: 1,
-                    minWidth: '50px'
+                    flex: 1
                 }}
                 placeholder={newPlayer ? t('enter-player-name') : ""}
                 value={newPlayer ? newPlayerName : player}
@@ -114,7 +114,6 @@ const PlayerInputBlock = ({
                 }
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
                 onKeyDown={handleKeyDown}
-                fullWidth
                 error={!!error}
                 helperText={t(error?.helperText)}
             />
@@ -126,7 +125,7 @@ const PlayerInputBlock = ({
                     cursor: 'pointer',
                     width: '24px',
                     visibility: newPlayer ? "hidden" : "visible",
-                    marginLeft: '8px'
+                    marginTop: '16px'
                 }}
             />
         </Box>
