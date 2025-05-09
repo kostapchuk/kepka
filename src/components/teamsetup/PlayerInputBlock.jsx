@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 
 import {setTeams} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
+import {useTheme} from "@mui/material/styles";
 
 const PlayerInputBlock = ({
                               teamIndex,
@@ -17,6 +18,7 @@ const PlayerInputBlock = ({
     const inputRef = useRef(null);
     const {dispatch, t} = useTranslationAndDispatch();
     const {teams} = useSelector(state => state.game);
+    const theme = useTheme();
 
     const handlePlayerNameChange = (teamIndex, name) => {
         setNewPlayerName(name);
@@ -88,21 +90,17 @@ const PlayerInputBlock = ({
                 data-cy="player-name-input"
                 inputRef={inputRef}
                 sx={{
-                    borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        '& fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#7A51EC'
-                        }
-                    },
-                    '&:focus': {
-                        backgroundColor: 'transparent'
+                      borderRadius: '12px',
+                      '& fieldset': {
+                        borderColor: '#D1D1D1'
+                      },
+                      '&:hover fieldset': {
+                        borderColor: error ? theme.palette.error.main : '#D1D1D1'
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#7A51EC'
+                      }
                     },
                     flex: 1,
                     minWidth: '50px'
@@ -114,7 +112,6 @@ const PlayerInputBlock = ({
                         ? handlePlayerNameChange(teamIndex, e.target.value)
                         : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
-                variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
                 onKeyDown={handleKeyDown}
                 fullWidth

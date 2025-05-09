@@ -5,6 +5,7 @@ import {setTeams} from "@/redux/gameSlice";
 import {useSelector} from "react-redux";
 import React, {useEffect, useRef, useState} from "react";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
+import { useTheme } from '@mui/material/styles';
 
 const TeamInputBlock = ({
                             teamName,
@@ -16,6 +17,7 @@ const TeamInputBlock = ({
     const {teams} = useSelector(state => state.game);
     const [newTeamName, setNewTeamName] = useState('');
     const inputRef = useRef(null);
+    const theme = useTheme();
 
     const handleTeamNameChangeByIndex = (index, name) => {
         const updatedTeams = [...teams];
@@ -73,33 +75,31 @@ const TeamInputBlock = ({
     }, [newTeam, newTeamName]);
 
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{
+          display: 'flex',
+          gap: '8px'
+        }}>
             <TextField
                 data-cy="team-name-input"
                 inputRef={inputRef}
                 sx={{
-                    backgroundColor: '#F6F5F8',
-                    borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        '& fieldset': {
-                            borderColor: 'transparent'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: 'transparent'
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#D1D1D1'
-                        }
-                    },
-                    '&:focus': {
-                        backgroundColor: 'transparent'
+                      borderRadius: '12px',
+                      backgroundColor: '#F6F5F8',
+                      '& fieldset': {
+                        borderColor: '#F6F5F8'
+                      },
+                      '&:hover fieldset': {
+                        borderColor: error?.error ? theme.palette.error.main : '#F6F5F8'
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#7A51EC'
+                      }
                     },
                     flex: 1,
                     minWidth: '50px',
                     marginBottom: '16px',
-                    marginTop: '16px',
-                    fontWeight: '600'
+                    marginTop: '16px'
                 }}
                 placeholder={newTeam ? t('team-name') : ""}
                 value={newTeam ? newTeamName : teamName}
@@ -131,8 +131,7 @@ const TeamInputBlock = ({
                 style={{
                     cursor: 'pointer',
                     width: '24px',
-                    visibility: newTeam ? "hidden" : "visible",
-                    marginLeft: '8px'
+                    visibility: newTeam ? "hidden" : "visible"
                 }}
             />
         </Box>
