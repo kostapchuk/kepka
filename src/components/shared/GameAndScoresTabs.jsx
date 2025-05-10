@@ -8,9 +8,7 @@ import GameTab from "../game/GameTab";
 import {setCurrentGameTab} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 
-const GameAndScoresTabs = ({
-                               gameTab = <GameTab/>
-                           }) => {
+const GameAndScoresTabs = ({gameTab = <GameTab/>}) => {
 
     const {roundInProgress, currentGameTab} = useSelector(state => state.game);
 
