@@ -13,7 +13,7 @@ const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
 
   return (
       <Stack spacing={4} mt={3}>
-        {teams.map((team, teamIndex) => (
+        {teams.map((team, teamIndex) =>
             <Stack key={teamIndex} spacing={2}>
                 <TeamInputBlock
                     teamName={team.name}
@@ -38,7 +38,7 @@ const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
                 />
               </Stack>
             </Stack>
-        ))}
+        )}
         <TeamInputBlock newTeam teamIndex={-1}/>
         {commonErrors.map(error => <Typography color="error">{t(error)}</Typography>)}
       </Stack>

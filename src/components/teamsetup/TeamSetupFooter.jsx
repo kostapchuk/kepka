@@ -39,7 +39,7 @@ const TeamSetupFooter = ({validateAll}) => {
             onClick={() => dispatch(setRandomizerModalOpen(true))}
             alt="Generate teams"
             style={{
-              backgroundColor: '#f0f0f0',
+              backgroundColor: '#F0F0F0',
               padding: '12px',
               borderRadius: '12px'
             }}
