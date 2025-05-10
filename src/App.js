@@ -28,7 +28,7 @@ function App() {
             },
             gray: {
                 light: '',
-                dark: '',
+                dark: '#F6F5F8',
                 lightPressed: ''
             },
             stroke: {

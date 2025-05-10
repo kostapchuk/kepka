@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 
 import {setTeams} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
+import {useTheme} from "@mui/material/styles";
 
 const PlayerInputBlock = ({
                               teamIndex,
@@ -17,6 +18,7 @@ const PlayerInputBlock = ({
     const inputRef = useRef(null);
     const {dispatch, t} = useTranslationAndDispatch();
     const {teams} = useSelector(state => state.game);
+    const theme = useTheme();
 
     const handlePlayerNameChange = (teamIndex, name) => {
         setNewPlayerName(name);
@@ -83,29 +85,25 @@ const PlayerInputBlock = ({
     }, [newPlayer, newPlayerName, teamIndex, teams]);
 
     return (
-        <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '16px'}}>
+        <Box display="flex" alignItems="flex-start" gap={1}>
             <TextField
+                autoComplete="off"
                 data-cy="player-name-input"
                 inputRef={inputRef}
                 sx={{
-                    borderRadius: '12px',
                     '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        '& fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&:hover fieldset': {
-                            borderColor: '#D1D1D1'
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#7A51EC'
-                        }
+                      borderRadius: '12px',
+                      '& fieldset': {
+                        borderColor: theme.colors.stroke.default
+                      },
+                      '&:hover fieldset': {
+                        borderColor: error ? theme.palette.error.main : theme.colors.stroke.default
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: theme.colors.control.primary
+                      }
                     },
-                    '&:focus': {
-                        backgroundColor: 'transparent'
-                    },
-                    flex: 1,
-                    minWidth: '50px'
+                    flex: 1
                 }}
                 placeholder={newPlayer ? t('enter-player-name') : ""}
                 value={newPlayer ? newPlayerName : player}
@@ -114,10 +112,8 @@ const PlayerInputBlock = ({
                         ? handlePlayerNameChange(teamIndex, e.target.value)
                         : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
                 }
-                variant="outlined"
                 onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
                 onKeyDown={handleKeyDown}
-                fullWidth
                 error={!!error}
                 helperText={t(error?.helperText)}
             />
@@ -129,7 +125,7 @@ const PlayerInputBlock = ({
                     cursor: 'pointer',
                     width: '24px',
                     visibility: newPlayer ? "hidden" : "visible",
-                    marginLeft: '8px'
+                    marginTop: '16px'
                 }}
             />
         </Box>
