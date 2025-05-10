@@ -1,19 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import {useTheme} from "@mui/material/styles";
 import {useSelector} from "react-redux";
 
 import {setTeams} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
-import {useTheme} from "@mui/material/styles";
+import InputWithDelete from "@/components/teamsetup/InputWithDelete";
+import BaseInput from "@/components/teamsetup/BaseInput";
 
-const PlayerInputBlock = ({
-                              teamIndex,
-                              playerIndex,
-                              player,
-                              error,
-                              newPlayer
-                          }) => {
+const PlayerInputBlock = ({teamIndex, playerIndex, player, error, newPlayer}) => {
     const [newPlayerName, setNewPlayerName] = useState('');
     const inputRef = useRef(null);
     const {dispatch, t} = useTranslationAndDispatch();
@@ -85,50 +79,25 @@ const PlayerInputBlock = ({
     }, [newPlayer, newPlayerName, teamIndex, teams]);
 
     return (
-        <Box display="flex" alignItems="flex-start" gap={1}>
-            <TextField
-                autoComplete="off"
-                data-cy="player-name-input"
-                inputRef={inputRef}
-                sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '12px',
-                      '& fieldset': {
-                        borderColor: theme.colors.stroke.default
-                      },
-                      '&:hover fieldset': {
-                        borderColor: error ? theme.palette.error.main : theme.colors.stroke.default
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: theme.colors.control.primary
-                      }
-                    },
-                    flex: 1
-                }}
-                placeholder={newPlayer ? t('enter-player-name') : ""}
-                value={newPlayer ? newPlayerName : player}
-                onChange={(e) =>
-                    newPlayer
-                        ? handlePlayerNameChange(teamIndex, e.target.value)
-                        : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
-                }
-                onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
-                onKeyDown={handleKeyDown}
-                error={!!error}
-                helperText={t(error?.helperText)}
-            />
-            <img
-                src="/close.svg"
-                alt="Delete player"
-                onClick={() => handleDeletePlayer(teamIndex, playerIndex)}
-                style={{
-                    cursor: 'pointer',
-                    width: '24px',
-                    visibility: newPlayer ? "hidden" : "visible",
-                    marginTop: '16px'
-                }}
-            />
-        </Box>
+        <InputWithDelete onDelete={() => handleDeletePlayer(teamIndex, playerIndex)} newInput={newPlayer}>
+          <BaseInput
+              dataCy="player-name-input"
+              inputRef={inputRef}
+              placeholder={newPlayer ? t('enter-player-name') : ""}
+              value={newPlayer ? newPlayerName : player}
+              onChange={e =>
+                  newPlayer
+                      ? handlePlayerNameChange(teamIndex, e.target.value)
+                      : handlePlayerNameChangeByIndex(playerIndex, teamIndex, e.target.value)
+              }
+              onBlur={() => newPlayer && handleNewPlayerBlur(teamIndex)}
+              onKeyDown={handleKeyDown}
+              error={!!error}
+              helperText={t(error?.helperText)}
+              borderColor={theme.colors.stroke.default}
+              activeBorderColor={theme.colors.control.primary}
+          />
+        </InputWithDelete>
     );
 };
 

@@ -1,18 +1,14 @@
-import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
-import TextField from "@mui/material/TextField";
-import {setTeams} from "@/redux/gameSlice";
 import {useSelector} from "react-redux";
 import React, {useEffect, useRef, useState} from "react";
-import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import { useTheme } from '@mui/material/styles';
 
-const TeamInputBlock = ({
-                            teamName,
-                            newTeam,
-                            error,
-                            teamIndex
-                        }) => {
+import {setTeams} from "@/redux/gameSlice";
+import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
+import InputWithDelete from "@/components/teamsetup/InputWithDelete";
+import BaseInput from "@/components/teamsetup/BaseInput";
+
+const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
     const {dispatch, t} = useTranslationAndDispatch();
     const {teams} = useSelector(state => state.game);
     const [newTeamName, setNewTeamName] = useState('');
@@ -75,27 +71,13 @@ const TeamInputBlock = ({
     }, [newTeam, newTeamName]);
 
     return (
-        <Box display="flex" alignItems="flex-start" gap={1}>
-            <TextField
-                autoComplete="off"
-                data-cy="team-name-input"
+        <InputWithDelete onDelete={() => handleDeleteTeam(teamIndex)} newInput={newTeam}>
+            <BaseInput
+                dataCy="team-name-input"
                 inputRef={inputRef}
-                sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '12px',
-                      backgroundColor: theme.colors.gray.dark,
-                      '& fieldset': {
-                        borderColor: theme.colors.gray.dark
-                      },
-                      '&:hover fieldset': {
-                        borderColor: error?.error ? theme.palette.error.main : theme.colors.gray.dark
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: theme.colors.control.primary
-                      }
-                    },
-                    flex: 1
-                }}
+                backgroundColor={theme.colors.gray.dark}
+                borderColor={theme.colors.gray.dark}
+                activeBorderColor={theme.colors.control.primary}
                 placeholder={newTeam ? t('team-name') : ""}
                 value={newTeam ? newTeamName : teamName}
                 onChange={(e) =>
@@ -105,9 +87,7 @@ const TeamInputBlock = ({
                 onBlur={() => newTeam && handleNewTeamBlur()}
                 slotProps={{
                     input: {
-                        sx: {
-                            fontWeight: '600'
-                        },
+                        sx: {fontWeight: '600'},
                         startAdornment: (
                             <InputAdornment position="start">
                                 <img width="40px" src={`/cap-${(newTeam ? teams.length : teamIndex) % 3}-v1.svg`} alt="Cap"/>
@@ -119,18 +99,7 @@ const TeamInputBlock = ({
                 error={error?.error}
                 helperText={t(error?.helperText)}
             />
-            <img
-                src="/close.svg"
-                alt="Delete team"
-                onClick={() => handleDeleteTeam(teamIndex)}
-                style={{
-                    cursor: 'pointer',
-                    width: '24px',
-                    visibility: newTeam ? "hidden" : "visible",
-                    marginTop: '16px'
-                }}
-            />
-        </Box>
+        </InputWithDelete>
     );
 };
 

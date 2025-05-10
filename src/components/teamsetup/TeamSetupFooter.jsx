@@ -1,5 +1,7 @@
 import React from "react";
-import Box from "@mui/material/Box";
+import {useSelector} from "react-redux";
+import {Stack} from "@mui/material";
+
 import PrimaryButton from "../shared/PrimaryButton";
 import {setRandomizerModalOpen} from "../../redux/gameSlice";
 import {randomIndex} from "../../util/arrayUtils";
@@ -7,7 +9,6 @@ import {addPlayers} from "../../redux/playersSlice";
 import {setCurrentPage} from "../../redux/pageSlice";
 import {Pages} from "../../routes";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
-import {useSelector} from "react-redux";
 
 const TeamSetupFooter = ({validateAll}) => {
   const {t, dispatch} = useTranslationAndDispatch();
@@ -32,11 +33,7 @@ const TeamSetupFooter = ({validateAll}) => {
   };
 
   return (
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center'
-      }}>
+      <Stack direction="row" spacing={1.5}>
         <img
             src="/random-arrows.svg"
             onClick={() => dispatch(setRandomizerModalOpen(true))}
@@ -44,12 +41,15 @@ const TeamSetupFooter = ({validateAll}) => {
             style={{
               backgroundColor: '#f0f0f0',
               padding: '12px',
-              borderRadius: '12px',
-              marginRight: '12px'
+              borderRadius: '12px'
             }}
         />
-        <PrimaryButton dataCy="team-page-continue-btn" onClick={onContinue} content={t('continue')}/>
-      </Box>
+        <PrimaryButton
+            dataCy="team-page-continue-btn"
+            onClick={onContinue}
+            content={t('continue')}
+        />
+      </Stack>
   );
 };
 

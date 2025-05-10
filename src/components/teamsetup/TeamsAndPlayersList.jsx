@@ -1,14 +1,14 @@
-import TeamInputBlock from "./TeamInputBlock";
-import PlayerInputBlock from "./PlayerInputBlock";
 import {useSelector} from "react-redux";
 import Typography from "@mui/material/Typography";
-import {Stack, useTheme} from "@mui/material";
+import {Stack} from "@mui/material";
 import React from 'react';
 import {useTranslation} from "react-i18next";
 
+import TeamInputBlock from "./TeamInputBlock";
+import PlayerInputBlock from "./PlayerInputBlock";
+
 const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
   const {teams} = useSelector(state => state.game);
-  const theme = useTheme();
   const {t} = useTranslation();
 
   return (
