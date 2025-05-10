@@ -4,22 +4,16 @@ import React, {useEffect, useRef, useState} from "react";
 import { useTheme } from '@mui/material/styles';
 
 import {setTeams} from "@/redux/gameSlice";
-import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
-import InputWithDelete from "@/components/teamsetup/InputWithDelete";
-import BaseInput from "@/components/teamsetup/BaseInput";
+import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
+import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
+import BaseInput from "@/components/teamplayerssetup/BaseInput";
 
-const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
+const NewTeamInputBlock = () => {
     const {dispatch, t} = useTranslationAndDispatch();
     const {teams} = useSelector(state => state.game);
     const [newTeamName, setNewTeamName] = useState('');
     const inputRef = useRef(null);
     const theme = useTheme();
-
-    const handleTeamNameChangeByIndex = (index, name) => {
-        const updatedTeams = [...teams];
-        updatedTeams[index] = {...updatedTeams[index], name: name};
-        dispatch(setTeams(updatedTeams));
-    };
 
     const handleNewTeamBlur = () => {
         const trimmedName = newTeamName.trim();
@@ -33,10 +27,6 @@ const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
         setNewTeamName(name);
     };
 
-    const handleDeleteTeam = (teamIndexToDelete) => {
-        dispatch(setTeams([...teams].filter((team, teamIndex) => teamIndex !== teamIndexToDelete)));
-    };
-
     const handleClick = () => {
         if (newTeamName.trim() === '') {
             setNewTeamName(`${t('team')} ` + (teams.length + 1));
@@ -46,9 +36,7 @@ const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            if (newTeam) {
-                handleNewTeamBlur();
-            }
+            handleNewTeamBlur();
             if (inputRef.current) {
                 inputRef.current.blur();
             }
@@ -58,9 +46,7 @@ const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
     useEffect(() => {
         function handleClickOutside(event) {
             if (inputRef.current && !inputRef.current.contains(event.target)) {
-                if (newTeam) {
-                    handleNewTeamBlur();
-                }
+                handleNewTeamBlur();
             }
         }
 
@@ -68,39 +54,35 @@ const TeamInputBlock = ({teamName, newTeam, error, teamIndex}) => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [newTeam, newTeamName]);
+    }, [newTeamName]);
 
     return (
-        <InputWithDelete onDelete={() => handleDeleteTeam(teamIndex)} newInput={newTeam}>
+        <InputWithDelete newInput>
             <BaseInput
                 dataCy="team-name-input"
                 inputRef={inputRef}
                 backgroundColor={theme.colors.gray.dark}
                 borderColor={theme.colors.gray.dark}
                 activeBorderColor={theme.colors.control.primary}
-                placeholder={newTeam ? t('team-name') : ""}
-                value={newTeam ? newTeamName : teamName}
-                onChange={(e) =>
-                    newTeam ? handleTeamNameChange(e.target.value) : handleTeamNameChangeByIndex(teamIndex, e.target.value)
-                }
-                onClick={() => newTeam && handleClick()}
-                onBlur={() => newTeam && handleNewTeamBlur()}
+                placeholder={t('team-name')}
+                value={newTeamName}
+                onChange={e => handleTeamNameChange(e.target.value)}
+                onClick={handleClick}
+                onBlur={handleNewTeamBlur}
                 slotProps={{
                     input: {
                         sx: {fontWeight: '600'},
                         startAdornment: (
                             <InputAdornment position="start">
-                                <img width="40px" src={`/cap-${(newTeam ? teams.length : teamIndex) % 3}-v1.svg`} alt="Cap"/>
+                                <img width="40px" src={`/cap-${teams.length % 3}-v1.svg`} alt="Cap"/>
                             </InputAdornment>
                         )
                     }
                 }}
                 onKeyDown={handleKeyDown}
-                error={error?.error}
-                helperText={t(error?.helperText)}
             />
         </InputWithDelete>
     );
 };
 
-export default TeamInputBlock;
+export default NewTeamInputBlock;

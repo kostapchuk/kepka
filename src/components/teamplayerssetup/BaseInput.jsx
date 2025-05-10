@@ -15,7 +15,8 @@ const BaseInput = ({
   backgroundColor,
   borderColor,
   activeBorderColor,
-  slotProps
+  slotProps,
+  onClick
 }) => {
   const theme = useTheme();
 
@@ -41,6 +42,7 @@ const BaseInput = ({
             },
             flex: 1
           }}
+          onClick={onClick}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
