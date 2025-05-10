@@ -21,16 +21,10 @@ jobs:
     name: Install and Build
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './package-lock.json'
-
-      - run: npm ci
-        shell: bash
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
 
       - name: Build the app
         run: npm run build
@@ -47,16 +41,10 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './package-lock.json'
-
-      - run: npm ci
-        shell: bash
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
 
       - name: Run unit tests
         run: npm test -- --ci --coverage
@@ -68,19 +56,13 @@ jobs:
     env:
       TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './package-lock.json'
-
-      - run: npm ci
-        shell: bash
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
 
       - name: Download the build folder
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.3.0
         with:
           name: build
           path: build

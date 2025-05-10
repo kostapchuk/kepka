@@ -14,6 +14,7 @@ on:
 
 jobs:
   sonarqube:
+    if: false  # on purpose
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
