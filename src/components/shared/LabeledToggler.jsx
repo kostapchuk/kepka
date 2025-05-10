@@ -4,7 +4,7 @@ import Toggler from "./Toggler";
 
 const LabeledToggler = ({checked, onToggle, label, dataCy}) => (
     <Box>
-      <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
+      <Typography fontSize="14px" color="#6B6B6B" mt={2.5} mb={0.5}>
         {label}
       </Typography>
       <Toggler dataCy={dataCy} checked={checked} onChange={onToggle} />
