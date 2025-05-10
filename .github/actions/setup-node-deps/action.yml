@@ -4,9 +4,9 @@ description: Composite action for setting up Node.js and installing dependencies
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
 
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4.4.0
       with:
         node-version: 18
         cache: 'npm'
