@@ -12,7 +12,7 @@ const StyledSwitch = styled(Switch)(({theme}) => ({
     transitionDuration: '300ms',
     '&.Mui-checked': {
       transform: 'translateX(20px)',
-      color: '#fff',
+      color: '#FFFFFF',
       '& + .MuiSwitch-track': {
         backgroundColor: '#7A51EC',
         opacity: 1,
@@ -38,7 +38,7 @@ const StyledSwitch = styled(Switch)(({theme}) => ({
     boxSizing: 'border-box',
     width: 24,
     height: 24,
-    color: '#fff'
+    color: '#FFFFFF'
   },
   '& .MuiSwitch-track': {
     borderRadius: 28 / 2,
@@ -50,14 +50,12 @@ const StyledSwitch = styled(Switch)(({theme}) => ({
   }
 }));
 
-const Toggler = ({checked, onChange, dataCy}) => {
-  return (
-      <StyledSwitch
-          data-cy={dataCy}
-          checked={checked}
-          onChange={onChange}
-      />
-  );
-};
+const Toggler = ({checked, onChange, dataCy}) => (
+    <StyledSwitch
+        data-cy={dataCy}
+        checked={checked}
+        onChange={onChange}
+    />
+);
 
 export default Toggler;

@@ -16,12 +16,15 @@ const BaseInput = ({
   borderColor,
   activeBorderColor,
   slotProps,
-  onClick
+  onClick,
+  fullWidth,
+  type
 }) => {
   const theme = useTheme();
 
   return (
       <TextField
+          type={type}
           autoComplete="off"
           data-cy={dataCy}
           inputRef={inputRef}
@@ -51,6 +54,7 @@ const BaseInput = ({
           error={error}
           helperText={helperText}
           slotProps={slotProps}
+          fullWidth={fullWidth}
       />
   );
 }

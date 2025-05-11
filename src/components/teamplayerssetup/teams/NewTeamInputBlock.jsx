@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import {setTeams} from "@/redux/gameSlice";
 import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
 import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
-import BaseInput from "@/components/teamplayerssetup/BaseInput";
+import BaseInput from "@/components/shared/BaseInput";
 
 const NewTeamInputBlock = () => {
     const {dispatch, t} = useTranslationAndDispatch();
@@ -61,8 +61,8 @@ const NewTeamInputBlock = () => {
             <BaseInput
                 dataCy="team-name-input"
                 inputRef={inputRef}
-                backgroundColor={theme.colors.gray.dark}
-                borderColor={theme.colors.gray.dark}
+                backgroundColor={theme.colors.gray.light}
+                borderColor={theme.colors.gray.light}
                 activeBorderColor={theme.colors.control.primary}
                 placeholder={t('team-name')}
                 value={newTeamName}

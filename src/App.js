@@ -27,8 +27,8 @@ function App() {
                 blackPressed: '#202020'
             },
             gray: {
-                light: '',
-                dark: '#F6F5F8',
+                light: '#F6F5F8',
+                dark: '#6B6B6B',
                 lightPressed: ''
             },
             stroke: {

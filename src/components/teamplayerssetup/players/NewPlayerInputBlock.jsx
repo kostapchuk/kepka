@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 import {setTeams} from "../../../redux/gameSlice";
 import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
 import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
-import BaseInput from "@/components/teamplayerssetup/BaseInput";
+import BaseInput from "@/components/shared/BaseInput";
 
 const NewPlayerInputBlock = ({teamIndex}) => {
     const [newPlayerName, setNewPlayerName] = useState('');

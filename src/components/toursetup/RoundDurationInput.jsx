@@ -1,39 +1,26 @@
-import React, {useRef} from 'react';
-import {TextField, Typography} from "@mui/material";
+import React from 'react';
+import {useTheme} from "@mui/material/styles";
+
+import BaseInput from "@/components/shared/BaseInput";
+import LabeledInput from "@/components/shared/LabeledInput";
 
 const RoundDurationInput = ({timer, error, onChange, label}) => {
-  const inputRef = useRef(null);
+  const theme = useTheme();
 
   return (
-      <>
-        <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 3, mb: 0.5}}>
-          {label}
-        </Typography>
-        <TextField
+      <LabeledInput label={label}>
+        <BaseInput
+            dataCy="round-duration-input"
+            fullWidth
             type="tel"
-            inputRef={inputRef}
             value={timer}
             error={!!error}
             helperText={error}
             onChange={onChange}
-            sx={{
-              borderRadius: '12px',
-              width: '100%',
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '12px',
-                '& fieldset': {
-                  borderColor: '#D1D1D1',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#D1D1D1',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#7A51EC',
-                },
-              },
-            }}
+            borderColor={theme.colors.stroke.default}
+            activeBorderColor={theme.colors.control.primary}
         />
-      </>
+      </LabeledInput>
   );
 };
 
