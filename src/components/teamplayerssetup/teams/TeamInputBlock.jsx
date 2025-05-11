@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 
 import {setTeams} from "@/redux/gameSlice";
 import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
-import BaseInput from "@/components/teamplayerssetup/BaseInput";
+import BaseInput from "@/components/shared/BaseInput";
 import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
 
 const TeamInputBlock = ({teamName, error, teamIndex}) => {
@@ -38,8 +38,8 @@ const TeamInputBlock = ({teamName, error, teamIndex}) => {
             <BaseInput
                 dataCy="team-name-input"
                 inputRef={inputRef}
-                backgroundColor={theme.colors.gray.dark}
-                borderColor={theme.colors.gray.dark}
+                backgroundColor={theme.colors.gray.light}
+                borderColor={theme.colors.gray.light}
                 activeBorderColor={theme.colors.control.primary}
                 value={teamName}
                 onChange={e => handleTeamNameChangeByIndex(teamIndex, e.target.value)}

@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {setRoundAnsweredWords} from "../../redux/gameSlice";
 

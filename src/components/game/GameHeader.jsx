@@ -1,12 +1,10 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from 'react';
 
 import {setRestartGameModalOpen} from "../../redux/gameSlice";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
-
-4
 
 const TOURS_MAPPING = {
     ALIAS: 'alias',
@@ -29,21 +27,21 @@ const GameHeader = () => {
     const {dispatch, t} = useTranslationAndDispatch();
 
     return (
-        <Box sx={{display: "flex", justifyContent: 'space-between'}}>
-            <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                <Typography variant="h3" sx={{fontSize: "42px"}}
+        <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="center" gap={1}>
+                <Typography variant="h3" fontSize="42px"
                             onClick={() => !roundInProgress && dispatch(setRestartGameModalOpen(true))}>
                     🚪
                 </Typography>
-                <Typography variant="h3" sx={{fontSize: "24px", fontWeight: "600"}}>
+                <Typography variant="h3" fontSize="24px" fontWeight="600">
                     {t(TOURS_MAPPING[tour])}
                 </Typography>
             </Box>
             <Box>
                 <Typography>{t('asker')}</Typography>
-                <Typography>{players.filter(
-                    p => p.gameId === currentGameId && p.teamId === currentTeam
-                        && p.asker)[0].name} ({currentTeam})</Typography>
+                <Typography>{
+                    players.filter(p => p.gameId === currentGameId && p.teamId === currentTeam && p.asker)[0].name} ({currentTeam})
+                </Typography>
             </Box>
         </Box>
     );

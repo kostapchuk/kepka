@@ -6,13 +6,15 @@ import React from "react";
 import {useSelector} from "react-redux";
 import useTranslationAndDispatch from "../../hooks/useTranslationAndDispatch";
 import {
-  addRoundWordStats, setLastClick,
+  addRoundWordStats,
+  setLastClick,
   updateRoundWordStatsDuration
 } from "../../redux/statisticsSlice";
 import {
   setCurrentWord,
   setRoundAnsweredWords,
-  setRoundInProgress, setRoundWords,
+  setRoundInProgress,
+  setRoundWords,
   setTimerRunning
 } from "../../redux/gameSlice";
 import {random} from "../../util/arrayUtils";
@@ -118,25 +120,14 @@ const OpenWordButton = () => {
   return (
       <StyledButton onClick={openWord}>
         <Box>
-          {roundInProgress
-              ? <Typography variant="h2"
-                            sx={{fontWeight: '600', fontSize: '30px'}}>
-                {currentWord}
+          <Typography variant="h2" fontSize="30px" fontWeight="600">
+            {roundInProgress ? currentWord : t('start-game')}
+          </Typography>
+          {!roundInProgress && showLeftWords &&
+              <Typography fontSize="14px" display="block" sx={{opacity: '60%'}}>
+                {t('left-words')}: {tourLeftWords.length}
               </Typography>
-              : <>
-                <Typography variant="h2"
-                            sx={{fontWeight: '600', fontSize: '30px'}}>
-                  {t('start-game')}
-                </Typography>
-                {showLeftWords &&
-                    <Typography sx={{
-                      fontSize: '14px',
-                      display: 'block',
-                      opacity: '60%'
-                    }}>
-                      {t('left-words')}: {tourLeftWords.length}
-                    </Typography>}
-              </>}
+          }
         </Box>
       </StyledButton>
   )

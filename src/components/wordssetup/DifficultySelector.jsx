@@ -1,16 +1,14 @@
 import React from "react";
 import {FormControl, MenuItem, Select} from "@mui/material";
-import Typography from "@mui/material/Typography";
 import {useTranslation} from "react-i18next";
+
+import LabeledInput from "@/components/shared/LabeledInput";
 
 const DifficultySelector = ({value, onChange, open, setOpen, options, label}) => {
   const {t} = useTranslation();
 
   return (
-      <>
-        <Typography sx={{fontSize: "14px", color: "#6B6B6B", mt: 2.5, mb: 0.5}}>
-          {label}
-        </Typography>
+      <LabeledInput label={label}>
         <FormControl fullWidth>
           <Select
               data-cy="difficulty-dropdown"
@@ -59,7 +57,7 @@ const DifficultySelector = ({value, onChange, open, setOpen, options, label}) =>
             )}
           </Select>
         </FormControl>
-      </>
+      </LabeledInput>
   );
 };
 

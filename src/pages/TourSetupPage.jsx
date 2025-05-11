@@ -2,7 +2,6 @@ import React, {useState, useCallback} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import ScrollablePageWithStickyFooter from "../components/shared/ScrollablePageWithStickyFooter";
 import RoundDurationInput from "../components/toursetup/RoundDurationInput";
-import LabeledToggler from "../components/shared/LabeledToggler";
 import PrimaryButton from "../components/shared/PrimaryButton";
 import {setCurrentPage} from "../redux/pageSlice";
 import {setCurrentTeam, setLeftSeconds, setScore, setShowScoreDuringGame, setTimer, setTour} from "../redux/gameSlice";
@@ -11,6 +10,9 @@ import {random} from "../util/arrayUtils";
 import useTranslationAndDispatch from "../hooks/useTranslationAndDispatch";
 import {TOURS} from "../types/tours";
 import SetupHeader from "../components/shared/SetupHeader";
+import {Stack} from "@mui/material";
+import LabeledInput from "@/components/shared/LabeledInput";
+import Toggler from "@/components/shared/Toggler";
 
 const TourSetupPage = () => {
     const dispatch = useDispatch();
@@ -61,18 +63,24 @@ const TourSetupPage = () => {
         <ScrollablePageWithStickyFooter
             footer={<PrimaryButton onClick={handleContinue} content={t('go-to-game')} />}
         >
-            <SetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
-            <RoundDurationInput
-                timer={timer}
-                error={error}
-                onChange={(e) => dispatch(setTimer(e.target.value))}
-                label={t('round-duration')}
-            />
-            <LabeledToggler
-                checked={showScoreDuringGame}
-                onToggle={toggleScoreDisplay}
-                label={t('show-score-during-game')}
-            />
+            <Stack gap={3}>
+                <SetupHeader onBackClick={onBackClick} title={`${t('game-settings')} 3 / 3`} />
+                <Stack gap={2.5}>
+                    <RoundDurationInput
+                        timer={timer}
+                        error={error}
+                        onChange={(e) => dispatch(setTimer(e.target.value))}
+                        label={t('round-duration')}
+                    />
+                    <LabeledInput label={t('show-score-during-game')}>
+                        <Toggler
+                            dataCy="show-score-during-game-toggler"
+                            checked={showScoreDuringGame}
+                            onChange={toggleScoreDisplay}
+                        />
+                    </LabeledInput>
+                </Stack>
+            </Stack>
         </ScrollablePageWithStickyFooter>
     );
 };

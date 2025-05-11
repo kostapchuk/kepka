@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 
 import {setTeams} from "../../../redux/gameSlice";
 import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
-import BaseInput from "@/components/teamplayerssetup/BaseInput";
+import BaseInput from "@/components/shared/BaseInput";
 import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
 
 const PlayerInputBlock = ({teamIndex, playerIndex, player, error}) => {

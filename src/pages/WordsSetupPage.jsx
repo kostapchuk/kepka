@@ -18,7 +18,9 @@ import WordCountInput from "../components/wordssetup/WordCountInput";
 import SetupHeader from "../components/shared/SetupHeader";
 import {setCurrentPage} from "../redux/pageSlice";
 import {DIFFICULTY_LEVELS} from "../types/difficultyLevels";
-import LabeledToggler from "../components/shared/LabeledToggler";
+import {Stack} from "@mui/material";
+import LabeledInput from "@/components/shared/LabeledInput";
+import Toggler from "@/components/shared/Toggler";
 
 const WordsSetupPage = () => {
   const dispatch = useDispatch();
@@ -49,27 +51,32 @@ const WordsSetupPage = () => {
       <ScrollablePageWithStickyFooter
           footer={<PrimaryButton dataCy="words-page-continue-btn" onClick={handleContinue} content={t("continue")} />}
       >
-        <SetupHeader onBackClick={() => dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE))} title={`${t("game-settings")} 2 / 3`} />
-        <WordCountInput
-            value={wordsCount}
-            onChange={e => dispatch(setWordsCount(e.target.value))}
-            error={error}
-            label={t("words-in-game")}
-        />
-        <DifficultySelector
-            value={wordsDifficulty}
-            onChange={e => dispatch(setWordsDifficulty(e.target.value))}
-            open={selectOpen}
-            setOpen={setSelectOpen}
-            options={DIFFICULTY_LEVELS}
-            label={t("words-difficulty")}
-        />
-        <LabeledToggler
-            dataCy="show-remaining-words-toggler"
-            checked={showLeftWords}
-            onToggle={() => dispatch(setShowLeftWords(!showLeftWords))}
-            label={t("show-left-words")}
-        />
+        <Stack gap={3}>
+          <SetupHeader onBackClick={() => dispatch(setCurrentPage(Pages.TEAM_SETUP_PAGE))} title={`${t("game-settings")} 2 / 3`} />
+          <Stack gap={2.5}>
+            <WordCountInput
+                value={wordsCount}
+                onChange={e => dispatch(setWordsCount(e.target.value))}
+                error={error}
+                label={t("words-in-game")}
+            />
+            <DifficultySelector
+                value={wordsDifficulty}
+                onChange={e => dispatch(setWordsDifficulty(e.target.value))}
+                open={selectOpen}
+                setOpen={setSelectOpen}
+                options={DIFFICULTY_LEVELS}
+                label={t("words-difficulty")}
+            />
+            <LabeledInput label={t("show-left-words")}>
+              <Toggler
+                  dataCy="show-remaining-words-toggler"
+                  checked={showLeftWords}
+                  onChange={() => dispatch(setShowLeftWords(!showLeftWords))}
+              />
+            </LabeledInput>
+          </Stack>
+        </Stack>
       </ScrollablePageWithStickyFooter>
   );
 };
