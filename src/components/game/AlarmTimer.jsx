@@ -9,7 +9,7 @@ import {setLastClick, updateRoundWordStatsDuration} from "../../redux/statistics
 const AlarmTimer = () => {
 
     const dispatch = useDispatch();
-    const audioRef = useRef(new Audio('/alarm-bell.mp3'));
+    const audioRef = useRef(new Audio('/alarm-bell-v1.mp3'));
     const {
         leftSeconds,
         timerRunning,

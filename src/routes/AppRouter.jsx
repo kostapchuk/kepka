@@ -13,9 +13,7 @@ import RandomizerModal from "../components/randomizer/RandomizerModal";
 import LanguageChangeModal from "../components/languagechange/LanguageChangeModal";
 
 const AppRouter = () => {
-
     const currentPage = useSelector(state => state.page.currentPage);
-
     return (
         <>
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}

@@ -11,6 +11,7 @@ import {
   REHYDRATE
 } from 'redux-persist';
 import {rootReducer} from './reducers/rootReducer';
+import * as Sentry from "@sentry/react";
 
 const persistConfig = {
   key: 'root',
@@ -19,8 +20,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = configureStore({
+const sentryReduxEnhancer = Sentry.createReduxEnhancer({});
+
+export const store   = configureStore({
   reducer: persistedReducer,
+  enhancers: (getDefaultEnhancers) => {
+    return getDefaultEnhancers().concat(sentryReduxEnhancer);
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

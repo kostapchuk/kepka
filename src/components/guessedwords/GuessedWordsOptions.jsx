@@ -13,10 +13,10 @@ const GuessedWordsOptions = () => {
     const dispatch = useDispatch();
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', mb: 2, mt: 2}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', my: 2, gap: 2.5}}>
             {
                 [...roundWords].reverse().map((option, index) => (
-                    <FormControlLabel key={index} sx={{m: 0, p: 0, mb: 2.5}} control={<Checkbox
+                    <FormControlLabel key={index} sx={{m: 0, p: 0}} control={<Checkbox
                         key={index}
                         checked={roundAnsweredWords.includes(option)}
                         onChange={() => {
@@ -26,20 +26,22 @@ const GuessedWordsOptions = () => {
                                 dispatch(setRoundAnsweredWords([...roundAnsweredWords, option]));
                             }
                         }}
-                        checkedIcon={<img src="/checkbox-on.svg" alt="Checked" style={{ width: '34px', height: '34px' }} />}
-                        icon={<img src="/checkbox-off.svg" alt="Unchecked" style={{ width: '34px', height: '34px' }} />}
                         sx={{
-                            height: '36px',
+                            padding: 0,
+                            '& .MuiSvgIcon-root': {
+                                width: 34,
+                                height: 34
+                            },
                             '&.Mui-checked': {
                                 color: '#7A51EC'
                             },
                         }}
-                    />} label={<Typography variant="body1" sx={{fontSize: '28px'}}>{option}</Typography>}
+                    />} label={<Typography variant="body1" sx={{fontSize: '28px', ml: 1.5}}>{option}</Typography>}
                     />
                 ))
             }
         </Box>
-    )
+    );
 };
 
 export default GuessedWordsOptions;
