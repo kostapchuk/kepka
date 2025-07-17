@@ -44,7 +44,9 @@ const AlarmTimer = () => {
     useEffect(() => {
         if (timerRunning) {
             const audioPlayTimeout = setTimeout(() => {
-                audioRef.current.play();
+                audioRef.current.play()
+                    .then(() => console.log("Alarm is playing"))
+                    .catch(e => console.error("Can't play alarm", e));
                 const audioPauseTimeout = setTimeout(() => {
                     audioRef.current.pause();
                     audioRef.current.currentTime = 0;
