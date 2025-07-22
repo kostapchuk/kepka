@@ -13,11 +13,11 @@ const GuessedWordsPage = () => {
     return (
         <ScrollablePageWithStickyFooter footer={<FinishRoundButton/>}>
             <Typography sx={{
-                padding: '16px 16px 8px 8px',
+                padding: '16px 16px 8px 0px',
                 fontSize: '20px',
                 fontWeight: '600'
             }}>{t('score')}: {score}</Typography>
-            <Typography variant="p" sx={{fontSize: '18px', paddingLeft: '8px'}}>
+            <Typography variant="p" sx={{fontSize: '18px'}}>
                 {t('choose-guessed-words')}
             </Typography>
             <GuessedWordsOptions/>

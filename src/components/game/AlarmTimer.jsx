@@ -9,7 +9,7 @@ import {setLastClick, updateRoundWordStatsDuration} from "../../redux/statistics
 const AlarmTimer = () => {
 
     const dispatch = useDispatch();
-    const audioRef = useRef(new Audio('/alarm-bell.mp3'));
+    const audioRef = useRef(new Audio('/alarm-bell-v1.mp3'));
     const {
         leftSeconds,
         timerRunning,
@@ -44,7 +44,9 @@ const AlarmTimer = () => {
     useEffect(() => {
         if (timerRunning) {
             const audioPlayTimeout = setTimeout(() => {
-                audioRef.current.play();
+                audioRef.current.play()
+                    .then(() => console.log("Alarm is playing"))
+                    .catch(e => console.error("Can't play alarm", e));
                 const audioPauseTimeout = setTimeout(() => {
                     audioRef.current.pause();
                     audioRef.current.currentTime = 0;

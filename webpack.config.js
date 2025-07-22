@@ -7,9 +7,11 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // Add this
-const { version } = require('./package.json');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { version, name } = require('./package.json');
 const { StatsWriterPlugin } = require("webpack-stats-plugin");
+const { sentryWebpackPlugin } = require("@sentry/webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 
 module.exports = (env, argv) => {
@@ -95,12 +97,15 @@ module.exports = (env, argv) => {
             runtimeChunk: 'single',
         },
         plugins: [
+            new Dotenv(),
+            new webpack.DefinePlugin({
+                'APPLICATION_VERSION': JSON.stringify(version),
+            }),
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
-                favicon: './public/favicon.ico', // Add this if you have a favicon
+                favicon: './public/favicon.ico',
             }),
-            // Copy public folder assets (except index.html)
             new CopyWebpackPlugin({
                 patterns: [
                     {
@@ -111,10 +116,6 @@ module.exports = (env, argv) => {
                         },
                     },
                 ],
-            }),
-            // Define process.env in the client code
-            new webpack.DefinePlugin({
-                'APPLICATION_VERSION': JSON.stringify(version),
             }),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'static/css/[name].[contenthash:8].css',
@@ -132,6 +133,15 @@ module.exports = (env, argv) => {
                     modules: true,
                     entrypoints: true,
                 },
+            }),
+            sentryWebpackPlugin({
+                authToken: process.env.SENTRY_AUTH_TOKEN,
+                org: 'kepka',
+                project: 'javascript-react',
+                release: `${name}@${version}`,
+                include: './dist',
+                ignore: ['node_modules', 'webpack.config.js'],
+                urlPrefix: '~/dist',
             }),
         ].filter(Boolean),
         resolve: {
