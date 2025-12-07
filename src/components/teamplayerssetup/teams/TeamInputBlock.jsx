@@ -7,6 +7,8 @@ import {setTeams} from "@/redux/gameSlice";
 import useTranslationAndDispatch from "../../../hooks/useTranslationAndDispatch";
 import BaseInput from "@/components/shared/BaseInput";
 import InputWithDelete from "@/components/teamplayerssetup/InputWithDelete";
+import Typography from "@mui/material/Typography";
+import {hats} from "@/util/hats";
 
 const TeamInputBlock = ({teamName, error, teamIndex}) => {
     const {dispatch, t} = useTranslationAndDispatch();
@@ -48,7 +50,7 @@ const TeamInputBlock = ({teamName, error, teamIndex}) => {
                         sx: {fontWeight: '600'},
                         startAdornment: (
                             <InputAdornment position="start">
-                                <img width="40px" src={`/cap-${teamIndex % 3}-v1.svg`} alt="Cap"/>
+                                <Typography sx={{fontSize: '22px', color: '#000000'}}>{hats[teamIndex % hats.length]}</Typography>
                             </InputAdornment>
                         )
                     }
