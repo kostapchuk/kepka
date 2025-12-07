@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import React from 'react';
 
 import {Pages} from "../../routes";
+import {hats} from "@/util/hats";
 
 const ScoresTab = () => {
 
@@ -15,9 +16,11 @@ const ScoresTab = () => {
         <>
             {Object.entries(score).map(([key, value], index) => (
                 <Box sx={{display: 'flex', mb: 2.5}}>
-                    <img src={`/cap-${index % 3}-v1.svg`} alt="Cap" style={{width: '50px', marginRight: '12px'}}/>
                     <Box>
-                        <Typography sx={{fontSize: '16px'}}>{key}</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Typography sx={{ fontSize: '22px' }}>{hats[index % hats.length]}</Typography>
+                            <Typography sx={{ fontSize: '16px' }}>{key}</Typography>
+                        </Box>
                         {(showScoreDuringGame || currentPage === Pages.RESULTS_PAGE) &&
                             <Typography sx={{fontSize: '14px', color: '#6B6B6B'}}>{value}</Typography>}
                     </Box>

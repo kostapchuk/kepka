@@ -41,7 +41,7 @@ const WordsSetupPage = () => {
 
   const handleContinue = () => {
     if (!validateWordsCount()) return;
-    const words = shuffle(wordsByDifficultyLevel[i18n.language][wordsDifficulty]).slice(0, wordsCount);
+    const words = shuffle(wordsByDifficultyLevel[i18n.resolvedLanguage][wordsDifficulty]).slice(0, wordsCount);
     dispatch(setWords(words));
     dispatch(setLeftWords(words));
     dispatch(setCurrentPage(Pages.TOUR_SETUP_PAGE));

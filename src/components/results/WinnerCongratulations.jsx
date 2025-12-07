@@ -22,9 +22,6 @@ const WinnerCongratulations = () => {
           {t("congratulations")}
         </Typography>
 
-        <img src={`/cap-${topTeam[2] % 3}-v1.svg`} alt="Cap"
-             style={{width: "100px", paddingTop: "32px"}}/>
-
         <Typography sx={{fontSize: "16px", pt: 2.5}}>
           {topTeam[0]}
         </Typography>
