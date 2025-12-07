@@ -1,9 +1,12 @@
+name: Bundle size comparison
+
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    branches:
+      - main
 jobs:
   # Build current and upload stats.json
   # You may replace this with your own build method. All that
