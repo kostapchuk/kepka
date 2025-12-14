@@ -7,6 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {Analytics} from "@vercel/analytics/react";
 import './i18n/config';
+import {Toaster} from "react-hot-toast";
 
 function App() {
     const theme = createTheme({
@@ -40,6 +41,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
+                    <Toaster />
                     <Analytics/>
                     <AppRouter/>
                 </PersistGate>

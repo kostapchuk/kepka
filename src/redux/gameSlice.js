@@ -28,7 +28,9 @@ const initialState = {
   currentGameTab: 'game', // game, team
   randomizerModalOpen: false,
   languageModalOpen: false,
-  teamCount: 3 // for randomizing
+  teamCount: 3, // for randomizing
+  teamErrors: [],
+  playerErrors: []
 }
 
 export const gameSlice = createSlice({
@@ -113,6 +115,18 @@ export const gameSlice = createSlice({
     setTeamCount: (state, action) => {
       state.teamCount = action.payload
     },
+    addTeamError: (state, action) => {
+      state.teamErrors.push(action.payload);
+    },
+    addPlayerError: (state, action) => {
+      state.playerErrors.push(action.payload);
+    },
+    setTeamErrors: (state, action) => {
+      state.teamErrors = action.payload;
+    },
+    setPlayerErrors: (state, action) => {
+      state.playerErrors = action.payload;
+    },
     reset: () => initialState
   }
 })
@@ -144,7 +158,11 @@ export const {
   setCurrentGameTab,
   setRandomizerModalOpen,
   setLanguageModalOpen,
-  setTeamCount
+  setTeamCount,
+  addTeamError,
+  addPlayerError,
+  setTeamErrors,
+  setPlayerErrors
 } = gameSlice.actions
 
 export default gameSlice.reducer
