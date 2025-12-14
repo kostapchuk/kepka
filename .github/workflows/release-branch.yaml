@@ -9,6 +9,7 @@ env:
   NODE_VERSION: '18'
 
 jobs:
+  # Your existing CI pipeline
   build:
     name: Install and Build
     runs-on: ubuntu-22.04
@@ -44,7 +45,7 @@ jobs:
   cypress-tests:
     name: Run cypress tests
     runs-on: ubuntu-22.04
-    needs: [build, unit-tests]
+    needs: [ build, unit-tests ]
     env:
       TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
     steps:
@@ -72,7 +73,7 @@ jobs:
   # Release-specific steps that run after all tests pass
   create-release:
     name: Create Release and Tag
-    needs: [build, unit-tests, cypress-tests]
+    needs: [ build, unit-tests, cypress-tests ]
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -99,10 +100,10 @@ jobs:
           echo "patch=$PATCH" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           
-          # Calculate next patch version for main branch
-          NEXT_PATCH=$((PATCH + 1))
-          echo "next_patch=$NEXT_PATCH" >> $GITHUB_OUTPUT
-          echo "next_version=$MAJOR.$MINOR.$NEXT_PATCH" >> $GITHUB_OUTPUT
+          # Calculate next minor version for main branch
+          NEXT_MINOR=$((MINOR + 1))
+          echo "next_minor=$NEXT_MINOR" >> $GITHUB_OUTPUT
+          echo "next_version=$MAJOR.$NEXT_MINOR.0" >> $GITHUB_OUTPUT
 
       - name: Checkout release branch
         uses: actions/checkout@v4.2.2
@@ -156,7 +157,7 @@ jobs:
             ### Changes since last release
             See commit history for details.
 
-      - name: Update version on main branch
+      - name: Update version on main branch with clean npm ci
         id: update_main
         run: |
           # Switch to main branch
@@ -164,31 +165,51 @@ jobs:
           git checkout main
           git pull origin main
           
-          # Update package.json version
+          # Get current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current main version: $CURRENT_VERSION"
           
-          # Only update if main version is older than release version
+          # Only update if main version is different from release version
           if [[ "$CURRENT_VERSION" != "${{ steps.extract_version.outputs.version }}" ]]; then
+            # Clean approach: delete node_modules and lock file, then rebuild
+            echo "Cleaning up existing dependencies..."
+            rm -rf node_modules
+            rm -f package-lock.json  # Remove old lock file
+          
+            # Update package.json version
+            echo "Updating package.json to version ${{ steps.extract_version.outputs.next_version }}..."
             npm version ${{ steps.extract_version.outputs.next_version }} --no-git-tag-version
           
-            # Commit and push
-            git add package.json
-            git commit -m "chore: bump version to ${{ steps.extract_version.outputs.next_version }} [skip ci]"
+            # Create fresh lock file with new version
+            echo "Creating fresh package-lock.json..."
+            npm install --package-lock-only  # Creates lock file without installing
+          
+            # Verify versions match
+            PACKAGE_VERSION=$(node -p "require('./package.json').version")
+            LOCK_VERSION=$(node -p "require('./package-lock.json').version")
+          
+            if [ "$PACKAGE_VERSION" != "$LOCK_VERSION" ]; then
+              echo "❌ Version mismatch after update!"
+              echo "package.json: $PACKAGE_VERSION"
+              echo "package-lock.json: $LOCK_VERSION"
+              exit 1
+            fi
+          
+            echo "✅ Version updated to: $PACKAGE_VERSION"
+          
+            # Commit changes
+            git add package.json package-lock.json
+            git commit -m "chore: bump version to ${{ steps.extract_version.outputs.next_version }}
+          
+            - Update package.json version
+            - Regenerate package-lock.json with new version
+            [skip ci]"
+          
             git push origin main
           
-            echo "✅ Updated main branch from $CURRENT_VERSION to ${{ steps.extract_version.outputs.next_version }}"
+            echo "✅ Successfully updated main branch to ${{ steps.extract_version.outputs.next_version }}"
           else
-            echo "⚠️  Main branch already at version $CURRENT_VERSION, skipping bump"
+            echo "⚠️  Main branch already at version $CURRENT_VERSION, skipping version bump"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete release branch
-        if: success()
-        run: |
-          # Delete the release branch
-          git push origin --delete ${{ github.ref_name }}
-          echo "✅ Deleted release branch ${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
