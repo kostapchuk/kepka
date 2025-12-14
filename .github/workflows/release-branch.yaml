@@ -157,7 +157,7 @@ jobs:
             ### Changes since last release
             See commit history for details.
 
-      - name: Update version on main branch with clean npm ci
+      - name: Update version on main branch
         id: update_main
         run: |
           # Switch to main branch
@@ -165,24 +165,27 @@ jobs:
           git checkout main
           git pull origin main
           
-          # Get current version
+          # Get current version from main
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current main version: $CURRENT_VERSION"
+          echo "Release version: ${{ steps.extract_version.outputs.version }}"
+          echo "Next version: ${{ steps.extract_version.outputs.next_version }}"
           
-          # Only update if main version is different from release version
-          if [[ "$CURRENT_VERSION" != "${{ steps.extract_version.outputs.version }}" ]]; then
-            # Clean approach: delete node_modules and lock file, then rebuild
+          # Only update if main version is NOT already the next version
+          # This prevents duplicate updates if the workflow runs multiple times
+          if [[ "$CURRENT_VERSION" != "${{ steps.extract_version.outputs.next_version }}" ]]; then
+            # Clean approach
             echo "Cleaning up existing dependencies..."
             rm -rf node_modules
-            rm -f package-lock.json  # Remove old lock file
+            rm -f package-lock.json
           
-            # Update package.json version
+            # Update package.json version to next minor version
             echo "Updating package.json to version ${{ steps.extract_version.outputs.next_version }}..."
             npm version ${{ steps.extract_version.outputs.next_version }} --no-git-tag-version
           
             # Create fresh lock file with new version
             echo "Creating fresh package-lock.json..."
-            npm install --package-lock-only  # Creates lock file without installing
+            npm install --package-lock-only
           
             # Verify versions match
             PACKAGE_VERSION=$(node -p "require('./package.json').version")
@@ -201,15 +204,15 @@ jobs:
             git add package.json package-lock.json
             git commit -m "chore: bump version to ${{ steps.extract_version.outputs.next_version }}
           
-            - Update package.json version
-            - Regenerate package-lock.json with new version
+            - Update package.json version to ${{ steps.extract_version.outputs.next_version }}
+            - Regenerate package-lock.json
             [skip ci]"
           
             git push origin main
           
             echo "✅ Successfully updated main branch to ${{ steps.extract_version.outputs.next_version }}"
           else
-            echo "⚠️  Main branch already at version $CURRENT_VERSION, skipping version bump"
+            echo "✅ Main branch already at version ${{ steps.extract_version.outputs.next_version }}, no update needed"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
