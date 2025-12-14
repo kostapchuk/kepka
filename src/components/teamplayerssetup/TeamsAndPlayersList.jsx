@@ -1,8 +1,6 @@
 import {useSelector} from "react-redux";
-import Typography from "@mui/material/Typography";
 import {Stack} from "@mui/material";
-import React from 'react';
-import {useTranslation} from "react-i18next";
+import React, {useState} from 'react';
 
 import TeamInputBlock from "./teams/TeamInputBlock";
 import PlayerInputBlock from "./players/PlayerInputBlock";
@@ -11,9 +9,8 @@ import NewPlayerInputBlock
 import NewTeamInputBlock
   from "@/components/teamplayerssetup/teams/NewTeamInputBlock";
 
-const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
-  const {teams} = useSelector(state => state.game);
-  const {t} = useTranslation();
+const TeamsAndPlayersList = () => {
+  const {teams, teamErrors, playerErrors} = useSelector(state => state.game);
 
   return (
       <Stack spacing={4} mt={3} mb={2}>
@@ -21,7 +18,7 @@ const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
             <Stack key={teamIndex} spacing={2}>
                 <TeamInputBlock
                     teamName={team.name}
-                    error={teamError.find(error => error.error === teamIndex)}
+                    error={teamErrors.find(error => error.error === teamIndex)}
                     teamIndex={teamIndex}
                 />
               <Stack spacing={2}>
@@ -30,7 +27,7 @@ const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
                         teamIndex={teamIndex}
                         playerIndex={playerIndex}
                         player={player}
-                        error={playerError.find(
+                        error={playerErrors.find(
                             error => error.teamIndex === teamIndex
                                 && error.playerIndex === playerIndex)}
                     />
@@ -40,7 +37,6 @@ const TeamsAndPlayersList = ({teamError, playerError, commonErrors}) => {
             </Stack>
         )}
         <NewTeamInputBlock/>
-        {commonErrors.map(error => <Typography color="error">{t(error)}</Typography>)}
       </Stack>
   )
 }
