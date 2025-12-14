@@ -1,0 +1,194 @@
+name: Release from Branch
+
+on:
+  push:
+    branches:
+      - 'release/*'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  build:
+    name: Install and Build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
+
+  unit-tests:
+    name: Run unit tests
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
+
+      - name: Run unit tests
+        run: npm test -- --ci --coverage
+
+  cypress-tests:
+    name: Run cypress tests
+    runs-on: ubuntu-22.04
+    needs: [build, unit-tests]
+    env:
+      TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: build
+          path: build
+
+      - name: Start app and run Cypress with Testomat reporting
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm start
+          browser: chrome
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+        env:
+          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+
+  # Release-specific steps that run after all tests pass
+  create-release:
+    name: Create Release and Tag
+    needs: [build, unit-tests, cypress-tests]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Extract version from branch name
+        id: extract_version
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          VERSION=${BRANCH_NAME#release/}
+          echo "Extracted version: $VERSION"
+          
+          # Validate version format (X.Y.Z)
+          if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format. Expected X.Y.Z, got: $VERSION"
+            exit 1
+          fi
+          
+          # Split version into components
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          echo "major=$MAJOR" >> $GITHUB_OUTPUT
+          echo "minor=$MINOR" >> $GITHUB_OUTPUT
+          echo "patch=$PATCH" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Calculate next patch version for main branch
+          NEXT_PATCH=$((PATCH + 1))
+          echo "next_patch=$NEXT_PATCH" >> $GITHUB_OUTPUT
+          echo "next_version=$MAJOR.$MINOR.$NEXT_PATCH" >> $GITHUB_OUTPUT
+
+      - name: Checkout release branch
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - name: Setup node dependencies
+        uses: ./.github/actions/setup-node-deps
+
+      - name: Validate package.json version matches branch
+        id: validate_version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "Package version: $PACKAGE_VERSION"
+          echo "Branch version: ${{ steps.extract_version.outputs.version }}"
+          
+          if [ "$PACKAGE_VERSION" != "${{ steps.extract_version.outputs.version }}" ]; then
+            echo "❌ Version mismatch! package.json has $PACKAGE_VERSION, branch expects ${{ steps.extract_version.outputs.version }}"
+            exit 1
+          fi
+          
+          echo "✅ Version validation passed"
+
+      - name: Create Git tag
+        run: |
+          git tag v${{ steps.extract_version.outputs.version }}
+          git push origin v${{ steps.extract_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.extract_version.outputs.version }}
+          name: Release v${{ steps.extract_version.outputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## Release v${{ steps.extract_version.outputs.version }}
+            
+            ✅ All tests passed:
+            - ✅ Build completed successfully
+            - ✅ Unit tests passed with coverage
+            - ✅ Cypress E2E tests passed
+            
+            ### Artifacts
+            The build artifacts are available in the build job outputs.
+            
+            ### Changes since last release
+            See commit history for details.
+
+      - name: Update version on main branch
+        id: update_main
+        run: |
+          # Switch to main branch
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          
+          # Update package.json version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current main version: $CURRENT_VERSION"
+          
+          # Only update if main version is older than release version
+          if [[ "$CURRENT_VERSION" != "${{ steps.extract_version.outputs.version }}" ]]; then
+            npm version ${{ steps.extract_version.outputs.next_version }} --no-git-tag-version
+          
+            # Commit and push
+            git add package.json
+            git commit -m "chore: bump version to ${{ steps.extract_version.outputs.next_version }} [skip ci]"
+            git push origin main
+          
+            echo "✅ Updated main branch from $CURRENT_VERSION to ${{ steps.extract_version.outputs.next_version }}"
+          else
+            echo "⚠️  Main branch already at version $CURRENT_VERSION, skipping bump"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete release branch
+        if: success()
+        run: |
+          # Delete the release branch
+          git push origin --delete ${{ github.ref_name }}
+          echo "✅ Deleted release branch ${{ github.ref_name }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
