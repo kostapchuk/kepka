@@ -14,6 +14,7 @@ const initialState = {
   currentGameId: uuidv4(),
   score: {},
   elapsedTime: 0,
+  roundDeadline: null,
   teams: [],
   timerRunning: false,
   currentWord: '',
@@ -72,6 +73,9 @@ export const gameSlice = createSlice({
     },
     setElapsedTime: (state, action) => {
       state.elapsedTime = action.payload
+    },
+    setRoundDeadline: (state, action) => {
+      state.roundDeadline = action.payload
     },
     setTeams: (state, action) => {
       state.teams = action.payload
@@ -145,6 +149,7 @@ export const {
   setScore,
   reset,
   setElapsedTime,
+  setRoundDeadline,
   setTeams,
   setTimerRunning,
   setCurrentWord,

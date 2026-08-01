@@ -9,6 +9,7 @@ import {
     setLeftSeconds,
     setLeftWords,
     setRoundAnsweredWords,
+    setRoundDeadline,
     setRoundWords,
     setScore,
     setTour,
@@ -78,6 +79,7 @@ const FinishRoundButton = () => {
             dispatch(setLeftSeconds(newLeftSeconds))
         }
         dispatch(setElapsedTime(0));
+        dispatch(setRoundDeadline(null));
         const newScore = {
             ...score,
             [currentTeam]: score[currentTeam] + roundAnsweredWords.length

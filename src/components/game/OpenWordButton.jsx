@@ -13,11 +13,13 @@ import {
 import {
   setCurrentWord,
   setRoundAnsweredWords,
+  setRoundDeadline,
   setRoundInProgress,
   setRoundWords,
   setTimerRunning
 } from "../../redux/gameSlice";
 import {random} from "../../util/arrayUtils";
+import {primeAlarm} from "../../util/alarm";
 import {setCurrentPage} from "../../redux/pageSlice";
 import {Pages} from "../../routes";
 
@@ -37,6 +39,7 @@ const OpenWordButton = () => {
   const {
     leftWords: tourLeftWords,
     timerRunning,
+    leftSeconds,
     roundWords,
     roundAnsweredWords,
     currentWord,
@@ -55,11 +58,16 @@ const OpenWordButton = () => {
 
   const startTimer = () => {
     if (!timerRunning) {
+      dispatch(setRoundDeadline(
+          Date.now() + Number(leftSeconds[currentTeam]) * 1000));
       dispatch(setTimerRunning(true));
     }
   };
 
   const openWord = () => {
+    // Must stay first and synchronous: the autoplay policy only lets the alarm
+    // element through if it played once inside a user gesture.
+    primeAlarm();
     const currentTime = performance.now();
     if (!roundInProgress) {
       dispatch(setRoundInProgress(true));
@@ -111,6 +119,7 @@ const OpenWordButton = () => {
       }
       dispatch(updateRoundWordStatsDuration(currentWordStats));
       dispatch(setTimerRunning(false));
+      dispatch(setRoundDeadline(null));
       dispatch(setCurrentPage(Pages.ROUND_SCORE_PAGE))
       dispatch(setRoundInProgress(false));
       dispatch(setLastClick(null));

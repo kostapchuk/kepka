@@ -77,6 +77,9 @@
     <!-- Prevent content translation -->
     <meta name="google" content="notranslate" />
 
+    <!-- Round-end alarm: buffered up front so playback never waits on the network -->
+    <link rel="preload" as="audio" href="/alarm-bell-v1.mp3" type="audio/mpeg" />
+
     <!-- Preconnect to important domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
