@@ -11,9 +11,11 @@ import GamePage from "../pages/GamePage";
 import GuessedWordsPage from "../pages/GuessedWordsPage";
 import RandomizerModal from "../components/randomizer/RandomizerModal";
 import LanguageChangeModal from "../components/languagechange/LanguageChangeModal";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const AppRouter = () => {
     const currentPage = useSelector(state => state.page.currentPage);
+    useScrollToTop(currentPage);
     return (
         <>
             {currentPage === Pages.TEAM_SETUP_PAGE && <TeamSetupPage/>}
