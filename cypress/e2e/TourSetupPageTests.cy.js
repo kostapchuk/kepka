@@ -3,6 +3,8 @@ import en from '../../src/i18n/locales/en/translations.json';
 import ru from '../../src/i18n/locales/ru/translations.json';
 const deploymentUrl = 'http://localhost:3000';
 
+// todo
+
 describe('Tour setup page tests', () => {
   const langs = ['en', 'ru'];
   const translations = { en, ru };

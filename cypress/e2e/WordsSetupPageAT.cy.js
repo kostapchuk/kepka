@@ -1,5 +1,7 @@
 const deploymentUrl = 'http://localhost:3000';
 
+// todo
+
 describe('Words setup acceptance test', () => {
   beforeEach(() => {
     cy.visit(deploymentUrl)
